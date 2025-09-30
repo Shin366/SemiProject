@@ -33,5 +33,22 @@
 ---
 
 ## 📂 프로젝트 구조
-
+src
+├─ main
+│ ├─ java
+│ │ └─ com.project.ForTrip
+│ │ ├─ controller
+│ │ ├─ service
+│ │ ├─ dao
+│ │ └─ vo
+│ ├─ resources
+│ │ └─ mappers
+│ └─ webapp
+│ ├─ WEB-INF
+│ │ └─ views
+│ └─ resources
+│ ├─ css
+│ ├─ jsp
+│ └─ img
+└─ test
 
