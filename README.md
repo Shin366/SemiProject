@@ -33,3 +33,17 @@
 ---
 
 ## 📂 프로젝트 구조
+src
+├─ main
+│ ├─ java
+│ │ └─ com.project.egotrip
+│ │ ├─ controller
+│ │ ├─ service
+│ │ ├─ dao
+│ │ └─ vo
+│ ├─ resources
+│ │ └─ mappers
+│ └─ webapp
+│ ├─ WEB-INF/views
+│ └─ resources (css, js, img)
+└─ test
