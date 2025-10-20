@@ -1,0 +1,125 @@
+# ===============================
+# 🧩 OS 임시 파일 (Mac / Windows)
+# ===============================
+.DS_Store
+.DS_Store?
+Thumbs.db
+ehthumbs.db
+desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# ===============================
+# ☕ Maven / Gradle 빌드 산출물
+# ===============================
+/target/
+/build/
+/out/
+/bin/
+!**/src/main/**/target/
+!**/src/test/**/target/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# Maven Wrapper
+.mvn/wrapper/maven-wrapper.jar
+.mvn/wrapper/maven-wrapper.properties
+
+# ===============================
+# 🌱 Spring / Java 설정 캐시
+# ===============================
+*.class
+*.log
+*.tmp
+*.cache
+*.swp
+*.swo
+
+# ===============================
+# 🧰 STS (Spring Tool Suite)
+# ===============================
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans
+.sts4-cache
+
+# ===============================
+# 🧠 IntelliJ IDEA
+# ===============================
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# ===============================
+# 🧩 NetBeans
+# ===============================
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# ===============================
+# 🧩 VS Code
+# ===============================
+.vscode/
+
+# ===============================
+# ⚙️ Environment Config Files (보안)
+# Oracle DB / API 키 / OAuth 등
+# ===============================
+/src/main/resources/application.properties
+/src/main/resources/application.yml
+/src/main/resources/config/
+/src/main/resources/secrets/
+/src/main/resources/keys/
+/src/main/resources/credentials/
+
+/src/test/resources/application.properties
+/src/test/resources/application.yml
+
+# 로컬 환경 변수 파일 (.env)
+.env
+.env.local
+.env.*
+!.env.example
+
+# ===============================
+# 🧾 OS / Tools 기타
+# ===============================
+*.bak
+*.old
+*.orig
+*.rej
+*.tmp
+*.log
+
+# ===============================
+# 🧩 Eclipse / STS / Windows 차이 대응
+# ===============================
+# Eclipse 자동 생성 설정 파일 (Mac/Windows 동시 대응)
+.metadata/
+.recommenders/
+.classpath
+.project
+
+# Windows 전용: 자동 백업, 임시 파일 제거
+*.bat~
+*.cmd~
+*.tmp
+~$*
+
+# Mac 전용: Spotlight, AppleDouble
+.Spotlight-V100
+.Trashes
+.AppleDouble
+._*
+
+# ===============================
+# ⚙️ Git 내부 관련 (macOS CRLF/LF 방지)
+# ===============================
+.gitattributes
