@@ -1,0 +1,120 @@
+@charset "UTF-8";
+#main {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+}
+
+#question-wrapper {
+    width: 60%;
+    padding: 40px;
+    border-radius: 12px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+    h1 {
+        font-size: 28px;
+        font-weight: 600;
+        margin-bottom: 30px;
+        text-align: left;
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 20px;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+
+        .form-row {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            gap: 25px;
+
+            .form-group:nth-child(1) {width: 80%;}
+            .form-group:nth-child(2) {width: 20%;}
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #666;
+        }
+
+        input[type="text"] {
+            height: 45px;
+        }
+
+        input[type="text"],
+        #questionCategory,
+        textarea {
+            border: 1px solid #666;
+            border-radius: 8px;
+            padding: 12px;
+            outline: none;
+            resize: vertical;
+
+            &:focus {
+                border: 2px solid #5D78FF;
+            }
+        }
+
+        input[type="file"] {
+            border: 1px dashed #666;
+            border-radius: 10px;
+            padding: 12px;
+            background-color: #fafafa;
+            cursor: pointer;
+            transition: background-color 0.3s;
+
+            &:hover {
+                background-color: #f0f0f0;
+            }
+        }
+
+        .btn-row {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            gap: 20px;
+
+            button {
+                border: none;
+                padding: 10px 20px;
+                border-radius: 8px;
+                font-size: 14px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: background-color 0.3s;
+                color: #fff;
+            }
+
+            #question-save-btn {
+                background-color: #5D78FF;
+
+                &:hover {
+                    background-color: #027dbf;
+                }
+            }
+
+            #question-cancel-btn {
+                background-color: #DC2626;
+                
+                &:hover {
+                    background-color: #c42121;
+               }
+            }
+        }
+    }
+}
+
