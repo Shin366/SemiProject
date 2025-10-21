@@ -23,5 +23,7 @@ public class TripController {
 	public String showCourseView(Model model) {
 	    return "/trip/course";
 	}
+	
+	
 
 }

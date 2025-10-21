@@ -13,7 +13,7 @@
     <nav class="nav-menu">
       <ul>
         <li><a href="/trip/course">여행코스</a></li>
-        <li><a href="/roadmap">나만의 로드맵</a></li>
+        <li><a href="/roadmap/my">나만의 로드맵</a></li>
         <li><a href="/community">커뮤니티</a></li>
         <li><a href="/support">고객지원</a></li>
       </ul>
