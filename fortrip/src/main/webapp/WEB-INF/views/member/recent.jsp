@@ -4,7 +4,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>ForTrip - 최근 본 코스</title>
+<link rel="icon" type="image/png" href="">
 </head>
 <body>
 
