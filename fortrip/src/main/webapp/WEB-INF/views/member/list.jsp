@@ -4,7 +4,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>ForTrip - 찜 목록</title>
+<link rel="icon" type="image/png" href="">
 </head>
 <body>
 

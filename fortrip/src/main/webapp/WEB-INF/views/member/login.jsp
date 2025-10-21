@@ -4,9 +4,34 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>ForTrip - 로그인</title>
+<link rel="icon" type="image/png" href="">
 </head>
 <body>
-
+	<div id="container">
+        <main id="main">
+            <div class="login-container">
+                <div class="login-title">
+                    <h2>로그인</h2>
+                </div>
+                <form class="login-form" action="/member/login" method="post">
+                    <div class="form-group">
+                        <label for="">아이디</label>
+                        <input type="text" name="memberId" placeholder="아이디를 입력해주세요." required>
+                    </div>
+                    <div class="form-group">
+                        <label for="">비밀번호</label>
+                        <input type="password" name="memberPw" placeholder="비밀번호를 입력해주세요." required>
+                    </div>
+                    <button type="submit">로그인</button>
+                </form>
+                <div class="login-links">
+                    <a href="#">아이디 찾기</a>
+                    <a href="#">비밀번호 찾기</a>
+                    <a href="/member/signup">회원가입</a>
+                </div>
+            </div>
+        </main>
+    </div>
 </body>
 </html>
