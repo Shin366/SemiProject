@@ -8,6 +8,31 @@
 <link rel="icon" type="image/png" href="">
 </head>
 <body>
-
+	<div id="container">
+        <main id="main">
+            <div class="list-container">
+                <div class="list-title">
+                    <h2>찜 목록</h2>
+                </div>
+                <button onclick="edit">편집</button>
+            </div>
+            <div class="sidebar">
+                <ul class="menu-list">
+                    <li><a href="#">내 프로필</a></li>
+                    <li><a href="#">내 게시글</a></li>
+                    <li><a href="#">찜 목록</a></li>
+                    <li><a href="#">최근 본 코스</a></li>
+                    <li><a href="#">개인 정보 수정</a></li>
+                    <li><a href="#">회원탈퇴</a></li>
+                </ul>
+            </div>
+            <div class="mainbar">
+                <div class="img"></div>
+                <div class="tripdate">여행날짜</div>
+                <div class="title">제목</div>
+                <div class="price">가격</div>
+            </div>
+        </main>
+    </div>
 </body>
 </html>

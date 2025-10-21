@@ -35,7 +35,7 @@
             </div>
             <div class="form-group">
                 <label class="required" for="birthDate">생년월일</label>
-                	<div class="birthdate-group">
+                    <div class="birthdate-group">
 						<input type="text" name="birthDateYear" id="birthDateYear" placeholder="YYYY" required><span>년</span>
 						<input type="text" name="birthDateMon" id="birthDateMon" placeholder="MM" required><span>월</span>
 						<input type="text" name="birthDateDay" id="birthDateDay" placeholder="DD" required><span>일</span>

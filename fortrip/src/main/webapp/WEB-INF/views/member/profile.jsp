@@ -9,7 +9,7 @@
 </head>
 <body>
 	<div id="container">
-        <main>
+        <main id="main">
             <div class="profile-section">
                 <div class="profile-image"></div>
                 <h2 class="profile-nickName">닉네임</h2>
@@ -39,6 +39,8 @@
                 <form action="/member/updateType" method="post">
                     <div class="style">
                         <p>여행 스타일</p>
+                        <div class="trip-type"></div>
+                        <button type="button">버튼</button>
                     </div>
                     <div class="use-type">
                         <p>성향</p>

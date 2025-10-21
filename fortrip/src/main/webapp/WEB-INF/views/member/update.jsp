@@ -32,19 +32,19 @@
             <div class="content-area">
                 <form action="/member/upDate" method="post">
                     <div class="info-group">
-                        <label for="">닉네임</label>
+                        <label for="nickName">닉네임</label>
                         <input type="text" value="">
                     </div>
-                    <div class="">
-                        <label for="">휴대폰 번호</label>
+                    <div class="newPhone">
+                        <label for="phone">휴대폰 번호</label>
                         <input type="text" value="">
                     </div>
-                    <div class="">
+                    <div class="newEmail">
                         <label for="">이메일</label>
                         <input type="text" value="">
                     </div>
                     <span class="pwUpdate-button">
-                        <a href="">비밀번호 변경</a>
+                        <a href="#">비밀번호 변경</a>
                     </span>
                 </form>
                 <button type="submit" class="update-button">수정하기</button>
