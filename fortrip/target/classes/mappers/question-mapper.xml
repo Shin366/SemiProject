@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fortrip.com.domain.admin.question.model.mapper.QuestionMapper">
+	<insert id="questionInsert">
+		INSERT INTO QUESTION VALUES (SEQ_QUESTION_NO.NEXTVAL, #{questionTitle}, #{questionCategory}, #{questionContent})
+	</insert>
+</mapper>

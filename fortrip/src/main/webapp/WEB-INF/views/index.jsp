@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <title>fortrip - 관리자 대시보드</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
-<link rel="stylesheet" href="../resources/admin/css/main.css">
+<link rel="stylesheet" href="../resources/css/admin/main.css">
 </head>
 <body>
 	<div id="container">
@@ -261,7 +261,7 @@
                             <div class="card-list">
                                 <div class="travel-card">
                                     <div class="travel-image">
-                                        <img src="../img/seoul-img.png" alt="">
+                                        <img src="../resources/img/admin/seoul-img.png" alt="">
                                     </div>
                                     <div class="travel-container">
                                         <h3 class="travel-title">서울 도심 문화탐방 코스</h3>
