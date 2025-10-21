@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>ForTrip - 내 프로필</title>
-<link rel="icon" type="image/png" href="">
+<link rel="icon" type="image/png" href="../../../resources/img/common/eyes-icon.png">
 </head>
 <body>
 	<div id="container">
@@ -45,6 +45,7 @@
                     <div class="use-type">
                         <p>성향</p>
                         <select name="type" id="type">
+                            <option value="">성향 선택</option>
                             <option value="">🌿 힐링러 (자연·휴식형)</option>
                             <option value="">🍜 미식러 (맛집·로컬 중심)</option>
                             <option value="">🧭 탐험러 (액티비티·모험형)</option>

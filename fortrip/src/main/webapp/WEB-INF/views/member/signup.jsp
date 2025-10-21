@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>ForTrip - 회원가입</title>
-<link rel="icon" type="image/png" href="">
+<link rel="icon" type="image/png" href="../../../resources/img/common/eyes-icon.png">
 </head>
 <body>
 	<div id="signup-container">

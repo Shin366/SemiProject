@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>ForTrip - 아이디찾기</title>
-<link rel="icon" type="image/png" href="">
+<link rel="icon" type="image/png" href="../../../resources/img/common/eyes-icon.png">
 </head>
 <body>
 	<div id="container">
