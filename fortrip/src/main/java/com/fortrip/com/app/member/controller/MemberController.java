@@ -81,7 +81,44 @@ public class MemberController {
 		}
 	}
 	
+	@RequestMapping(value = "/member/delete", method = RequestMethod.GET)
+	public String showDeletePage() {
+		return "member/detele";
+	}
 	
-	//
+	@RequestMapping(value = "/member/delete", method = RequestMethod.POST)
+	public String memberDelete(
+			@ModelAttribute LoginRequest member
+			,HttpSession session
+			, Model model) {
+		try {
+			String memberId = (String)session.getAttribute("memberId");
+			if(memberId == null) {
+				model.addAttribute("errorMsg", "로그인 정보가 없습니다.");
+				return "common/error";
+			}
+			
+			Member dbMember = mService.selectOneById(memberId);
+			
+				if(bcrypt.matches(member.getMemberPw(), dbMember.getMemberPw())) {
+					int result = mService.deleteMember(memberId);				
+				
+				if(result > 0) {
+					session.invalidate();
+					return "redirect:/member/logout";
+				}else {
+					model.addAttribute("errorMsg", "회원 탈퇴에 실패했습니다.");
+					return "common/error";
+				}
+			}else {
+				model.addAttribute("errorMsg", "비밀번호가 일치하지 않습니다.");
+				return "common/error";
+			}
+			
+		} catch (Exception e) {
+			model.addAttribute("errorMsg", e.getMessage());
+			return "common/error";
+		}
+	}
 	
 }

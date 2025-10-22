@@ -12,5 +12,10 @@ public interface MemberMapper {
 	int insertMember(JoinRequest member);
 
 	Member seleteByOneId(LoginRequest member);
+
+	int deleteMember(String memberId);
+
+	Member selectOneById(String memberId);
+
 	
 }

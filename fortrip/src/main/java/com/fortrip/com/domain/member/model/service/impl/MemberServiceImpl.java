@@ -31,7 +31,21 @@ public class MemberServiceImpl implements MemberService{
 	@Override
 	public Member seleteOneByLogin(LoginRequest member) {
 		Member result = mStore.seleteByOneId(member);
-		return null;
+		return result;
+	}
+
+
+
+	@Override
+	public Member selectOneById(String memberId) {
+		Member result = mStore.selectOneById(memberId);
+		return result;
+	}
+
+	@Override
+	public int deleteMember(String memberId) {
+		int result = mStore.deleteMember(memberId);
+		return result;
 	}
 
 	

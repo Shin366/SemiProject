@@ -15,5 +15,10 @@ public interface MemberService {
 
 	Member seleteOneByLogin(LoginRequest member);
 
+	int deleteMember(String memberId);
+
+	Member selectOneById(String memberId);
+
+
 
 }
