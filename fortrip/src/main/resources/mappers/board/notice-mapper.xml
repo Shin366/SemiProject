@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.fortrip.com.domain.board.notice.model.mapper.BoardNoticeMapper">
+   <select id="selectNoticeList" resultType="BoardNotice">
+ 		SELECT * FROM NOTICE ORDER BY NOTICE_NO DESC
+ 	</select>
+   <select id="selectOneByNo" resultType="BoardNotice">
+ 		SELECT * FROM NOTICE WHERE NOTICE_NO = #{noticeNo }
+ 	</select>
+    <select id="getTotalCount" resultType="_int">
+ 		SELECT COUNT(*) FROM NOTICE WHERE DELETE_YN = 'N'
+ 	</select>
+</mapper>
