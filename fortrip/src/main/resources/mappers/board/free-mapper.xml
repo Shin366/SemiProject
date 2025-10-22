@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.fortrip.com.domain.board.free.model.mapper.BoardFreeMapper">
+ 	
+ 	<select id="selectOneByNo" resultType="BoardFree">
+ 		SELECT
+ 		    POST_NO, MEMBER_NO, POST_TITLE, POST_CONTENT, POST_WRITER,
+ 		    VIEW_COUNT, WRITE_DATE, UPDATE_DATE, IS_DELETE
+ 		FROM FREE
+ 		WHERE POST_NO = #{postNo} AND IS_DELETE = 'N' 
+	</select>
+	
+    <insert id="insertFree" parameterType="com.fortrip.com.app.board.free.dto.BoardFreeAddRequest">
+        <selectKey keyProperty="postNo" resultType="_int" order="BEFORE">
+            SELECT SEQ_POST_NO.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO FREE (
+            POST_NO,
+            POST_TITLE,
+            POST_CONTENT,
+            MEMBER_NO,
+            POST_WRITER
+        ) VALUES (
+            #{postNo},
+            #{postTitle},
+            #{postContent},
+            #{memberNo},
+            #{postWriter}
+        )
+    </insert>
+
+    <select id="getTotalCount" resultType="_int">
+        SELECT
+            COUNT(*)
+        FROM FREE
+        WHERE IS_DELETE = 'N'
+    </select>
+
+    <select id="selectFreeList" resultType="BoardFree">
+        SELECT *
+        FROM (
+            SELECT
+                ROWNUM AS RNUM,
+                F.*
+            FROM (
+                SELECT
+                    POST_NO,
+                    MEMBER_NO,
+                    POST_TITLE,
+                    POST_WRITER,
+                    VIEW_COUNT,
+                    WRITE_DATE
+                FROM FREE
+                WHERE IS_DELETE = 'N'
+                ORDER BY POST_NO DESC
+            ) F
+        )
+        WHERE RNUM BETWEEN #{offset} + 1 AND #{offset} + #{freeCountPerPage}
+    </select>
+ 	
+ </mapper>
