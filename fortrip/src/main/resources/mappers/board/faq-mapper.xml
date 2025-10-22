@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.fortrip.com.domain.board.faq.model.mapper.BoardFaqMapper">
+    <select id="selectAll" resultType="BoardFaq">
+        SELECT 
+            FAQ_NO,
+            CATEGORY,
+            FAQ_TITLE,
+            FAQ_CONTENT,
+            DELETE_YN
+        FROM FAQ
+        WHERE DELETE_YN = 'N'  -- 삭제되지 않은 FAQ만 조회하는 조건 추가
+        ORDER BY FAQ_NO DESC
+    </select>
+    
+</mapper>
