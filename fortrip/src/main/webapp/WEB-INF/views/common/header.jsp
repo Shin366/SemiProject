@@ -23,7 +23,7 @@
     <!-- 검색창 -->
     <div class="search-box">
       <form action="/search" method="get">
-        <button type="submit" class="icon">🔍</button>
+        <button type="submit" class="icon"></button>
         <input type="text" name="q" placeholder="여행지, 맛집을 검색하세요" />
       </form>
     </div>

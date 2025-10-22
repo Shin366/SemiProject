@@ -31,34 +31,34 @@
         <h1>여행코스</h1>
         <p>FORTRIP 관리자가 추천하는 최고의 여행지를 만나보세요</p>
 
-        <form action="${pageContext.request.contextPath}/trip/search" method="get" class="search-form">
+        <form action="/trip/search" method="get" class="search-form">
           <input type="hidden" name="size" value="8"/>
           <div class="search-row">
             <div class="field">
               <label>목적지</label>
               <div class="input-wrap">
-                <input type="text" name="destination" value="${param.destination}" placeholder="어디로 가시나요?" />
+                <input type="text" name="destination" value="" placeholder="어디로 가시나요?" />
               </div>
             </div>
 
             <div class="field">
               <label>체크인</label>
               <div class="input-wrap">
-                <input type="date" name="checkin" value="${param.checkin}" />
+                <input type="date" name="checkin" value="" />
               </div>
             </div>
 
             <div class="field">
               <label>체크아웃</label>
               <div class="input-wrap">
-                <input type="date" name="checkout" value="${param.checkout}" />
+                <input type="date" name="checkout" value="" />
               </div>
             </div>
 
             <div class="field">
               <label>인원</label>
               <div class="input-wrap">
-                <input type="text" name="people" value="${param.people}" placeholder="1명" />
+                <input type="text" name="people" value="" placeholder="1명" />
               </div>
             </div>
 
@@ -107,10 +107,10 @@
                     </div>
 
                     <ul class="card-meta">
-                      <li><img src="${pageContext.request.contextPath}/resources/img/trip/distance.png" alt=""><span><c:out value="${course.city}"/></span></li>
-                      <li><img src="${pageContext.request.contextPath}/resources/img/trip/schedule.png" alt=""><span><c:out value="${course.duration}"/></span></li>
-                      <li><img src="${pageContext.request.contextPath}/resources/img/trip/star.png" alt=""><span><fmt:formatNumber value='${course.rating}' minFractionDigits='1' maxFractionDigits='1'/></span></li>
-                      <li><img src="${pageContext.request.contextPath}/resources/img/trip/card.png" alt=""><span><fmt:formatNumber value='${course.price}' type='number'/>￦</span></li>
+                      <li><img src="/resources/img/trip/distance.png" alt=""><span><c:out value=""/></span></li>
+                      <li><img src="/resources/img/trip/schedule.png" alt=""><span><c:out value=""/></span></li>
+                      <li><img src="/resources/img/trip/star.png" alt=""><span><fmt:formatNumber value='' minFractionDigits='1' maxFractionDigits='1'/></span></li>
+                      <li><img src="/resources/img/trip/card.png" alt=""><span><fmt:formatNumber value='' type='number'/>￦</span></li>
                     </ul>
 
                     <div class="card-foot">
