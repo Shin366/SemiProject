@@ -443,7 +443,6 @@ tfoot tr {
 .travelCourse-setting .search-course, 
 .travelInfoSetting .travel-search-course,
 .board-search-wrapper {
-    width: 100%;
     overflow: hidden; /* 자식 요소가 넘치는 것을 방지하고 너비를 고정시킴 */
     display: flex;
     flex-direction: row;
@@ -521,7 +520,7 @@ tfoot tr {
 
 .card-img, .travel-card-img{
     height: 200px;
-    background-image: url("../img/seoul-img.png");
+    background-image: url("../../img/admin/seoul-img.png");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: 50% 50%;
@@ -617,7 +616,8 @@ tfoot tr {
 }
 
 /* 게시물 리스트 전체 */
-.board-content {
+.board-content, .notice-content,
+.qnaBoard-content {
     display: flex;
     flex-direction: column;
     padding: 10px 20px;
@@ -817,6 +817,11 @@ tfoot tr {
 }
 
 /* 버튼 */
+.question-btn {
+    display: flex;
+    align-items: center;
+}
+.edit-btn {text-decoration: none;}
 .question-btn .edit-btn,
 .question-btn .delete-btn {
     font-size: 12px;

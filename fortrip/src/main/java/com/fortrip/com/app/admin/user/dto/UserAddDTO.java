@@ -26,5 +26,5 @@ public class UserAddDTO {
     private String birthDateDay;    // 생년월일 - 일
     private String adminYn;         // 관리자 여부 (Y/N)
     private Date enrollDate;
-    private String activeYn;
+    private String statusYsn;
 }

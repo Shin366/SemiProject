@@ -8,4 +8,24 @@
 		#{memberName}, #{nickName}, #{gender}, #{memberId}, #{memberPw}, #{phone}, #{email}, DEFAULT, #{birthDateYear},
 		#{birthDateMon}, #{birthDateDay}, #{adminYn},DEFAULT)
 	</insert>
+	
+	<select id="userModifyInfo" resultType="UserVO">
+		SELECT * FROM MEMBER WHERE MEMBER_NO = #{memberNo}
+	</select>
+	
+	<update id="userModifyPost">
+		UPDATE MEMBER SET 
+		MEMBER_NAME = #{memberName},
+		NICKNAME = #{nickName},
+		MEMBER_ID = #{memberId},
+		MEMBER_PW = #{memberPw},
+		PHONE = #{phone},
+		EMAIL = #{email},
+		BIRTH_DATE_YEAR = #{birthDateYear},
+		BIRTH_DATE_MON = #{birthDateMon},
+		BIRTH_DATE_DAY = #{birthDateDay},
+		ADMIN_YN = #{adminYn},
+		STATUS_YSN = #{statusYsn}
+		WHERE MEMBER_NO = #{memberNo} 
+	</update>
 </mapper>
