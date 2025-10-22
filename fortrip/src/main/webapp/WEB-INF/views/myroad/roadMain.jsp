@@ -6,6 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>나만의 로드맵 - ForTrip</title>
+<link rel="stylesheet" href="../resources/css/common/header.css">
 <style>
 body {
   margin: 0;
@@ -154,6 +155,7 @@ body {
 </head>
 
 <body>
+<jsp:include page="/WEB-INF/views/common/header.jsp"/>
 <div class="page-container">
   <!-- 왼쪽 메뉴 -->
   <aside class="sidebar">

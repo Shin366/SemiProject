@@ -16,6 +16,7 @@
         <li><a href="/roadmap/my">나만의 로드맵</a></li>
         <li><a href="/community">커뮤니티</a></li>
         <li><a href="/support">고객지원</a></li>
+        <li><a href="/admin/main">관리자페이지</a></li>           
       </ul>
     </nav>
 
