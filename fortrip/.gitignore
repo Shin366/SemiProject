@@ -110,6 +110,14 @@ pom.properties
 .classpath
 .project
 
+# Eclipse Maven Integration generated files
+.classpath
+.project
+.settings/
+*.prefs
+*.pom.properties
+
+
 # Windows 전용: 자동 백업, 임시 파일 제거
 *.bat~
 *.cmd~
