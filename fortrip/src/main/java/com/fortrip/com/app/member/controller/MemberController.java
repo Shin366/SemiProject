@@ -40,19 +40,19 @@ public class MemberController {
 			, HttpSession session
 			, Model model) {
 		try {
-			Member result = mService.seleteOneByLogin(member);
-			System.out.println(result);
-			System.out.println(member);
+			System.out.println(member.getMemberPw());
+			System.out.println(bcrypt.encode(member.getMemberPw()));
+			Member result = mService.selectOneByLogin(member);
 			if(result != null && bcrypt.matches(member.getMemberPw(), result.getMemberPw())) {
 				session.setAttribute("memberId", result.getMemberId());
 				session.setAttribute("memberName", result.getMemberName());
-				return "index";
+				return "redirect:/";
 			}else {
 				model.addAttribute("errorMsg", "데이터가 없습니다.");
 				return "common/error"; //에러 페이지 만들면 url 넣기
 			}
 		} catch (Exception e) {
-			model.addAttribute("ercmdrorMsg", e.getMessage());
+			model.addAttribute("errorMsg", e.getMessage());
 			return "common/error";	//에러 페이지 만들면 url 넣기
 		}
 	}

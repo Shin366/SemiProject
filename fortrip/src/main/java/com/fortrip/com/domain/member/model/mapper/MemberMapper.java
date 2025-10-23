@@ -9,9 +9,9 @@ import com.fortrip.com.domain.member.model.vo.Member;
 @Mapper
 public interface MemberMapper {
 
-	int insertMember(JoinRequest member);
+	Member selectOneBylogin(LoginRequest member);
 
-	Member seleteByOneId(LoginRequest member);
+	int insertMember(JoinRequest member);
 
 	int deleteMember(String memberId);
 

@@ -8,6 +8,10 @@
   		SELECT * FROM MEMBER WHERE MEMBER_ID = #{memberId}
   	</select>
   	
+  	<select id="selectOneBylogin" parameterType="String" resultType="Member">
+  		SELECT * FROM MEMBER WHERE MEMBER_ID = #{memberId}
+  	</select>
+  	  	
   	<insert id="insertMember">
   		INSERT INTO MEMBER VALUES(SEQ_MEMBER_NO.NEXTVAL, #{memberId}, #{memberPw}, #{memberName}, #{nickName}
   		, #{phone}, #{birthDateYear}, #{birthDateMon}, #{birthDateDay}, #{email}, #{gender}
@@ -15,6 +19,6 @@
   	</insert>
   	
   	<delete id="deleteMember">
-  		DELETE FROM MEMBER WHERE MRMBER_ID = #{memberId}
+  		DELETE FROM MEMBER WHERE MEMBER_ID = #{memberId}
   	</delete>
   </mapper>

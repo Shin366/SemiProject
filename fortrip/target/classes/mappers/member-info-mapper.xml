@@ -10,12 +10,12 @@
 	
 	<!-- 활성 회원 수 -->
 	<select id="getMemberActive" resultType="_int">
-		SELECT COUNT(*) FROM MEMBER WHERE ACTIVE_YN = 'N'
+		SELECT COUNT(*) FROM MEMBER WHERE STATUS_YSN = 'N'
 	</select>
 	
 	<!-- 활동 정지 회원 수 -->
 	<select id="getMemberStop" resultType="_int">
-		SELECT COUNT(*) FROM MEMBER WHERE ACTIVE_YN = 'S'
+		SELECT COUNT(*) FROM MEMBER WHERE STATUS_YSN = 'S'
 	</select>
 	<!-- 멤버 전체 가져오기 -->
 	<select id="getAllMember" resultType="MemberVO">

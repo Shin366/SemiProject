@@ -23,8 +23,8 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public Member seleteOneByLogin(LoginRequest member) {
-		Member result = mStore.seleteByOneId(member);
+	public Member selectOneByLogin(LoginRequest member) {
+		Member result = mStore.selectOneBylogin(member);
 		return result;
 	}
 
