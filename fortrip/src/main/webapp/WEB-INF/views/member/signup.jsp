@@ -19,7 +19,7 @@
             </div>
             <div class="form-group">
                 <label class="required" for="memberPw">비밀번호</label>
-                <input type="text" id="memberPw" name="memberPw" placeholder="비밀번호를 입력해주세요." required>
+                <input type="password" id="memberPw" name="memberPw" placeholder="비밀번호를 입력해주세요." required>
             </div>
             <div class="form-group">
                 <label class="required" for="memberName">이름</label>

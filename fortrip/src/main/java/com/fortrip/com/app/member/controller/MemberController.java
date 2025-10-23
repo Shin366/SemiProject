@@ -5,7 +5,11 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -19,42 +23,41 @@ import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
+@RequestMapping("member")
 public class MemberController {
 	
 	private final BCryptPasswordEncoder bcrypt;
+	private final MemberService mService;
 	
-	@Autowired
-	private MemberService mService;
-	
-	@RequestMapping(value = "/member/login", method = RequestMethod.GET)
+	@GetMapping("login")
 	public String showLoginPage() {
 		return "member/login";
 	}
 	
-	@RequestMapping(value = "/member/login", method = RequestMethod.POST)
+	@PostMapping("login")
 	public String checkLogin(
 			@ModelAttribute LoginRequest member
 			, HttpSession session
 			, Model model) {
 		try {
-			System.out.println(member.getMemberPw());
-			System.out.println(bcrypt.encode(member.getMemberPw()));
 			Member result = mService.seleteOneByLogin(member);
+			System.out.println(result);
+			System.out.println(member);
 			if(result != null && bcrypt.matches(member.getMemberPw(), result.getMemberPw())) {
 				session.setAttribute("memberId", result.getMemberId());
 				session.setAttribute("memberName", result.getMemberName());
-				return "redirect:/index.jsp";
+				return "index";
 			}else {
 				model.addAttribute("errorMsg", "데이터가 없습니다.");
 				return "common/error"; //에러 페이지 만들면 url 넣기
 			}
 		} catch (Exception e) {
-			model.addAttribute("errorMsg", e.getMessage());
+			model.addAttribute("ercmdrorMsg", e.getMessage());
 			return "common/error";	//에러 페이지 만들면 url 넣기
 		}
 	}
 	
-	@RequestMapping(value = "/member/logout", method = RequestMethod.GET)
+	@GetMapping("logout")
 	public String processLogout(HttpSession session) {
 		if(session != null) {
 			session.invalidate();
@@ -62,31 +65,31 @@ public class MemberController {
 		return "redirect:index.jsp";
 	}
 	
-	@RequestMapping(value = "/member/signup", method = RequestMethod.GET)
+	@GetMapping("signup")
 	public String showSignupView() {
 		return "member/signup";
 	}
 	
-	@RequestMapping(value = "/member/signup", method = RequestMethod.POST)
+	@PostMapping("signup")
 	public String signupMember(
 			@ModelAttribute JoinRequest member
 			, Model model) {
 		try {
 			member.setMemberPw(bcrypt.encode(member.getMemberPw()));
 			int result = mService.insertMember(member);
-			return "redirect:/member.login";
+			return "redirect:/member/login";
 		} catch (Exception e) {
 			model.addAttribute("errorMsg", e.getMessage());
 			return "common/error";	//에러 페이지 만들면 url 넣기
 		}
 	}
 	
-	@RequestMapping(value = "/member/delete", method = RequestMethod.GET)
+	@GetMapping("delete")
 	public String showDeletePage() {
 		return "member/detele";
 	}
 	
-	@RequestMapping(value = "/member/delete", method = RequestMethod.POST)
+	@PostMapping("delete")
 	public String memberDelete(
 			@ModelAttribute LoginRequest member
 			,HttpSession session

@@ -23,17 +23,10 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public int insertMember() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
 	public Member seleteOneByLogin(LoginRequest member) {
 		Member result = mStore.seleteByOneId(member);
 		return result;
 	}
-
 
 
 	@Override
@@ -46,6 +39,12 @@ public class MemberServiceImpl implements MemberService{
 	public int deleteMember(String memberId) {
 		int result = mStore.deleteMember(memberId);
 		return result;
+	}
+
+	@Override
+	public int insertMember() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	
