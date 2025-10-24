@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<link rel="stylesheet" href="../resources/css/common/header.css">
 <header class="site-header">
   <div class="container">
     <!-- 왼쪽 로고 -->

@@ -6,11 +6,11 @@
 <head>
   <meta charset="UTF-8">
   <title>여행코스</title>
-  <link rel="stylesheet" href="/resources/css/common/header.css">
   <link rel="stylesheet" href="/resources/css/trip/course.css">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
+  <!-- 헤더 -->
   <jsp:include page="/WEB-INF/views/common/header.jsp"/>
 
   <div class="page-container">
@@ -37,28 +37,28 @@
             <div class="field">
               <label>목적지</label>
               <div class="input-wrap">
-                <input type="text" name="destination" value="" placeholder="어디로 가시나요?" />
+                <input type="text" name="destination" placeholder="어디로 가시나요?" />
               </div>
             </div>
 
             <div class="field">
               <label>체크인</label>
               <div class="input-wrap">
-                <input type="date" name="checkin" value="" />
+                <input type="date" name="checkin"/>
               </div>
             </div>
 
             <div class="field">
               <label>체크아웃</label>
               <div class="input-wrap">
-                <input type="date" name="checkout" value="" />
+                <input type="date" name="checkout"/>
               </div>
             </div>
 
             <div class="field">
               <label>인원</label>
               <div class="input-wrap">
-                <input type="text" name="people" value="" placeholder="1명" />
+                <input type="text" name="people" placeholder="1명" />
               </div>
             </div>
 
@@ -72,17 +72,6 @@
           </div>
         </form>
       </section>
-
-      <!-- 리스트 타이틀 -->
-      <header class="list-header">
-        <div>
-          <h2>추천 여행코스</h2>
-          <p class="subtitle">전문가와 여행자들이 추천하는 최고의 여행코스를 만나보세요</p>
-        </div>
-        <div class="count">
-          총 <strong><c:out value="${totalCount != null ? totalCount : (courses != null ? fn:length(courses) : 0)}"/></strong>개
-        </div>
-      </header>
 
       <!-- 카드 그리드 (4열) -->
       <section class="cards-grid">

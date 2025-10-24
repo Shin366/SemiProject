@@ -5,7 +5,7 @@
   display:grid;
   grid-template-columns: 220px 1fr;
   gap: 24px;
-  max-width: 1280px;
+  max-width: 1920px;
   margin: 24px auto;
   padding: 0 20px 40px;
   min-height: calc(100vh - 120px); /* 헤더 아래~푸터 전까지 꽉 차게(헤더 높이 여유치 포함) */
@@ -16,26 +16,28 @@
 .sidebar{
   background:#fff;
   border-right:1px solid #E5E7EB;
-  border-radius: 12px;              /* 모서리는 둥글게 */
-  border-top-right-radius: 12px;
-  border-bottom-right-radius: 12px; /* 오른쪽 라운드 유지 */
   padding: 20px;
   min-height: 100%;                 /* grid 아이템 높이 채우기 */
   display: flex;
 }
-.sidebar ul{ list-style:none; margin:0; padding:0; width:100%; }
-.sidebar li a{
-  display:block;
-  padding:12px 14px;
-  color:#111827;
-  text-decoration:none;
-  font-weight:600;
-  border-radius:8px;
+.sidebar ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
-.sidebar li.active a,
-.sidebar li a:hover{
-  background:#2563EB;
-  color:#fff;
+.sidebar li {
+  margin-bottom: 10px;
+}
+.sidebar a {
+  display: block;
+  padding: 10px 15px;
+  text-decoration: none;
+  color: #333;
+  border-radius: 4px;
+}
+.sidebar li.active a {
+  background: #0066ff;
+  color: #fff;
 }
 
 /* 메인 컨텐츠 카드 영역 */
@@ -56,7 +58,6 @@
   text-align:center;
 }
 .trip-search-box h1{
-  font-size:28px;
   margin:0 0 6px;
   color:#111827;
 }
@@ -96,18 +97,6 @@
 .filter-link{ text-align:left; margin-top:4px; }
 .filter-link a{ font-size:13px; color:#2563EB; text-decoration:none; font-weight:600; }
 .filter-link a:hover{ text-decoration:underline; }
-
-/* 리스트 헤더 */
-.list-header{
-  display:flex; align-items:end; justify-content:space-between;
-  margin: 24px 0 12px;
-}
-.list-header h2{
-  font-size:20px; margin:0 0 4px;
-}
-.subtitle{ color:#6B7280; margin:0; }
-.count{ color:#6B7280; font-size:14px; }
-.count strong{ color:#111827; }
 
 /* 카드 그리드: 4열, 반응형 */
 .cards-grid{
