@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <title>ForTrip - 로그인</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
-<link rel="stylesheet" href="/resources/css/common/header.css">
+<link rel="stylesheet" href="../resources/css/common/header.css">
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/common/header.jsp"/>
