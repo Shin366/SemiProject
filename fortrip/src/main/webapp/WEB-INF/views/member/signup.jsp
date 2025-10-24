@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>ForTrip - 회원가입</title>
-<link rel="icon" type="image/png" href="">
+<link rel="icon" type="image/png" href="../../../resources/img/common/eyes-icon.png">
 </head>
 <body>
 	<div id="signup-container">
@@ -19,7 +19,7 @@
             </div>
             <div class="form-group">
                 <label class="required" for="memberPw">비밀번호</label>
-                <input type="text" id="memberPw" name="memberPw" placeholder="비밀번호를 입력해주세요." required>
+                <input type="password" id="memberPw" name="memberPw" placeholder="비밀번호를 입력해주세요." required>
             </div>
             <div class="form-group">
                 <label class="required" for="memberName">이름</label>
@@ -35,7 +35,7 @@
             </div>
             <div class="form-group">
                 <label class="required" for="birthDate">생년월일</label>
-                	<div class="birthdate-group">
+                    <div class="birthdate-group">
 						<input type="text" name="birthDateYear" id="birthDateYear" placeholder="YYYY" required><span>년</span>
 						<input type="text" name="birthDateMon" id="birthDateMon" placeholder="MM" required><span>월</span>
 						<input type="text" name="birthDateDay" id="birthDateDay" placeholder="DD" required><span>일</span>

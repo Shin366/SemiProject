@@ -5,9 +5,11 @@
 <head>
 <meta charset="UTF-8">
 <title>ForTrip - 로그인</title>
-<link rel="icon" type="image/png" href="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+<link rel="stylesheet" href="/resources/css/common/header.css">
 </head>
 <body>
+<jsp:include page="/WEB-INF/views/common/header.jsp"/>
 	<div id="container">
         <main id="main">
             <div class="login-container">
@@ -34,4 +36,5 @@
         </main>
     </div>
 </body>
+
 </html>
