@@ -5,6 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<<<<<<< HEAD
 <title>fortrip - 관리자 대시보드</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
 <link rel="stylesheet" href="../resources/css/admin/main.css">
@@ -342,5 +343,13 @@
 			});
 
 	</script>
+=======
+<title>For Trip Main</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+<link rel="stylesheet" href="../resources/css/common/header.css">
+</head>
+<body>
+	<jsp:include page="/WEB-INF/views/common/header.jsp"/>
+>>>>>>> refs/remotes/origin/Dev
 </body>
 </html>

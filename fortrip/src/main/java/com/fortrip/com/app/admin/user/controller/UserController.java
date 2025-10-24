@@ -6,14 +6,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fortrip.com.app.admin.user.dto.UserAddDTO;
+import com.fortrip.com.app.admin.user.dto.UserModifyDTO;
 import com.fortrip.com.domain.admin.user.model.service.UserService;
+import com.fortrip.com.domain.admin.user.model.vo.UserVO;
 
 import lombok.RequiredArgsConstructor;
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/admin/user")
 @RequiredArgsConstructor
 public class UserController {
 	
@@ -41,6 +44,35 @@ public class UserController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return "user/userInsert";
+		}
+	}
+	
+	// 유저 수정 페이지
+	@GetMapping("/modify")
+	public String userModifyPage(Model model, @RequestParam("memberNo") int memberNo) {
+		System.out.println(memberNo);
+		UserVO member = uService.userModifyInfo(memberNo);
+		model.addAttribute("memberInfo", member);
+		return "admin/user/usermodify";
+	}
+	
+	// 유저 수정 페이지 저장
+	@PostMapping("/modify")
+	public String userModifyPost(@ModelAttribute UserModifyDTO user, Model model) {
+		try {
+			int result = uService.userModifyPost(user);
+			
+			if (result > 0) {
+				model.addAttribute("success", "수정 완료");
+				return "redirect:/admin/main";
+			} else {
+				model.addAttribute("error", "수정 실패");
+				return "redirect:/admin/main";
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+			model.addAttribute("error", "수정 실패");
+			return "admin/admin";
 		}
 	}
 }

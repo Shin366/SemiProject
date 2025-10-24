@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.fortrip.com.domain.comment.model.mapper.CommentMapper">
+ 
+	<select id="selectCommentList" resultType="Comment">
+        SELECT
+            C.COMMENT_NO, C.BOARD_TYPE, C.BOARD_NO, C.MEMBER_NO,
+            C.COMMENT_CONTENT, C.COMMENT_DATE,
+            M.MEMBER_NICKNAME AS writerNickname
+        FROM BOARD_COMMENT C
+        JOIN MEMBER M ON C.MEMBER_NO = M.MEMBER_NO
+        WHERE C.BOARD_TYPE = #{boardType}
+          AND C.BOARD_NO = #{boardNo}
+          AND C.DELETE_YN = 'N'
+        ORDER BY C.COMMENT_NO ASC
+    </select>
+    
+    <insert id="insertComment" parameterType="com.fortrip.com.domain.comment.model.vo.Comment">
+        INSERT INTO BOARD_COMMENT (
+            COMMENT_NO, BOARD_TYPE, BOARD_NO, MEMBER_NO, COMMENT_CONTENT
+        ) VALUES (
+            SEQ_COMMENT_NO.NEXTVAL, #{boardType}, #{boardNo}, #{memberNo}, #{commentContent}
+        )
+    </insert>
+    
+    <update id="updateComment">
+        UPDATE BOARD_COMMENT
+        SET COMMENT_CONTENT = #{commentContent}, UPDATE_DATE = SYSDATE
+        WHERE COMMENT_NO = #{commentNo}
+    </update>
+    
+    <update id="deleteComment">
+        UPDATE BOARD_COMMENT
+        SET DELETE_YN = 'Y'
+        WHERE COMMENT_NO = #{commentNo}
+    </update>
+ 
+ </mapper>

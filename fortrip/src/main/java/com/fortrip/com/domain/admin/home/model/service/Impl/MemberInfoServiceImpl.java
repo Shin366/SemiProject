@@ -2,6 +2,7 @@ package com.fortrip.com.domain.admin.home.model.service.Impl;
 
 import java.util.List;
 
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
 
 import com.fortrip.com.domain.admin.home.model.mapper.MemberInfoMapper;
@@ -38,10 +39,18 @@ public class MemberInfoServiceImpl implements MemberInfoService{
 	}
 
 	@Override
-	public List<MemberVO> getAllMemeber() {
+	public int getTotalCount() {
 		// TODO Auto-generated method stub
-		List<MemberVO> mList = mMapper.getAllMember();
-		return mList;
+		int getTotalCoun = mMapper.getTotalCount();
+		return getTotalCoun;
 	}
 
+	@Override
+	public List<MemberVO> getAllMember(int currentPage, int memberCountPerPage) {
+		// TODO Auto-generated method stub
+		int offset = (currentPage - 1) * memberCountPerPage;
+		RowBounds rowBounds = new RowBounds(offset, memberCountPerPage);
+		List<MemberVO> mList = mMapper.getAllMember(rowBounds);
+		return mList;
+	}
 }

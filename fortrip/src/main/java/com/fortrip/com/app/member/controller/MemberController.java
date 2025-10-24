@@ -1,7 +1,5 @@
 package com.fortrip.com.app.member.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,7 +27,6 @@ public class MemberController {
 	
 	private final BCryptPasswordEncoder bcrypt;
 	private final MemberService mService;
-	
 	
 	@GetMapping("pwSearch")	// 아이디, 이메일이 같으면 비밀번호 보여주기 > 근데 보호를 해놔서 어떻게 보여줄 수 있는지 여쭤봐야함
 	public String showpwSearchPage() {
@@ -78,16 +75,30 @@ public class MemberController {
 			, HttpSession session
 			, Model model) {
 		try {
-			System.out.println(member.getMemberPw());
-			System.out.println(bcrypt.encode(member.getMemberPw()));
-			Member result = mService.selectOneByLogin(member);
-			if(result != null && bcrypt.matches(member.getMemberPw(), result.getMemberPw())) {
-				session.setAttribute("memberId", result.getMemberId());
-				session.setAttribute("memberName", result.getMemberName());
+			// 로그인 정보로 member 객체 조회
+			Member loginMember = mService.selectOneByLogin(member);
+			/* 주애 코드
+				System.out.println(member.getMemberPw());
+				System.out.println(bcrypt.encode(member.getMemberPw()));
+				Member result = mService.selectOneByLogin(member);
+				if(result != null && bcrypt.matches(member.getMemberPw(), result.getMemberPw())) {
+					session.setAttribute("memberId", result.getMemberId());
+					session.setAttribute("memberName", result.getMemberName());
+					// 우리는 회원 닉네임이 있는데 회원이름을 받아오는 이유?
+					// 멤버 객체를 저장해서 사용하면 훨씬 용이
+					return "redirect:/";
+				}else {
+					model.addAttribute("errorMsg", "데이터가 없습니다.");
+					return "common/error"; //에러 페이지 만들면 url 넣기
+				}
+			 */
+			if (loginMember != null && bcrypt.matches(member.getMemberPw(), loginMember.getMemberPw())) {
+				session.setAttribute("loginMember", loginMember);
+				
 				return "redirect:/";
 			}else {
 				model.addAttribute("errorMsg", "데이터가 없습니다.");
-				return "common/error"; //에러 페이지 만들면 url 넣기
+				return "member/login";
 			}
 		} catch (Exception e) {
 			model.addAttribute("errorMsg", e.getMessage());
@@ -113,7 +124,7 @@ public class MemberController {
 	public String use() {
 		return "";
 	}
-	
+
 	@PostMapping("signup")
 	public String signupMember(
 			@ModelAttribute JoinRequest member
@@ -128,6 +139,10 @@ public class MemberController {
 		}
 	}
 	
+	@GetMapping("delete")
+	public String showDeletePage() {
+		return "member/detele";
+	}
 	
 	@GetMapping("profile")
 	public String showProfilePage() {
@@ -140,11 +155,6 @@ public class MemberController {
 		return "/member/profile";
 	}
 	
-	
-	@GetMapping("delete")
-	public String showDeletePage() {
-		return "member/delete";
-	}
 	
 	@PostMapping("delete")
 	public String memberDelete(

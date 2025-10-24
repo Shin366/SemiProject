@@ -6,6 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>forTrip - 공지사항 관리</title>
+<<<<<<< HEAD
 <link href="../resources/admin/img/eyes-icon.png" rel="shortcut icon" type="image/x-icon">
 <link rel="stylesheet" href="../resources/admin/css/noticeSet.css">
 </head>
@@ -16,6 +17,18 @@
             <div id="notice-wrapper">
                 <h1>공지사항</h1>
                 <form action="/notice/insert" method="post" enctype="multipart/form-data">
+=======
+<link href="../../../resources/img/common/eyes-icon.png" rel="shortcut icon" type="image/x-icon">
+<link rel="stylesheet" href="../../../resources/css/admin/noticeSet.css">
+</head>
+<body>
+    <div id="container">
+        <jsp:include page="/WEB-INF/views/admin/include/header.jsp"/>
+        <div id="main">
+            <div id="notice-wrapper">
+                <h1>공지사항</h1>
+                <form action="/admin/notice/insert" method="post" enctype="multipart/form-data">
+>>>>>>> refs/remotes/origin/Dev
                    <div class="form-group">
                         <label for="notice-title">제목</label>
                         <input type="text" name="noticeTitle" id="notice-title" placeholder="공지 제목을 입력하세요">

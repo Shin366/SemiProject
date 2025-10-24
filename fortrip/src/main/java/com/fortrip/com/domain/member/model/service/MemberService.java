@@ -17,6 +17,4 @@ public interface MemberService {
 
 	Member selectOneById(String memberId);
 
-
-
 }

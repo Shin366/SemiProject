@@ -1,5 +1,7 @@
 package com.fortrip.com.app.admin.notice.dto;
 
+import java.sql.Timestamp;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -13,4 +15,5 @@ public class NoticeInsertDTO {
 	private String noticeWriter;
 	private String attachmentName;
 	private String attachmentPath;
+	private Timestamp attachmentDate;
 }
