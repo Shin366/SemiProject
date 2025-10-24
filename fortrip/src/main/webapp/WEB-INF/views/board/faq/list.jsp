@@ -5,20 +5,21 @@
 <head>
     <meta charset="UTF-8">
     <title>ForTrip - 자주 묻는 질문</title>
-    <link rel="stylesheet" href="/resources/css/include/reset.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+	<link rel="stylesheet" href="/resources/css/common/header.css">
     <link rel="stylesheet" href="/resources/css/board/faq.css">
     <style>
     </style>
 </head>
 <body>
-    <%-- <jsp:include page="/WEB-INF/views/include/header.jsp"/> --%>
+    <jsp:include page="/WEB-INF/views/common/header.jsp"/>
 
     <div class="container">
         <!-- 왼쪽 사이드 메뉴 -->
         <aside class="sidebar">
             <ul>
                 <li><a href="/board/notice/list">공지 사항</a></li>
-                <li><a href="/board/faq" class="active">자주 묻는 질문</a></li>
+                <li><a href="/board/faq/list" class="active">자주 묻는 질문</a></li>
                 <li><a href="/board/qna/list">1:1 문의</a></li>
                 <li><a href="/board/report/list">신고 게시판</a></li>
             </ul>
@@ -28,22 +29,22 @@
         <section class="content">
             <h2>자주 묻는 질문</h2>
 
-            <div class="faq-categories">
+            <div class="question-categories">
                 <button class="active">여행 관련</button>
                 <button>회원 관련</button>
                 <button>커뮤니티 & 고객센터</button>
                 <button>사이트 기능</button>
             </div>
 
-            <div class="faq-list">
-			    <c:forEach var="faq" items="${faqList}">
-			        <div class="faq-item" data-category="${faq.faqCategory}"> <%-- 카테고리별 필터링을 위해 data 속성 추가 --%>
+            <div class="question-list">
+			    <c:forEach var="question" items="${faqList}">
+			        <div class="question-item" data-category="${question.questionCategory}"> <%-- 카테고리별 필터링을 위해 data 속성 추가 --%>
 			            <div class="faq-question">
-			                Q. ${faq.faqTitle}
+			                Q. ${question.questionTitle}
 			                <span class="toggle-icon">+</span>
 			            </div>
 			            <div class="faq-answer">
-			                A. ${faq.faqContent}
+			                A. ${question.questionContent}
 			            </div>
 			        </div>
 			    </c:forEach>
@@ -55,7 +56,7 @@
         </section>
     </div>
 	<!-- footer -->
-    <jsp:include page="/WEB-INF/views/include/footer.jsp"/>
+    <%-- <jsp:include page="/WEB-INF/views/include/footer.jsp"/> --%>
 
     <script>
     document.addEventListener('DOMContentLoaded', () => {

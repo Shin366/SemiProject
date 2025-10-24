@@ -10,9 +10,9 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BoardFaq {
-	private int faqNo; 				// 자주묻는질문 고유번호
-	private String faqCategory; 	// 자주묻는질문 카테고리
-	private String faqTitle; 		// 자주묻는질문 제목
-	private String faqContent; 		// 자주묻는질문 답변내용
+	private int questionNo; 				// 자주묻는질문 고유번호
+	private String questionCategory; 	// 자주묻는질문 카테고리
+	private String questionTitle; 		// 자주묻는질문 제목
+	private String questionContent; 		// 자주묻는질문 답변내용
 	private String deleteYn;		// 삭제 여부
 }

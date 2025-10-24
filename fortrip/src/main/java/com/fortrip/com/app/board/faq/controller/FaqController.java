@@ -13,13 +13,13 @@ import com.fortrip.com.domain.board.faq.model.vo.BoardFaq;
 import lombok.RequiredArgsConstructor;
 
 @Controller
-@RequestMapping("/board")
+@RequestMapping("/board/faq")
 @RequiredArgsConstructor
 public class FaqController {
 
 	private final BoardFaqService fService;
 	
-	@GetMapping("/faq")
+	@GetMapping("/list")
     public String showFaqListView(Model model) {
         // 1. 서비스에서 모든 FAQ 목록을 조회
         List<BoardFaq> faqList = fService.selectAll();
@@ -28,6 +28,6 @@ public class FaqController {
         model.addAttribute("faqList", faqList);
         
         // 3. faq.jsp 페이지로 포워딩
-        return "board/faq"; // JSP 파일 경로
+        return "board/faq/list"; // JSP 파일 경로
     }
 }
