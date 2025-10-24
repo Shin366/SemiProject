@@ -1,4 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -74,13 +76,13 @@
             outline: none;
             border-color: #007bff;
         }
-        
+
         /* WYSIWYG Editor Placeholder */
         #reviewContent {
-            min-height: 450px;
+            min-height: 450px; /* 에디터 높이 조정 */
             resize: vertical;
         }
-        
+
         .form-group .guide {
              font-size: 13px;
              color: #888;
@@ -103,9 +105,9 @@
             border-bottom: 1px solid #eee;
             padding-bottom: 10px;
         }
-        
+
         /* Course Selection Widget */
-        #selectCourseBtn {
+        #selectRoadBtn { /* 버튼 ID 수정 */
             width: 100%;
             padding: 10px;
             background-color: #343a40;
@@ -160,7 +162,7 @@
             display: flex;
             justify-content: flex-end;
             gap: 10px;
-            margin-top: 30px;
+            margin-top: 30px; /* 폼과 버튼 사이 간격 */
         }
         .btn {
             padding: 12px 25px;
@@ -181,35 +183,30 @@
     </style>
 </head>
 <body>
-
-<%-- header
-    <jsp:include page="/WEB-INF/views/common/header.jsp" />
---%>
+<jsp:include page="/WEB-INF/views/common/header.jsp"/>
 
 <div class="container">
     <h1>코스 리뷰 작성</h1>
 
-    <form class="review-form" action="/review/insert" method="post" enctype="multipart/form-data">
-        
+    <%-- 폼 ID 추가 --%>
+    <form class="review-form" id="review-form" action="/board/review/insert" method="post" enctype="multipart/form-data">
+
         <%-- 왼쪽 메인 콘텐츠 영역 --%>
         <div class="main-content">
             <div class="form-group">
                 <label for="reviewTitle">제목</label>
                 <input type="text" id="reviewTitle" name="reviewTitle" placeholder="리뷰의 제목을 입력해주세요" required>
             </div>
-            
+
             <div class="form-group">
                 <label for="reviewSubtitle">소제목 (한 줄 요약)</label>
-                <input type="text" id="reviewSubtitle" name="reviewSubtitle" placeholder="목록에 표시될 매력적인 한 줄 요약을 작성해주세요">
-             <!--    <p class="guide">작성하지 않을 경우, 본문 내용의 일부가 표시될 수 있습니다.</p> -->
+                <input type="text" id="reviewSubtitle" name="reviewSubtitle" placeholder="목록에 표시될 한 줄 요약을 작성해주세요">
             </div>
 
             <div class="form-group">
                 <label for="reviewContent">상세 내용</label>
-                <%-- 
-                   에디터 알아봐야함
-                --%>
-                <textarea id="reviewContent" name="reviewContent" placeholder="여행 코스에 대한 상세한 후기를 남겨주세요."></textarea>
+                <%-- TODO: WYSIWYG 에디터 라이브러리(Summernote, CKEditor 등) 적용 필요 --%>
+                <textarea id="reviewContent" name="reviewContent" placeholder="여행 코스에 대한 상세한 후기를 남겨주세요." required></textarea>
             </div>
         </div>
 
@@ -217,16 +214,18 @@
         <div class="sidebar">
             <div class="widget">
                 <h3>원본 코스</h3>
-                <button type="button" id="selectCourseBtn">리뷰할 코스 선택하기</button>
+                <%-- 버튼 ID 수정 --%>
+                <button type="button" id="selectRoadBtn">리뷰할 코스 선택하기</button>
                 <div id="selectedCourseName">선택된 코스가 없습니다.</div>
-                
-                <%-- DB에 저장될 코스 번호와 타입을 숨겨서 전달합니다. --%>
-                <input type="hidden" id="courseId" name="courseId">
-                <input type="hidden" id="courseType" name="courseType">
+
+                <%-- Hidden Input ID/Name 수정 ('r' 소문자) --%>
+                <input type="hidden" id="roadNo" name="roadNo">
+                <%-- reviewerType은 로그인 사용자 정보 기반으로 서버에서 설정하는 것이 안전할 수 있음 --%>
+                <input type="hidden" id="reviewerType" name="reviewerType" value="USER">
             </div>
 
             <div class="widget rating">
-                <h3>평점</h3>
+                <h3>평점 <span style="color:red;">*</span></h3>
                 <div class="stars">
                     <i class="fa-solid fa-star" data-value="1"></i>
                     <i class="fa-solid fa-star" data-value="2"></i>
@@ -243,21 +242,23 @@
                     <i class="fa-solid fa-cloud-arrow-up"></i>
                     <p>이미지를 드래그하거나<br>클릭해서 업로드하세요</p>
                 </div>
-                <%-- 실제 파일은 이 input 태그를 통해 처리됩니다. --%>
-                <input type="file" id="fileInput" name="reviewImages" multiple hidden>
+                <input type="file" id="fileInput" name="files" multiple hidden>
+                <%-- 이미지 미리보기 영역 (선택 사항) --%>
+                <div id="imagePreview" style="margin-top: 15px;"></div>
             </div>
 
         </div>
-    </form>
-    
+    </form> 
+
+    <%-- 버튼들을 form 밖에 두되, submit 버튼에 form 속성 연결 --%>
     <div class="form-actions">
-        <button type="button" class="btn btn-secondary">취소</button>
+        <button type="button" class="btn btn-secondary" onclick="history.back()">취소</button>
         <button type="submit" form="review-form" class="btn btn-primary">등록하기</button>
     </div>
 
 </div>
 
-<%-- 
+<%--
     footer
     <jsp:include page="/WEB-INF/views/common/footer.jsp" />
 --%>
@@ -266,20 +267,18 @@
     document.addEventListener('DOMContentLoaded', function() {
 
         // 1. 코스 선택하기 시뮬레이션
-        const selectCourseBtn = document.getElementById('selectCourseBtn');
+        const selectRoadBtn = document.getElementById('selectRoadBtn'); // ID 수정
         const selectedCourseName = document.getElementById('selectedCourseName');
-        const courseIdInput = document.getElementById('courseId');
-        const courseTypeInput = document.getElementById('courseType');
+        const roadNoInput = document.getElementById('roadNo'); // ID/변수명 수정
+        const reviewerTypeInput = document.getElementById('reviewerType'); // 변수명 수정
 
-        selectCourseBtn.addEventListener('click', function() {
-            // 실제로는 여기서 모달(팝업) 창을 띄워 코스를 검색/선택하게 됩니다.
-            // 지금은 prompt로 간단하게 시뮬레이션합니다.
+        selectRoadBtn.addEventListener('click', function() {
             const courseName = prompt("선택할 코스 이름을 입력하세요 (예: 제주 동부 3박 4일)");
             if (courseName) {
                 selectedCourseName.textContent = `선택된 코스: ${courseName}`;
-                // 실제로는 선택된 코스의 고유 ID와 타입을 DB에서 받아와 설정합니다.
-                courseIdInput.value = '101'; // 예시 ID
-                courseTypeInput.value = 'ADMIN'; // 예시 타입
+                // 실제로는 선택된 코스의 고유 ID와 타입을 받아와 설정
+                roadNoInput.value = '101'; // 예시 ID (실제 값으로 변경 필요)
+                // reviewerTypeInput.value = 'ADMIN'; // 예시 타입 (USER로 고정하거나 로직 추가)
             }
         });
 
@@ -290,27 +289,27 @@
         stars.forEach(star => {
             star.addEventListener('mouseover', function() {
                 resetStars();
-                const rating = this.dataset.value;
-                for (let i = 0; i < rating; i++) {
-                    stars[i].classList.add('selected');
-                }
+                highlightStars(this.dataset.value);
             });
 
             star.addEventListener('mouseout', function() {
                 resetStars();
-                const currentRating = ratingInput.value;
-                if (currentRating > 0) {
-                    for (let i = 0; i < currentRating; i++) {
-                         stars[i].classList.add('selected');
-                    }
-                }
+                highlightStars(ratingInput.value); // 현재 선택된 값 기준으로 다시 표시
             });
 
             star.addEventListener('click', function() {
-                const rating = this.dataset.value;
-                ratingInput.value = rating;
+                ratingInput.value = this.dataset.value; // 클릭 시 값 설정
+                highlightStars(ratingInput.value); // 클릭된 상태 반영
             });
         });
+
+        function highlightStars(rating) {
+            for (let i = 0; i < rating; i++) {
+                if (stars[i]) { // Check if star exists
+                    stars[i].classList.add('selected');
+                }
+            }
+        }
 
         function resetStars() {
             stars.forEach(s => s.classList.remove('selected'));
@@ -319,18 +318,52 @@
         // 3. 이미지 업로더
         const imageUploader = document.getElementById('imageUploader');
         const fileInput = document.getElementById('fileInput');
+        const imagePreview = document.getElementById('imagePreview'); // 미리보기 영역
 
-        imageUploader.addEventListener('click', function() {
-            fileInput.click();
+        imageUploader.addEventListener('click', () => fileInput.click());
+
+        // Drag and Drop 
+        imageUploader.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            imageUploader.style.borderColor = '#007bff';
+        });
+        imageUploader.addEventListener('dragleave', () => {
+             imageUploader.style.borderColor = '#ddd';
+        });
+        imageUploader.addEventListener('drop', (e) => {
+            e.preventDefault();
+            imageUploader.style.borderColor = '#ddd';
+            fileInput.files = e.dataTransfer.files; // 드롭된 파일들을 input에 설정
+            handleFiles(fileInput.files); // 파일 처리 함수 호출
         });
 
-        fileInput.addEventListener('change', function() {
-            const files = this.files;
+
+        fileInput.addEventListener('change', () => handleFiles(fileInput.files));
+
+        function handleFiles(files) {
+            imagePreview.innerHTML = ''; // 기존 미리보기 초기화
             if (files.length > 0) {
-                // 실제로는 여기서 선택된 파일 목록을 미리보기로 보여주는 로직을 추가합니다.
-                alert(`${files.length}개의 파일이 선택되었습니다.`);
+                 imageUploader.querySelector('p').textContent = `${files.length}개의 파일 선택됨`; // 메시지 변경
+
+                // 간단한 이미지 미리보기
+                for (const file of files) {
+                    if (file.type.startsWith('image/')) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            const img = document.createElement('img');
+                            img.src = e.target.result;
+                            img.style.maxWidth = '80px';
+                            img.style.maxHeight = '80px';
+                            img.style.margin = '5px';
+                            imagePreview.appendChild(img);
+                        }
+                        reader.readAsDataURL(file);
+                    }
+                }
+            } else {
+                 imageUploader.querySelector('p').innerHTML = '이미지를 드래그하거나<br>클릭해서 업로드하세요';
             }
-        });
+        }
     });
 </script>
 

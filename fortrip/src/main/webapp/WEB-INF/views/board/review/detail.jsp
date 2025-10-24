@@ -51,11 +51,12 @@
         .btn-list { background-color: #007bff; color: white; border: none; padding: 12px 30px; text-decoration: none; border-radius: 6px; }
     </style>
 </head>
+<jsp:include page="/WEB-INF/views/common/header.jsp"/>
 <body>
     <div class="container">
         <aside class="sidebar">
-            <a href="#">자유 소통</a>
-            <a href="#" class="active">코스 리뷰</a>
+            <a href="/board/free/list">자유 소통</a>
+            <a href="/board/review/list" class="active">코스 리뷰</a>
         </aside>
 
         <main class="main-content">
@@ -63,14 +64,14 @@
             
             <article class="review-article">
                 <header class="post-header">
-                    <h2 class="post-title">${review.title}</h2>
+                    <h2 class="post-title">${review.reviewTitle}</h2>
                     <span class="post-rating">
                         <c:forEach begin="1" end="5" var="i">
                             <!-- <i class="fa-solid fa-star" style="${i <= review.rating ? '' : 'color:#ddd;'}"></i> -->
                         </c:forEach>
                     </span>
                     <div class="post-meta">
-                        <span>${review.writer}</span>
+                        <span>${review.reviewWriter}</span>
                         <span><fmt:formatDate value="${review.writeDate}" pattern="yyyy.MM.dd HH:mm"/></span>
                         <span>조회 ${review.viewCount}</span>
                     </div>
@@ -78,13 +79,13 @@
                 
                 <div class="course-link-wrapper">
                     <c:choose>
-                        <c:when test="${review.courseType == 'ADMIN'}">
-                            <a href="/course/admin/${review.courseId}" class="btn-course-link">
+                        <c:when test="${review.reviewerType == 'ADMIN'}">
+                            <a href="/road/admin/${review.roadNo}" class="btn-course-link">
                                 <i class="fa-solid fa-route"></i>원본 코스 정보 보러가기
                             </a>
                         </c:when>
-                        <c:when test="${review.courseType == 'USER'}">
-                             <a href="/course/user/${review.courseId}" class="btn-course-link">
+                        <c:when test="${review.reviewerType == 'USER'}">
+                             <a href="/road/user/${review.roadNo}" class="btn-course-link">
                                 <i class="fa-solid fa-route"></i>원본 코스 정보 보러가기
                             </a>
                         </c:when>
@@ -92,10 +93,10 @@
                 </div>
 
                 <section class="post-body">
-                    <p class="post-subtitle">${review.subtitle}</p>
+                    <p class="post-subtitle">${review.reviewSubtitle}</p>
                     <div class="post-content">
                         <%-- 본문 내용 --%>
-                        <p>${review.content}</p>
+                        <p>${review.reviewContent}</p>
                         <img src="https://i.imgur.com/k2jB25m.jpeg" alt="리뷰 이미지">
                     </div>
                 </section>
@@ -137,7 +138,7 @@
             </section>
             
             <div class="bottom-actions">
-                <a href="/review/list" class="btn-list">게시글 목록</a>
+                <a href="/board/review/list" class="btn-list">게시글 목록</a>
             </div>
         </main>
     </div>
