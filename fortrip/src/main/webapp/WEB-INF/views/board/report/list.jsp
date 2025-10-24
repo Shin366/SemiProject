@@ -6,6 +6,8 @@
 <head>
     <meta charset="UTF-8">
     <title>신고 게시판 - 고객지원</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+	<link rel="stylesheet" href="/resources/css/common/header.css">
     <style>
         /* 이전 페이지들과 공통된 스타일은 재사용합니다. */
         body { font-family: sans-serif; background-color: #f8f9fa; margin: 0; }
@@ -98,4 +100,5 @@
         </main>
     </div>
 </body>
+<jsp:include page="/WEB-INF/views/common/header.jsp"/>
 </html>
