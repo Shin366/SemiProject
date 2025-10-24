@@ -5,7 +5,8 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>${post.title} - 자유 게시판</title> <%-- 실제 데이터 연동 예시 --%>
+    <title>자유 게시판 글 수정</title>
+    <link rel="stylesheet" href="/resources/css/common/header.css">
     <style>
         body { font-family: sans-serif; background-color: #f8f9fa; margin: 0; }
         .container { display: flex; max-width: 1200px; margin: 20px auto; gap: 20px; }
@@ -14,66 +15,63 @@
         .sidebar a.active { background-color: #007bff; color: white; font-weight: bold; }
         .main-content { flex-grow: 1; background-color: #fff; padding: 40px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         .page-title { font-size: 28px; font-weight: bold; margin-top: 0; margin-bottom: 30px; }
-        .post-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #333; padding-bottom: 15px; }
-        .post-title { font-size: 24px; margin: 0; }
-        .post-category { background-color: #e9ecef; padding: 5px 10px; border-radius: 15px; font-size: 14px; }
-        .post-body { padding: 30px 0; min-height: 300px; font-size: 16px; line-height: 1.8; border-bottom: 1px solid #dee2e6;}
-        .attachment-section { padding: 20px 0; font-size: 14px; }
-        .actions { text-align: right; margin-top: 20px; }
-        .btn { padding: 8px 18px; border-radius: 6px; text-decoration: none; font-size: 14px; margin-left: 8px; border: 1px solid #ccc; background-color: #fff; cursor: pointer; }
-        .btn-edit { border-color: #007bff; color: #007bff; }
-        .btn-delete { border-color: #dc3545; color: #dc3545; }
-        .bottom-actions { display: flex; justify-content: flex-end; margin-top: 40px; }
-        .btn-list { background-color: #007bff; color: white; border: none; padding: 12px 25px; }
+        form { display: flex; flex-direction: column; gap: 20px; }
+        input[type="text"], textarea {
+            width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px;
+            font-size: 16px; box-sizing: border-box;
+        }
+        textarea { min-height: 250px; resize: vertical; line-height: 1.6; }
+        .attachment-section { padding: 10px 0; font-size: 14px; border-top: 1px solid #eee; }
+        .attachment-section a { margin-right: 10px; color: #007bff; text-decoration: none; }
+        .attachment-section a:hover { text-decoration: underline; }
+        .btn-group { text-align: right; margin-top: 30px; }
+        .btn { padding: 10px 20px; border-radius: 6px; font-size: 15px; cursor: pointer; border: none; }
+        .btn-submit { background-color: #007bff; color: white; }
+        .btn-cancel { background-color: #e9ecef; color: #333; margin-left: 10px; }
     </style>
 </head>
 <body>
-    <%-- 헤더 영역 --%>
-    <%-- <jsp:include page="/WEB-INF/views/common/header.jsp" /> --%>
+    <%-- 공통 헤더 --%>
+    <jsp:include page="/WEB-INF/views/common/header.jsp"/>
 
     <div class="container">
         <aside class="sidebar">
-            <a href="#" class="active">자유 소통</a>
-            <a href="#">코스 리뷰</a>
+            <a href="/board/free/list" class="active">자유 소통</a>
+            <a href="/board/review/list">코스 리뷰</a>
         </aside>
 
         <main class="main-content">
-            <h1 class="page-title">자유 게시판</h1>
+            <h1 class="page-title">자유게시판 게시글 수정</h1>
 
-            <div class="post-container">
-                <div class="post-header">
-                    <h2 class="post-title">${post.title}</h2>
-                    <span class="post-writer">${post.writer}</span>
-                </div>
+            <form action="<c:url value='/board/free/update'/>" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="postNo" value="${free.postNo}">
 
-                <div class="post-body">
-                    <p>${post.content}</p>
-                </div>
+                <label>제목</label>
+                <input type="text" name="postTitle" value="${free.postTitle}" required>
 
+				<!-- 본문 내용 -->
+                <label>내용</label>
+                <textarea name="postContent" required>${free.postContent}</textarea>
+
+				<!-- 첨부파일 영역 -->	
                 <div class="attachment-section">
-                    <strong>첨부 파일 :</strong>
-                    <%-- 첨부파일 목록이 있다면 반복문으로 표시 --%>
+                    <strong>첨부파일:</strong><br>
                     <c:forEach var="file" items="${post.attachments}">
-                        <a href="${file.downloadPath}">${file.originalName}</a>
+                        <label>
+                            <input type="checkbox" name="deletedFiles" value="${file.fileNo}"> 
+                            <a href="${file.downloadPath}" target="_blank">${file.originalName}</a>
+                        </label><br>
                     </c:forEach>
-                    <c:if test="${empty post.attachments}">
-                        <span>첨부파일이 없습니다.</span>
-                    </c:if>
+                    <br>
+                    <label>새 파일 추가:</label>
+                    <input type="file" name="reloadFiles" multiple>
                 </div>
 
-                <div class="actions">
-                    <%-- 로그인한 사용자와 게시글 작성자가 동일할 경우에만 수정/삭제 버튼 노출 --%>
-                    <c:if test="${sessionScope.loginUser.memberNo == post.memberNo}">
-                    <button type="button" class="btn btn-edit" onclick="location.href='/community/edit?no=${post.postNo}'">수정</button>
-                        <button type="button" class="btn btn-delete" onclick="confirmDelete()">삭제</button>
-                    </c:if>
-                    <button type="button" class="btn" onclick="location.href='/community/list'">취소</button>
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-submit">수정 완료</button>
+                    <button type="button" class="btn btn-cancel" onclick="location.href='<c:url value='/board/free/detail?postNo=${free.postNo}'/>'">취소</button>
                 </div>
-            </div>
-
-            <div class="bottom-actions">
-                <a href="/community/list" class="btn btn-list">게시글 목록</a>
-            </div>
+            </form>
         </main>
     </div>
 </body>

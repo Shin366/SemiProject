@@ -21,5 +21,8 @@ public class BoardFree {
 	private int viewCount;		// 조회수
 	private Timestamp writeDate;		// 작성일
 	private Timestamp updateDate;	// 수정일
-	private String isDelete;	// 삭제여부(논리삭제)
+	private String deleteYn;	// 삭제여부(논리삭제)
+	private int likeCount;      // 좋아요 수
+	private int bookmarkCount;  // 북마크 수
+	private int commentCount;   // 댓글 수
 }

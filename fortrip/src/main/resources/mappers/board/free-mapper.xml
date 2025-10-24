@@ -6,36 +6,17 @@
  	
  	<select id="selectOneByNo" resultType="BoardFree">
  		SELECT
- 		    POST_NO, MEMBER_NO, POST_TITLE, POST_CONTENT, POST_WRITER,
- 		    VIEW_COUNT, WRITE_DATE, UPDATE_DATE, IS_DELETE
+ 		    POST_NO, MEMBER_NO, POST_TITLE, POST_CONTENT,
+ 		    VIEW_COUNT, WRITE_DATE, UPDATE_DATE, DELETE_YN
  		FROM FREE
- 		WHERE POST_NO = #{postNo} AND IS_DELETE = 'N' 
+ 		WHERE POST_NO = #{postNo} AND DELETE_YN = 'N' 
 	</select>
 	
-    <insert id="insertFree" parameterType="com.fortrip.com.app.board.free.dto.BoardFreeAddRequest">
-        <selectKey keyProperty="postNo" resultType="_int" order="BEFORE">
-            SELECT SEQ_POST_NO.NEXTVAL FROM DUAL
-        </selectKey>
-        INSERT INTO FREE (
-            POST_NO,
-            POST_TITLE,
-            POST_CONTENT,
-            MEMBER_NO,
-            POST_WRITER
-        ) VALUES (
-            #{postNo},
-            #{postTitle},
-            #{postContent},
-            #{memberNo},
-            #{postWriter}
-        )
-    </insert>
-
     <select id="getTotalCount" resultType="_int">
         SELECT
             COUNT(*)
         FROM FREE
-        WHERE IS_DELETE = 'N'
+        WHERE DELETE_YN = 'N'
     </select>
 
     <select id="selectFreeList" resultType="BoardFree">
@@ -43,21 +24,76 @@
         FROM (
             SELECT
                 ROWNUM AS RNUM,
-                F.*
+                F_SUB.*
             FROM (
                 SELECT
-                    POST_NO,
-                    MEMBER_NO,
-                    POST_TITLE,
-                    POST_WRITER,
-                    VIEW_COUNT,
-                    WRITE_DATE
-                FROM FREE
-                WHERE IS_DELETE = 'N'
-                ORDER BY POST_NO DESC
-            ) F
+                    F.POST_NO,
+                    F.MEMBER_NO,
+                    F.POST_TITLE,
+                    M.NICKNAME AS POST_WRITER,
+                    F.VIEW_COUNT,
+                    F.WRITE_DATE,
+                    
+                    -- 좋아요 수 (서브쿼리)
+                    (SELECT COUNT(*) FROM BOARD_LIKE L
+                     WHERE L.BOARD_TYPE = 'FREE' AND L.BOARD_NO = F.POST_NO) AS LIKE_COUNT,
+                     
+                    -- 북마크 수 (서브쿼리)
+                    (SELECT COUNT(*) FROM BOOKMARK B
+                     WHERE B.TARGET_TYPE = 'FREE' AND B.TARGET_NO = F.POST_NO) AS BOOKMARK_COUNT,
+                     
+                    -- 댓글 수 (서브쿼리) - 삭제되지 않은 댓글만 카운트
+                    (SELECT COUNT(*) FROM BOARD_COMMENT C
+                     WHERE C.BOARD_TYPE = 'FREE' AND C.BOARD_NO = F.POST_NO AND C.DELETE_YN = 'N') AS COMMENT_COUNT
+                     
+                FROM FREE F
+                JOIN MEMBER M ON F.MEMBER_NO = M.MEMBER_NO
+                WHERE F.DELETE_YN = 'N'
+                ORDER BY F.POST_NO DESC
+            ) F_SUB
         )
         WHERE RNUM BETWEEN #{offset} + 1 AND #{offset} + #{freeCountPerPage}
-    </select>
- 	
+	</select>
+	
+	<insert id="insertFree" parameterType="com.fortrip.com.app.board.free.dto.BoardFreeAddRequest">
+	    <selectKey keyProperty="postNo" resultType="_int" order="BEFORE">
+	        SELECT SEQ_POST_NO.NEXTVAL FROM DUAL
+	    </selectKey>
+	    INSERT INTO FREE (
+	        POST_NO,
+	        POST_TITLE,
+	        POST_CONTENT,
+	        MEMBER_NO
+	    ) VALUES (
+	        #{postNo},
+	        #{postTitle},
+	        #{postContent},
+	        #{memberNo}
+	    )
+	</insert>
+	
+	<update id="updateFree" parameterType="com.fortrip.com.app.board.free.dto.BoardFreeUpdateRequest">
+	    UPDATE FREE
+	    SET
+	        POST_TITLE = #{postTitle},
+	        POST_CONTENT = #{postContent},
+	        UPDATE_DATE = SYSDATE -- 수정 시각 업데이트
+	    WHERE POST_NO = #{postNo}
+	</update>
+	
+	<update id="increaseViewCount">
+        UPDATE FREE
+        SET VIEW_COUNT = VIEW_COUNT + 1
+        WHERE POST_NO = #{postNo}
+    </update>
+    
+    
+    <update id="deleteFree" parameterType="int">
+    UPDATE FREE
+    SET 
+        DELETE_YN = 'Y',
+        UPDATE_DATE = SYSDATE
+    WHERE POST_NO = #{postNo}
+</update>
+	 	
  </mapper>

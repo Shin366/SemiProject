@@ -5,14 +5,14 @@
  <mapper namespace="com.fortrip.com.domain.board.faq.model.mapper.BoardFaqMapper">
     <select id="selectAll" resultType="BoardFaq">
         SELECT 
-            FAQ_NO,
-            CATEGORY,
-            FAQ_TITLE,
-            FAQ_CONTENT,
+            QUESTION_NO,
+            QUESTION_CATEGORY,
+            QUESTION_TITLE,
+            QUESTION_CONTENT,
             DELETE_YN
-        FROM FAQ
-        WHERE DELETE_YN = 'N'  -- 삭제되지 않은 FAQ만 조회하는 조건 추가
-        ORDER BY FAQ_NO DESC
+        FROM QUESTION
+        WHERE DELETE_YN = 'N'  
+        ORDER BY QUESTION_NO DESC
     </select>
     
 </mapper>

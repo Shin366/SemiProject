@@ -1,5 +1,7 @@
 package com.fortrip.com.app.board.free.dto;
 
+import java.sql.Timestamp;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -7,11 +9,10 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class BoardFreeAddRequest {
+public class BoardFreeUpdateRequest {
 	private int postNo;
+	private int memberNo;
 	private String postTitle;
 	private String postContent;
-	private String postWriter;
-	private int memberNo;
-	private int nickName;
+	private Timestamp updateDate;
 }

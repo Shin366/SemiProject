@@ -5,7 +5,10 @@
 <head>
     <meta charset="UTF-8">
     <title>ForTrip - 자유게시판 글쓰기</title>
-    <link rel="stylesheet" href="/resources/css/reset.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+	<link rel="stylesheet" href="/resources/css/common/header.css">
+	<link rel="stylesheet" href="/resources/css/common/rset.css">
+	
     <style>
         body {
             font-family: 'Noto Sans KR', sans-serif;
@@ -76,31 +79,33 @@
     </style>
 </head>
 <body>
-    <jsp:include page="/WEB-INF/views/include/header.jsp"/>
+	<!-- header -->
+   <jsp:include page="/WEB-INF/views/common/header.jsp"/>
 
     <div class="container">
         <h2>자유 게시판</h2>
 
-        <form action="/community/free/insert" method="post" enctype="multipart/form-data">
+        <form action="/board/free/insert" method="post" enctype="multipart/form-data">
             <div class="top-fields">
-                <input type="text" name="title" placeholder="제목을 입력해주세요..." required>
+                <input type="text" name="postTitle" placeholder="제목을 입력해주세요..." required>
                 <input type="text" name="writer" value="${loginMember.nickname}" readonly placeholder="작성자 닉네임">
             </div>
 
-            <textarea name="content" placeholder="본문을 입력해주세요..." required></textarea>
+            <textarea name="postContent" placeholder="본문을 입력해주세요..." required></textarea>
 
             <div class="file-upload">
                 <label>첨부 파일:</label>
-                <input type="file" name="uploadFile">
+                <input type="file" name="files">
             </div>
 
             <div class="buttons">
-                <button type="button" class="btn btn-cancel" onclick="location.href='/community/free/list'">취소</button>
+                <button type="button" class="btn btn-cancel" onclick="location.href='/board/free/list'">취소</button>
                 <button type="submit" class="btn btn-submit">작성</button>
             </div>
         </form>
     </div>
 
-    <jsp:include page="/WEB-INF/views/include/footer.jsp"/>
+	<!-- footer -->
+   <%--  <jsp:include page="/WEB-INF/views/include/footer.jsp"/> --%>
 </body>
 </html>

@@ -5,12 +5,13 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.fortrip.com.app.board.free.dto.BoardFreeAddRequest;
+import com.fortrip.com.app.board.free.dto.BoardFreeUpdateRequest;
 import com.fortrip.com.domain.board.free.model.vo.BoardFree;
 
 @Mapper
 public interface BoardFreeMapper {
 
-	BoardFree selectOneByNo(int freeNo);
+	BoardFree selectOneByNo(int postNo);
 
 	int insertFree(BoardFreeAddRequest free);
 
@@ -18,5 +19,10 @@ public interface BoardFreeMapper {
 
 	List<BoardFree> selectFreeList(int offset, int freeCountPerPage);
 
+	int updateFree(BoardFreeUpdateRequest free);
+
+	int increaseViewCount(int postNo); // 조회수 증가
+
+	int deleteFree(int postNo);
 
 }
