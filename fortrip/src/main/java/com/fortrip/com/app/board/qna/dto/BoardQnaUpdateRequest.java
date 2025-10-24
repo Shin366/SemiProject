@@ -9,7 +9,8 @@ import lombok.ToString;
 @ToString
 public class BoardQnaUpdateRequest {
 	private int qnaNo;
+	private int memberNo;
 	private String qnaTitle;
 	private String qnaContent;
-
+	private String qnaPassword;
 }

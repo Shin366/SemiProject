@@ -9,10 +9,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.fortrip.com.app.board.qna.dto.BoardQnaAddRequest;
 import com.fortrip.com.app.board.qna.dto.BoardQnaUpdateRequest;
+import com.fortrip.com.domain.attachment.service.AttachmentService;
 import com.fortrip.com.domain.board.qna.model.mapper.BoardQnaMapper;
 import com.fortrip.com.domain.board.qna.model.service.BoardQnaService;
 import com.fortrip.com.domain.board.qna.model.vo.BoardQna;
-import com.fortrip.com.domain.common.model.service.AttachmentService;
+import com.fortrip.com.domain.member.model.vo.Member;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,7 +24,7 @@ public class BoardQnaServiceImpl implements BoardQnaService{
 	private final BoardQnaMapper qMapper; 
 	private final AttachmentService attachmentService;
 	// BoardType을 상수로 관리해 오타 방지
-    private static final String BOARD_TYPE = "BOARD_QNA";
+    private static final String BOARD_TYPE = "QNA";
 	
 	@Override
 	public int getTotalCount() {
@@ -41,7 +42,13 @@ public class BoardQnaServiceImpl implements BoardQnaService{
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public int insertQna(BoardQnaAddRequest qna, List<MultipartFile> files) {
+	public int insertQna(BoardQnaAddRequest qna, List<MultipartFile> files, Member loginMember) {
+		
+		if(loginMember == null) {
+			throw new IllegalArgumentException("로그인 정보가 필요합니다.");
+		}
+		
+		qna.setMemberNo(loginMember.getMemberNo());
 		
 		// Qna 게시글 DB에 저장
 		int result = qMapper.insertQna(qna);

@@ -12,5 +12,5 @@ public class BoardQnaAddRequest {
 	private int memberNo;
 	private String qnaTitle;
 	private String qnaContent;
-
+	private String qnaPassword;
 }

@@ -22,4 +22,5 @@ public class BoardQna {
 	private Timestamp updateDate;
 	private int viewCount;
 	private String deleteYn;
+	private String writer;
 }
