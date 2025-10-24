@@ -17,4 +17,7 @@ public interface MemberService {
 
 	Member selectOneById(String memberId);
 
+	int updateMemberPw(String memberId, String encodedPw);
+
+
 }
