@@ -1,30 +1,27 @@
 package com.fortrip.com.domain.journey.trip.model.vo;
 
-
-
 import java.sql.Timestamp;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
-@Getter
-@Setter
+/** ROAD 테이블과 1:1 매핑 */
+@Getter @Setter @ToString @NoArgsConstructor
 public class Trip {
-
-	private int roadNo;          // ROAD_NO
-    private String roadName;      // ROAD_NAME
-    private String roadStart;     // ROAD_START
-    private String roadEnd;       // ROAD_END
-    private String roadLocation;  // ROAD_LOCATION
-    private String roadYn;        // ROAD_YN (Y/N)
-    private String roadCost;      // ROAD_COST
-    private String roadStyle;     // ROAD_STYLE
-    private String roadIntro;     // ROAD_INTRO
-    private String deleteYn;      // DELETE_YN
-    private Timestamp writeDate;  // WRITE_DATE
-    private String type;          // TYPE ('ROAD' or 'TRAVEL')
-
-    // ===== 화면용 추가 필드 (DB X) =====
-    private String thumbnailUrl;  // 썸네일 이미지 URL (JSP img용)
-    private String[] routeList;   // 경로 분리 표시 (ex. START~END 기준)
+    private int roadNo;            // NUMBER PK
+    private String roadName;       // VARCHAR2(200)
+    private String roadStart;      // VARCHAR2(80)
+    private String roadEnd;        // VARCHAR2(80)
+    private String roadLocation;   // VARCHAR2(40)
+    private String roadYn;         // VARCHAR2(1)
+    private String roadCost;       // VARCHAR2(100)
+    private String roadStyle;      // VARCHAR2(30)
+    private String roadIntro;      // VARCHAR2(2000)
+    private String deleteYn;       // VARCHAR2(1)
+    private Timestamp writeDate;   // TIMESTAMP
+    private String type;           // 'ROAD','TRAVEL'
+    private String memberId;       // VARCHAR2(50)
 }
+
