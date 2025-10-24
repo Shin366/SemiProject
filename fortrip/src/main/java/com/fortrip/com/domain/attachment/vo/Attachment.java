@@ -1,5 +1,5 @@
 // Attachment.java
-package com.fortrip.com.domain.common.model.vo;
+package com.fortrip.com.domain.attachment.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

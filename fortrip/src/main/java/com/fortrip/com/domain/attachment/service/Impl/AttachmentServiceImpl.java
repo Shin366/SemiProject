@@ -1,4 +1,4 @@
-package com.fortrip.com.domain.common.model.service.impl;
+package com.fortrip.com.domain.attachment.service.Impl;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,9 +9,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.fortrip.com.domain.common.model.mapper.AttachmentMapper;
-import com.fortrip.com.domain.common.model.service.AttachmentService;
-import com.fortrip.com.domain.common.model.vo.Attachment;
+import com.fortrip.com.domain.attachment.mapper.AttachmentMapper;
+import com.fortrip.com.domain.attachment.service.AttachmentService;
+import com.fortrip.com.domain.attachment.vo.Attachment;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -106,6 +106,12 @@ public class AttachmentServiceImpl implements AttachmentService{
 	    // 3. DB에서는 단 한 번의 쿼리로 모든 관련 데이터를 삭제
 	    attachmentMapper.deleteAttachmentsByBoard(boardType, boardNo);
 		
+	}
+
+	// 상세페이지 용 첨부파일 조회
+	@Override
+	public List<Attachment> getAttachmentsByBoard(String boardType, int boardNo) {
+		return attachmentMapper.selectAttachmentList(boardType, boardNo);
 	}
 
 }
