@@ -25,15 +25,15 @@
                 <ul class="useTerms">
                     <div class="form-group">
                         <input type="checkbox" id="use1" name="use1">
-                        <label class="required" for="use1">(필수)<a href="#">for trip 이용약관</a> 동의</label>
+                        <label class="required" for="use1">(필수)<a href="/member/use1">for trip 이용약관</a> 동의</label>
                     </div>
                     <div class="form-group">
                         <input type="checkbox" id="use2" name="use2">
-                        <label class="required" for="use2">(필수)<a href="#">개인정보 수집 및 이용</a>에 대한 동의</label>
+                        <label class="required" for="use2">(필수)<a href="/member/use2">개인정보 수집 및 이용</a>에 대한 동의</label>
                     </div>
                     <div class="form-group">
                         <input type="checkbox" id="use3" name="use3">
-                        <label class="required" for="use3">(필수)<a href="#">개인정보 제3자 제공</a>에 대한 동의</label>
+                        <label class="required" for="use3">(필수)<a href="/member/use3">개인정보 제3자 제공</a>에 대한 동의</label>
                     </div>
                 </ul>
             </div>

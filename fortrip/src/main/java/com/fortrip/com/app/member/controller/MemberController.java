@@ -134,6 +134,23 @@ public class MemberController {
 	public String use() {
 		return "";
 	}
+	
+	@GetMapping("use1")
+	public String showUse1Page() {
+		return "member/use1";
+	}
+	
+	@GetMapping("use2")
+	public String showUse2Page() {
+		return "member/use2";
+	}
+	
+	@GetMapping("use3")
+	public String showUse3Page() {
+		return "member/use3";
+	}
+	
+	
 
 	@PostMapping("signup")
 	public String signupMember(
