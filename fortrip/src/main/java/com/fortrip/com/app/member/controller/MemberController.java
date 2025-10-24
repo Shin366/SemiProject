@@ -29,6 +29,27 @@ public class MemberController {
 	private final BCryptPasswordEncoder bcrypt;
 	private final MemberService mService;
 	
+	
+	@GetMapping("pwSearch")	// 아이디, 이메일이 같으면 비밀번호 보여주기 > 근데 보호를 해놔서 어떻게 보여줄 수 있는지 여쭤봐야함
+	public String showpwSearchPage() {
+		return "member/pwSearch";
+	}
+	
+	@PostMapping("pwSearch")
+	public String pwSearch() {
+		return "";
+	}
+	
+	@GetMapping("idSearch")	// 이름, 이메일이 같으면 아이디 보여주기
+	public String showidSearchPage() {
+		return "member/idSearch";
+	}
+	
+	@PostMapping("idSearch")
+	public String idSearch() {
+		return "";
+	}
+	
 	@GetMapping("login")
 	public String showLoginPage() {
 		return "member/login";
@@ -62,12 +83,18 @@ public class MemberController {
 		if(session != null) {
 			session.invalidate();
 		}
-		return "redirect:index.jsp";
+		return "redirect:/";
 	}
 	
-	@GetMapping("signup")
+	@GetMapping("use")
 	public String showSignupView() {
-		return "member/signup";
+		return "member/use";
+		
+	}
+	
+	@PostMapping("use")
+	public String use() {
+		return "";
 	}
 	
 	@PostMapping("signup")
@@ -84,9 +111,22 @@ public class MemberController {
 		}
 	}
 	
+	
+	@GetMapping("profile")
+	public String showProfilePage() {
+		return "member/profile";
+	}
+	
+	
+	@PostMapping("profile")
+	public String profileUpdate() {
+		return "/member/profile";
+	}
+	
+	
 	@GetMapping("delete")
 	public String showDeletePage() {
-		return "member/detele";
+		return "member/delete";
 	}
 	
 	@PostMapping("delete")

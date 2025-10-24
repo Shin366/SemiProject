@@ -44,7 +44,7 @@
                         <input type="text" value="">
                     </div>
                     <span class="pwUpdate-button">
-                        <a href="#">비밀번호 변경</a>
+                        <a href="/member/pwUpdate">비밀번호 변경</a>
                     </span>
                 </form>
                 <button type="submit" class="update-button">수정하기</button>

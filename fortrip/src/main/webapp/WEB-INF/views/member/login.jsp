@@ -26,9 +26,9 @@
                     <button type="submit">로그인</button>
                 </form>
                 <div class="login-links">
-                    <a href="#">아이디 찾기</a>
-                    <a href="#">비밀번호 찾기</a>
-                    <a href="#">회원가입</a>
+                    <a href="/member/idSearch">아이디 찾기</a>
+                    <a href="/member/pwSearch">비밀번호 찾기</a>
+                    <a href="/member/use">회원가입</a>
                 </div>
             </div>
         </main>
