@@ -7,6 +7,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>신고게시판 - 작성</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+	<link rel="stylesheet" href="/resources/css/common/header.css">
     <style>
         /* 기본 스타일 초기화 및 설정 */
         body {
@@ -142,7 +144,7 @@
     </style>
 </head>
 <body>
-
+<jsp:include page="/WEB-INF/views/common/header.jsp"/>
     <div class="report-container">
         <div class="report-card">
             <div class="card-header">
