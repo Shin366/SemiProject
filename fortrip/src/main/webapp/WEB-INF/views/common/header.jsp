@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!-- 10월 24일 taglib 추가 -->
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<link rel="stylesheet" href="../resources/css/common/header.css">
 <header class="site-header">
   <div class="container">
     <!-- 왼쪽 로고 -->
@@ -13,10 +14,11 @@
     <!-- 중앙 메뉴 -->
     <nav class="nav-menu">
       <ul>
-        <li><a href="/course">여행코스</a></li>
-        <li><a href="/roadmap">나만의 로드맵</a></li>
+		<li><a href="/trip/course">여행코스</a></li>
+		<li><a href="/roadmap/my">나만의 로드맵</a></li>
         <li><a href="/board/free/list">커뮤니티</a></li>
         <li><a href="/board/notice/list">고객지원</a></li>
+		<li><a href="/admin/main">관리자페이지</a></li>         
       </ul>
     </nav>
 
