@@ -6,4 +6,11 @@
 	<insert id="questionInsert">
 		INSERT INTO QUESTION VALUES (SEQ_QUESTION_NO.NEXTVAL, #{questionTitle}, #{questionCategory}, #{questionContent})
 	</insert>
+	<select id="AllquestionList" resultType="QuestionVO">
+		SELECT * FROM QUESTION
+	</select>
+	
+	<delete id="questionDelete">
+		DELETE FROM QUESTION WHERE NOTICE_NO = #{questionNo}
+	</delete>
 </mapper>

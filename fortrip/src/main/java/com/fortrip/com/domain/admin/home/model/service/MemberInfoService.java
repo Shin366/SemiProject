@@ -12,7 +12,9 @@ public interface MemberInfoService {
 
 	int getMemberStop();
 
-	List<MemberVO> getAllMemeber();
+	int getTotalCount();
+
+	List<MemberVO> getAllMember(int currentPage, int memberCountPerPage);
 
 
 }

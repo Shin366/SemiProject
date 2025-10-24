@@ -18,7 +18,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Controller
-@RequestMapping("/notice")
+@RequestMapping("/admin/notice")
 @RequiredArgsConstructor
 public class NoticeController {
 	
@@ -49,10 +49,10 @@ public class NoticeController {
 				notice.setAttachmentPath(attachmentPath);
 			}
 			int result = nService.insertNotice(notice);
-			return "notice/noticeInsert";
+			return "admin/notice/noticeInsert";
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "notice/noticeInsert";
+			return "admin/notice/noticeInsert";
 		}
 	}
 

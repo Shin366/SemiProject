@@ -5,6 +5,10 @@
 <mapper namespace="com.fortrip.com.domain.admin.notice.model.mapper.NoticeMapper">
 	<insert id="insertNotice">
 		INSERT INTO NOTICE VALUES (SEQ_NOTICE_NO.NEXTVAL, #{noticeTitle}, #{noticeContent}, 'admin',
-		DEFAULT, DEFAULT, #{attachmentName}, #{attachmentPath}, DEFAULT)
+		DEFAULT, 0, #{attachmentName, jdbcType=NULL}, #{attachmentPath, jdbcType=NULL}, #{attachmentDate, jdbcType=NULL}, DEFAULT)
 	</insert>
+	
+	<select id="AllnoticeList" resultType="NoticeVO">
+		SELECT * FROM NOTICE ORDER BY NOTICE_NO DESC
+	</select>
 </mapper>
