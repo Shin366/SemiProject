@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fortrip.com.app.member.dto.JoinRequest;
 import com.fortrip.com.app.member.dto.LoginRequest;
@@ -35,10 +36,26 @@ public class MemberController {
 		return "member/pwSearch";
 	}
 	
-	@PostMapping("pwSearch")
-	public String pwSearch() {
-		return "";
-	}
+//	@PostMapping("pwSearch")
+//	public String pwSearch(
+//			@RequestParam("memberId") String memberId
+//			, @RequestParam("email") String email
+//			, Model model
+//			) {
+//		try {
+//			Member member = mService.selectOneById(memberId);
+//			if(member == null || !member.getEmail().equals(email)) {
+//				model.addAttribute("errorMsg", "일치하는 회원 정보가 없습니다.");
+//				return "common/error";
+//			}
+//			
+//			String tempPw = 
+//			
+//		} catch (Exception e) {
+//			
+//		}
+//		return "";
+//	}
 	
 	@GetMapping("idSearch")	// 이름, 이메일이 같으면 아이디 보여주기
 	public String showidSearchPage() {
