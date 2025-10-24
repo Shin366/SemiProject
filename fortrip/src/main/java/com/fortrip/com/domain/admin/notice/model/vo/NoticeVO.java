@@ -1,6 +1,10 @@
 package com.fortrip.com.domain.admin.notice.model.vo;
 
+import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
