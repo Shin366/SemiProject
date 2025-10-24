@@ -5,26 +5,26 @@
 <head>
 <meta charset="UTF-8">
 <title>ForTrip - 비밀번호 변경</title>
-<link rel="icon" type="image/png" href="">
+<link rel="icon" type="image/png" href="../../../resources/img/common/eyes-icon.png">
 </head>
 <body>
 	<div id="container">
-        <main id="">
+        <main id="main">
             <div class="pwUpDate-container">
                 <div class="pwUpDate-title">
                     <h2>비밀 번호 변경</h2>
                 </div>
                 <form class="pwUpDate-form" action="/member/pwUpDate" method="post">
                     <div class="form-group">
-                        <label for="">기존 비밀번호</label>
+                        <label class="required" for="memberPw">기존 비밀번호</label>
                         <input type="password" name="memberPw" placeholder="기존 비밀번호를 입력해주세요." required>
                     </div>
                     <div class="form-group">
-                        <label for="">새 비밀번호</label>
+                        <label class="required" for="newMemberPw">새 비밀번호</label>
                         <input type="password" name="newMemberPw" placeholder="새 비밀번호를 입력해주세요." required>
                     </div>
                     <div class="form-group">
-                        <label for="">새 비밀번호 확인</label>
+                        <label class="required" for="newMemberPwd">새 비밀번호 확인</label>
                         <input type="password" name="newMemberPwd" placeholder="새 비밀번호를 다시 입력해주세요." required>
                     </div>
                     <button type="submit">변경하기</button>
