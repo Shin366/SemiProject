@@ -14,5 +14,10 @@ public interface BoardNoticeMapper {
 	int getTotalCount();
 
 	List<BoardNotice> selectNoticeList(RowBounds rowBounds);
+	// 이전 글 조회
+    BoardNotice selectPrevNotice(int noticeNo);
+
+    // 다음 글 조회
+    BoardNotice selectNextNotice(int noticeNo);
 
 }

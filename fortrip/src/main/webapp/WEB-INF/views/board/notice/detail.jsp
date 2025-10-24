@@ -6,8 +6,9 @@
 <head>
     <meta charset="UTF-8">
     <title>공지사항</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+	<link rel="stylesheet" href="/resources/css/common/header.css">
     <style>
-        /* 1번 JSP와 공통 스타일 생략 */
         body { font-family: sans-serif; background-color: #f8f9fa; margin: 0; }
         .container { display: flex; max-width: 1200px; margin: 20px auto; gap: 20px; }
         .sidebar { flex: 0 0 180px; }
@@ -28,33 +29,34 @@
     </style>
 </head>
 <body>
+<jsp:include page="/WEB-INF/views/common/header.jsp"/>
     <div class="container">
         <aside class="sidebar">
-            <a href="#" class="active">공지 사항</a>
-            <a href="#">자주 묻는 질문</a>
-            <a href="#">1:1 문의</a>
-            <a href="#">신고 게시판</a>
+            <a href="/board/notice/list" class="active">공지 사항</a>
+            <a href="/board/faq/list">자주 묻는 질문</a>
+            <a href="/board/qna/list">1:1 문의</a>
+            <a href="/board/report/list">신고 게시판</a>
         </aside>
         <main class="main-content">
             <h1 class="page-title">공지 사항</h1>
             <div class="post-header">
-                <h2 class="post-title">${notice.title}</h2>
+                <h2 class="post-title">${detail.notice.noticeTitle}</h2>
             </div>
             <div class="post-body">
-                <p>${notice.content}</p>
+                <p>${detail.notice.noticeContent}</p>
             </div>
             <ul class="post-nav">
                 <li>
                     <span class="nav-label">이전글</span>
-                    <span class="nav-title"><a href="/notice/detail?no=${prevNotice.no}">${prevNotice.title}</a></span>
+                    <span class="nav-title"><a href="/board/notice/detail?noticeNo=${detail.prevNotice.noticeNo}">${detail.prevNotice.noticeTitle}</a></span>
                 </li>
                 <li>
                     <span class="nav-label">다음글</span>
-                    <span class="nav-title"><a href="/notice/detail?no=${nextNotice.no}">${nextNotice.title}</a></span>
+                    <span class="nav-title"><a href="/board/notice/detail?noticeNo=${detail.nextNotice.noticeNo}">${detail.nextNotice.noticeTitle}</a></span>
                 </li>
             </ul>
             <div class="bottom-actions">
-                <a href="/notice/list" class="btn-list">목록</a>
+                <a href="/board/notice/list" class="btn-list">목록</a>
             </div>
         </main>
     </div>

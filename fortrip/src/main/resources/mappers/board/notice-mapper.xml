@@ -12,4 +12,25 @@
     <select id="getTotalCount" resultType="_int">
  		SELECT COUNT(*) FROM NOTICE WHERE DELETE_YN = 'N'
  	</select>
+ 	<select id="selectPrevNotice" resultType="BoardNotice">
+        SELECT
+            NOTICE_NO,
+            NOTICE_TITLE
+        FROM NOTICE
+        WHERE DELETE_YN = 'N'
+          AND NOTICE_NO &lt; #{noticeNo}
+        ORDER BY NOTICE_NO DESC
+        FETCH FIRST 1 ROW ONLY
+    </select>
+
+    <select id="selectNextNotice" resultType="BoardNotice">
+        SELECT
+            NOTICE_NO,
+            NOTICE_TITLE
+        FROM NOTICE
+        WHERE DELETE_YN = 'N'
+          AND NOTICE_NO &gt; #{noticeNo}
+        ORDER BY NOTICE_NO ASC
+        FETCH FIRST 1 ROW ONLY
+    </select>
 </mapper>

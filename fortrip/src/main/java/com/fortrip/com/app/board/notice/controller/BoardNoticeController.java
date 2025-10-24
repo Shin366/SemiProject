@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.fortrip.com.app.board.notice.dto.BoardNoticeDetailDTO;
 import com.fortrip.com.domain.board.notice.model.service.BoardNoticeService;
 import com.fortrip.com.domain.board.notice.model.vo.BoardNotice;
 
@@ -26,8 +27,11 @@ public class BoardNoticeController {
 			int noticeNo
 			,Model model) {
 		try {
-			BoardNotice notice = nService.selectOneByNo(noticeNo);
-			model.addAttribute("notice",notice);
+			// 1. Service로부터 BoardNoticeDetailDTO 타입으로 결과를 받습니다.
+	        BoardNoticeDetailDTO detailDto = nService.selectOneByNo(noticeNo); 
+	        
+	        // 2. DTO 객체 전체를 "detail"이라는 이름으로 Model에 담습니다.
+	        model.addAttribute("detail", detailDto);
 			return "board/notice/detail";
 		}catch(Exception e) {
 			model.addAttribute("errorMsg", e.getMessage());

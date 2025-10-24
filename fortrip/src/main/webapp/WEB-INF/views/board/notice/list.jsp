@@ -6,6 +6,8 @@
 <head>
     <meta charset="UTF-8">
     <title>공지사항 목록</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+	<link rel="stylesheet" href="/resources/css/common/header.css">
     <style>
         body { font-family: sans-serif; background-color: #f8f9fa; margin: 0; }
         .container { display: flex; max-width: 1200px; margin: 20px auto; gap: 20px; }
@@ -31,12 +33,13 @@
     </style>
 </head>
 <body>
+<jsp:include page="/WEB-INF/views/common/header.jsp"/>
     <div class="container">
         <aside class="sidebar">
-            <a href="#" class="active">공지 사항</a>
-            <a href="#">자주 묻는 질문</a>
-            <a href="#">1:1 문의</a>
-            <a href="#">신고 게시판</a>
+            <a href="/board/notice/list" class="active">공지 사항</a>
+            <a href="/board/faq/list">자주 묻는 질문</a>
+            <a href="/board/qna/list">1:1 문의</a>
+            <a href="/board/report/list">신고 게시판</a>
         </aside>
 
         <main class="main-content">
@@ -55,20 +58,22 @@
             <ul class="notice-list">
                 <c:forEach var="notice" items="${nList}">
                     <li class="notice-item">
-                        <a href="/board/notice/detail?noticeNo=${notice.noticeNo}">${notice.title}</a>
+                        <a href="/board/notice/detail?noticeNo=${notice.noticeNo}">${notice.noticeTitle}</a>
                         <span class="author">관리자</span>
                     </li>
                 </c:forEach>
             </ul>
 
             <nav class="pagination">
-                <a href="#">&lt;</a>
-                <strong>1</strong>
-                <a href="#">2</a>
-                <a href="#">...</a>
-                <a href="#">9</a>
-                <a href="#">10</a>
-                <a href="#">&gt;</a>
+                <c:if test="${startNavi ne 1 }">
+                    <a href="/board/notice/list?page=${startNavi - 1 }" class="prev">&laquo; 이전</a>
+               	</c:if>
+                    <c:forEach begin="${startNavi }" end="${endNavi }" var="n">
+                      <a href="/board/notice/list?page=${n }" class='page-number <c:if test="${currentPage eq n }">active</c:if>'>${n }</a>
+                    </c:forEach>
+                    <c:if test="${endNavi ne maxPage }">
+                      <a href="/board/notice/list?page=${endNavi + 1 }" class="next">다음 &raquo;</a>
+                    </c:if>
             </nav>
         </main>
     </div>
