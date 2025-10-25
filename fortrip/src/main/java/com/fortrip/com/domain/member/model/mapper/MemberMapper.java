@@ -19,5 +19,7 @@ public interface MemberMapper {
 
 	int updateMemberPw(String memberId, String encodedPw);
 
+	Member searchMemberId(Member member);
+
 	
 }

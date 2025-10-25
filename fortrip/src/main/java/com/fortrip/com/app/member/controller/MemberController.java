@@ -56,7 +56,7 @@ public class MemberController {
 				model.addAttribute("tempPw", tempPw);
 				return "member/pwSearchResult";				
 			}
-			return "common/pwSearch";
+			return "member/pwSearch";
 			
 		} catch (Exception e) {
 			model.addAttribute("errorMsg", e.getMessage());
@@ -70,8 +70,21 @@ public class MemberController {
 	}
 	
 	@PostMapping("idSearch")
-	public String idSearch() {
-		return "";
+	public String idSearch(
+			Member member
+			, Model model
+			) {
+		try {
+			Member findMember = mService.findMemberId(member);
+			if(findMember != null) {
+				model.addAttribute("memberId", findMember.getMemberId());
+				return "member/idSearchResult";
+			}
+			return "member/idSearch";
+		} catch (Exception e) {
+			model.addAttribute("errorMsg", e.getMessage());
+			return "common/error";
+		}
 	}
 	
 	@GetMapping("login")
@@ -83,7 +96,8 @@ public class MemberController {
 	public String checkLogin(
 			@ModelAttribute LoginRequest member
 			, HttpSession session
-			, Model model) {
+			, Model model
+			, @RequestParam(value = "beforeURL", required=false)String beforeURL) {
 		try {
 			// 로그인 정보로 member 객체 조회
 			Member loginMember = mService.selectOneByLogin(member);
@@ -103,9 +117,16 @@ public class MemberController {
 				}
 			 */
 			if (loginMember != null && bcrypt.matches(member.getMemberPw(), loginMember.getMemberPw())) {
-				session.setAttribute("loginMember", loginMember);
+			    session.setAttribute("loginMember", loginMember);
+			    session.setAttribute("adminYN", loginMember.getAdminYN());
+				System.out.println("로그인 멤버 관리자 여부: " + loginMember.getAdminYN());
+				if(loginMember.getAdminYN().equals("Y")) {
+					return "redirect:/admin/user/admin";
+				}else {
+					
+					return "redirect:"+beforeURL;
+				}
 				
-				return "redirect:/";
 			}else {
 				model.addAttribute("errorMsg", "데이터가 없습니다.");
 				return "member/login";
@@ -135,16 +156,19 @@ public class MemberController {
 		return "";
 	}
 	
+	// 회원가입 - for trip 이용약관 이용약관 연결용
 	@GetMapping("use1")
 	public String showUse1Page() {
 		return "member/use1";
 	}
 	
+	// 회원가입 - 개인정보 수집 및 이용 이용약관 연결용
 	@GetMapping("use2")
 	public String showUse2Page() {
 		return "member/use2";
 	}
 	
+	// 회원가입 - 개인정보 제3자 제공 이용약관 연결용
 	@GetMapping("use3")
 	public String showUse3Page() {
 		return "member/use3";
@@ -216,6 +240,11 @@ public class MemberController {
 			model.addAttribute("errorMsg", e.getMessage());
 			return "common/error";
 		}
+	}
+	
+	@GetMapping("/admin/home")
+	public String showAdminMain() {
+		return "/admin/user/admin";	//이 url이 맞는지 모르겠음
 	}
 	
 }

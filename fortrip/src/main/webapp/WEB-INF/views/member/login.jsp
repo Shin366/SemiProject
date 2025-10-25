@@ -17,6 +17,7 @@
                     <h2>로그인</h2>
                 </div>
                 <form class="login-form" action="/member/login" method="post">
+                <input type="hidden" name="beforeURL" value="">
                     <div class="form-group">
                         <label class="required" for="memberId">아이디</label>
                         <input type="text" name="memberId" placeholder="아이디를 입력해주세요." required>
@@ -35,6 +36,11 @@
             </div>
         </main>
     </div>
+    <script>
+    		window.onload = () => {
+    			document.getElementsByName('beforeURL')[0].value = document.referrer;
+    		}
+    </script>
 </body>
 
 </html>

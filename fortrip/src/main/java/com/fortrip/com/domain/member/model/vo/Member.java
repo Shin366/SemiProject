@@ -28,4 +28,5 @@ public class Member {
 	private String tripStyle;
 	private String tendency;
 	private String stausYSN;
+	
 }

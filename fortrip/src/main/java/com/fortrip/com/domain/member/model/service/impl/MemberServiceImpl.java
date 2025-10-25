@@ -53,6 +53,12 @@ public class MemberServiceImpl implements MemberService{
 		return result;
 	}
 
+	@Override
+	public Member findMemberId(Member member) {
+		Member result = mStore.searchMemberId(member);
+		return result;
+	}
+
 
 
 	

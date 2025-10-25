@@ -19,5 +19,7 @@ public interface MemberService {
 
 	int updateMemberPw(String memberId, String encodedPw);
 
+	Member findMemberId(Member member);
+
 
 }
