@@ -207,21 +207,44 @@ public class MemberController {
 		return "/member/profile";
 	}
 	
+	@GetMapping("update")
+	public String showUpdate() {
+		return "member/update";
+	}
+	
 	@PostMapping("update")
 	public String modifyProfile(@ModelAttribute ModifyRequest member
 			,HttpSession session, Model model) {
 		try {
 			String memberId = (String)session.getAttribute("memberId");
+			member.setMemberId(memberId);
+			int result = mService.updateMember(member);
+			if(result > 0) {
+				return "redirect:/member/update";
+			}else {
+				model.addAttribute("errorMsg", "SERVICE_FAILED");
+				return "common/error";
+			}
 		} catch (Exception e) {
-			
+			model.addAttribute("errorMsg", e.getMessage());
+			return "common/error";			
 		}
+	}
+	
+	@GetMapping("pwUpdate")
+	public String showPwUpdate() {
+		return "member/pwUpdate";
+	}
+	
+	@PostMapping("pwUpdate")
+	public String pwUpdate() {
 		return "";
 	}
 	
 	
 	@GetMapping("delete")
 	public String showDeletePage() {
-		return "member/detele";
+		return "member/delete";
 	}
 	
 	
@@ -262,7 +285,7 @@ public class MemberController {
 	
 	@GetMapping("/admin/user/admin")
 	public String showAdminMain() {
-		return "/admin/user/admin";	//이 url이 맞는지 모르겠음
+		return "/admin/admin";	//이 url이 맞는지 모르겠음
 	}
 	
 }

@@ -21,33 +21,33 @@
             </div>
             <div class="sidebar">
                 <ul class="menu-list">
-                    <li><a href="#">내 프로필</a></li>
-                    <li><a href="#">내 게시글</a></li>
-                    <li><a href="#">찜 목록</a></li>
-                    <li><a href="#">최근 본 코스</a></li>
-                    <li><a href="#">개인 정보 수정</a></li>
-                    <li><a href="#">회원탈퇴</a></li>
+                    <li><a href="profile">내 프로필</a></li>
+                    <li><a href="myboard">내 게시글</a></li>
+                    <li><a href="list">찜 목록</a></li>
+                    <li><a href="recet">최근 본 코스</a></li>
+                    <li><a href="update">개인 정보 수정</a></li>
+                    <li><a href="delete">회원탈퇴</a></li>
                 </ul>
             </div>
             <div class="content-area">
                 <form action="/member/upDate" method="post">
                     <div class="info-group">
                         <label for="nickName">닉네임</label>
-                        <input type="text" value="">
+                        <input type="text" name="nickName" value="${member.nickName}">
                     </div>
                     <div class="newPhone">
                         <label for="phone">휴대폰 번호</label>
-                        <input type="text" value="">
+                        <input type="text" name="phone" value="${member.phone}">
                     </div>
                     <div class="newEmail">
                         <label for="">이메일</label>
-                        <input type="text" value="">
+                        <input type="text" name="email" value="${member.email}">
                     </div>
                     <span class="pwUpdate-button">
                         <a href="/member/pwUpdate">비밀번호 변경</a>
                     </span>
                 </form>
-                <button type="submit" class="update-button">수정하기</button>
+                <button type="submit" class="save-button">수정하기</button>
             </div>
         </main>
     </div>

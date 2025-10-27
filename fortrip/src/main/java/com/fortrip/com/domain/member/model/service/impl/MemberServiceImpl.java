@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import com.fortrip.com.app.member.dto.JoinRequest;
 import com.fortrip.com.app.member.dto.LoginRequest;
+import com.fortrip.com.app.member.dto.ModifyRequest;
 import com.fortrip.com.domain.member.model.mapper.MemberMapper;
 import com.fortrip.com.domain.member.model.service.MemberService;
 import com.fortrip.com.domain.member.model.vo.Member;
@@ -56,6 +57,12 @@ public class MemberServiceImpl implements MemberService{
 	@Override
 	public Member findMemberId(Member member) {
 		Member result = mStore.searchMemberId(member);
+		return result;
+	}
+
+	@Override
+	public int updateMember(ModifyRequest member) {
+		int result = mStore.updateMember(member);
 		return result;
 	}
 
