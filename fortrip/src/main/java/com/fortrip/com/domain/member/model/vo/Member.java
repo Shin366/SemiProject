@@ -24,9 +24,9 @@ public class Member {
 	private String email;
 	private String gender;
 	private Date enrollDate;
-	private String adminYN;
+	private String adminYn;
 	private String tripStyle;
 	private String tendency;
-	private String stausYSN;
+	private String stausYsn;
 	
 }

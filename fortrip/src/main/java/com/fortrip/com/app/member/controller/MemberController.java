@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.fortrip.com.app.common.util.TempPwUtil;
 import com.fortrip.com.app.member.dto.JoinRequest;
 import com.fortrip.com.app.member.dto.LoginRequest;
+import com.fortrip.com.app.member.dto.ModifyRequest;
 import com.fortrip.com.domain.member.model.service.MemberService;
 import com.fortrip.com.domain.member.model.vo.Member;
 
@@ -118,10 +119,13 @@ public class MemberController {
 			 */
 			if (loginMember != null && bcrypt.matches(member.getMemberPw(), loginMember.getMemberPw())) {
 			    session.setAttribute("loginMember", loginMember);
-			    session.setAttribute("adminYN", loginMember.getAdminYN());
-				System.out.println("로그인 멤버 관리자 여부: " + loginMember.getAdminYN());
-				if(loginMember.getAdminYN().equals("Y")) {
-					return "redirect:/admin/user/admin";
+			    session.setAttribute("adminYn", loginMember.getAdminYn());
+			    
+			    // 디버깅용 코드
+			    String adminYn = (String) session.getAttribute("adminYn");
+				System.out.println("로그인 멤버 관리자 여부: " + adminYn);
+				if(loginMember.getAdminYn().equals("Y")) {
+					return "admin/admin";
 				}else {
 					
 					return "redirect:"+beforeURL;
@@ -132,6 +136,7 @@ public class MemberController {
 				return "member/login";
 			}
 		} catch (Exception e) {
+			e.printStackTrace(); //에러 확인용
 			model.addAttribute("errorMsg", e.getMessage());
 			return "common/error";	//에러 페이지 만들면 url 넣기
 		}
@@ -190,10 +195,6 @@ public class MemberController {
 		}
 	}
 	
-	@GetMapping("delete")
-	public String showDeletePage() {
-		return "member/detele";
-	}
 	
 	@GetMapping("profile")
 	public String showProfilePage() {
@@ -204,6 +205,23 @@ public class MemberController {
 	@PostMapping("profile")
 	public String profileUpdate() {
 		return "/member/profile";
+	}
+	
+	@PostMapping("update")
+	public String modifyProfile(@ModelAttribute ModifyRequest member
+			,HttpSession session, Model model) {
+		try {
+			String memberId = (String)session.getAttribute("memberId");
+		} catch (Exception e) {
+			
+		}
+		return "";
+	}
+	
+	
+	@GetMapping("delete")
+	public String showDeletePage() {
+		return "member/detele";
 	}
 	
 	
@@ -242,7 +260,7 @@ public class MemberController {
 		}
 	}
 	
-	@GetMapping("/admin/home")
+	@GetMapping("/admin/user/admin")
 	public String showAdminMain() {
 		return "/admin/user/admin";	//이 url이 맞는지 모르겠음
 	}

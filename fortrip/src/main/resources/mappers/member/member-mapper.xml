@@ -34,10 +34,10 @@
 		, EMAIL AS email
 		, GENDER AS gender
 		, ENROLL_DATE AS enrollDate
-		, ADMIN_YN AS adminYN
+		, ADMIN_YN AS adminYn
 		, TRIP_STYLE AS tripStyle
 		, TENDENCY AS tendency
-		, STATUS_YSN AS statusYSN
+		, STATUS_YSN AS statusYsn
 	FROM MEMBER WHERE MEMBER_ID = #{memberId}
 </select>
   	  	
