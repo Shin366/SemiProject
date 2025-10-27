@@ -10,12 +10,14 @@
 <body>
 	<div id="container">
         <main id="main">
+        
             <div class="profile-section">
                 <div class="profile-image"></div>
-                <h2 class="profile-nickName">닉네임</h2>
-                <p class="profile-name">이름</p>
-                <p class="profile-memberId">아이디</p>
-                <p class="enroll-date">가입일</p>
+                <h2 class="profile-nickName">${member.nickName}</h2>
+                <p class="profile-name">${member.memberName}</p>
+                <p class="profile-memberId">${member.memberId}</p>
+                <p class="enroll-date">${member.enrollDate}</p>
+                
                 <div class="like-list">
                     <h2 class="board">게시글</h2>
                     <h2 class="boardNo"></h2>
@@ -28,9 +30,9 @@
             <div class="sidebar">
                 <ul class="menu-list">
                     <li><a href="profile">내 프로필</a></li>
-                    <li><a href="myboard">내 게시글</a></li>
+                    <li><a href="myBoard">내 게시글</a></li>
                     <li><a href="list">찜 목록</a></li>
-                    <li><a href="recet">최근 본 코스</a></li>
+                    <li><a href="recent">최근 본 코스</a></li>
                     <li><a href="update">개인 정보 수정</a></li>
                     <li><a href="delete">회원탈퇴</a></li>
                 </ul>

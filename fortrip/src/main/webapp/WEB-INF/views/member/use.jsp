@@ -10,6 +10,7 @@
 <body>
 	<div id="container">
         <main id="main">
+        <form action="/member/signup" method="post">
             <div class="use-container">
                 <div class="use-title">
                     <h2>회원가입</h2>
@@ -24,20 +25,21 @@
                 </div>
                 <ul class="useTerms">
                     <div class="form-group">
-                        <input type="checkbox" id="use1" name="use1">
+                        <input type="checkbox" id="use1" name="use1" required>
                         <label class="required" for="use1">(필수)<a href="/member/use1">for trip 이용약관</a> 동의</label>
                     </div>
                     <div class="form-group">
-                        <input type="checkbox" id="use2" name="use2">
+                        <input type="checkbox" id="use2" name="use2" required>
                         <label class="required" for="use2">(필수)<a href="/member/use2">개인정보 수집 및 이용</a>에 대한 동의</label>
                     </div>
                     <div class="form-group">
-                        <input type="checkbox" id="use3" name="use3">
+                        <input type="checkbox" id="use3" name="use3" required>
                         <label class="required" for="use3">(필수)<a href="/member/use3">개인정보 제3자 제공</a>에 대한 동의</label>
                     </div>
                 </ul>
             </div>
             <button type="submit" class="use-button">다음</button>
+            </form>
         </main>
     </div>
 </body>

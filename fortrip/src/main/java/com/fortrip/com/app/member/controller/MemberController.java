@@ -158,7 +158,7 @@ public class MemberController {
 	
 	@PostMapping("use")
 	public String use() {
-		return "";
+		return "member/signup";
 	}
 	
 	// 회원가입 - for trip 이용약관 이용약관 연결용
@@ -179,6 +179,10 @@ public class MemberController {
 		return "member/use3";
 	}
 	
+	@GetMapping("signup")
+	public String showSignupPage() {
+		return "member/signup";
+	}
 	
 
 	@PostMapping("signup")
@@ -207,6 +211,36 @@ public class MemberController {
 		return "/member/profile";
 	}
 	
+	@GetMapping("myBoard")
+	public String showMyBoard() {
+		return "member/myBoard";
+	}
+	
+	@PostMapping("myBoard")
+	public String myBoard() {
+		return "";
+	}
+	
+	@GetMapping("list")
+	public String showListPage() {
+		return "member/list";
+	}
+	
+	@PostMapping("list")
+	public String listPage() {
+		return "member/list";
+	}
+	
+	@GetMapping("recent")
+	public String showRecentPage() {
+		return "member/recent";
+	}
+	
+	@PostMapping("recent")
+	public String recentPage() {
+		return "member/recent";
+	}
+	
 	@GetMapping("update")
 	public String showUpdate() {
 		return "member/update";
@@ -216,10 +250,18 @@ public class MemberController {
 	public String modifyProfile(@ModelAttribute ModifyRequest member
 			,HttpSession session, Model model) {
 		try {
-			String memberId = (String)session.getAttribute("memberId");
-			member.setMemberId(memberId);
+			String loginMember = (String)session.getAttribute("loginMember");
+			member.setMemberId(loginMember);
+			System.out.println(loginMember);
+			if (loginMember == null) {
+			    model.addAttribute("errorMsg", "로그인 정보가 없습니다.");
+			    return "common/error";
+			}
+			
 			int result = mService.updateMember(member);
+			
 			if(result > 0) {
+				model.addAttribute("member", loginMember);
 				return "redirect:/member/update";
 			}else {
 				model.addAttribute("errorMsg", "SERVICE_FAILED");
@@ -254,27 +296,33 @@ public class MemberController {
 			,HttpSession session
 			, Model model) {
 		try {
-			String memberId = (String)session.getAttribute("memberId");
-			if(memberId == null) {
+			Member loginMember = (Member) session.getAttribute("loginMember");
+			if(loginMember == null) {
+				System.out.println(loginMember);
 				model.addAttribute("errorMsg", "로그인 정보가 없습니다.");
 				return "common/error";
 			}
-			
+			String memberId = loginMember.getMemberId();
+			System.out.println("탈퇴 요청 회원 ID: " + memberId);
 			Member dbMember = mService.selectOneById(memberId);
+			
+				if(dbMember == null) {
+		            model.addAttribute("errorMsg", "회원 정보를 찾을 수 없습니다.");
+		            return "common/error";
+		        }
 			
 				if(bcrypt.matches(member.getMemberPw(), dbMember.getMemberPw())) {
 					int result = mService.deleteMember(memberId);				
-				
 				if(result > 0) {
 					session.invalidate();
-					return "redirect:/member/logout";
+					return "member/deleteResult";
 				}else {
 					model.addAttribute("errorMsg", "회원 탈퇴에 실패했습니다.");
 					return "common/error";
 				}
 			}else {
 				model.addAttribute("errorMsg", "비밀번호가 일치하지 않습니다.");
-				return "common/error";
+				return "member/delete";
 			}
 			
 		} catch (Exception e) {

@@ -38,9 +38,9 @@
                 <div class="sidebar">
                 <ul class="menu-list">
                     <li><a href="profile">내 프로필</a></li>
-                    <li><a href="myboard">내 게시글</a></li>
+                    <li><a href="myBoard">내 게시글</a></li>
                     <li><a href="list">찜 목록</a></li>
-                    <li><a href="recet">최근 본 코스</a></li>
+                    <li><a href="recent">최근 본 코스</a></li>
                     <li><a href="update">개인 정보 수정</a></li>
                     <li><a href="delete">회원탈퇴</a></li>
                 </ul>
@@ -52,11 +52,11 @@
                 <form class="delete-form" action="/member/delete" method="post">
                     <div class="form-group">
                         <label for="memberName">이름</label>
-                        <input type="text" name="memberName">
+                        <input type="text" name="memberName" placeholder="${member.memberName }" readonly>
                     </div>
                     <div class="form-group">
                         <label for="memberId">아이디</label>
-                        <input type="text" name="memberId">
+                        <input type="text" name="memberId" placeholder="${member.memberId }" readonly>
                     </div>
                     <div class="form-group">
                         <label class="required" for="memberPw">비밀번호</label>

@@ -27,6 +27,6 @@ public class Member {
 	private String adminYn;
 	private String tripStyle;
 	private String tendency;
-	private String stausYsn;
+	private String statusYsn;
 	
 }

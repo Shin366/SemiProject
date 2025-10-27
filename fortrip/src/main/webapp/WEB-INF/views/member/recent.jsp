@@ -19,9 +19,9 @@
             <div class="sidebar">
                 <ul class="menu-list">
                     <li><a href="profile">내 프로필</a></li>
-                    <li><a href="myboard">내 게시글</a></li>
+                    <li><a href="myBoard">내 게시글</a></li>
                     <li><a href="list">찜 목록</a></li>
-                    <li><a href="recet">최근 본 코스</a></li>
+                    <li><a href="recent">최근 본 코스</a></li>
                     <li><a href="update">개인 정보 수정</a></li>
                     <li><a href="delete">회원탈퇴</a></li>
                 </ul>
