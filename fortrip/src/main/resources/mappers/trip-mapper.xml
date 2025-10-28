@@ -5,8 +5,7 @@
 <mapper namespace="com.fortrip.com.domain.journey.trip.model.mapper.TripMapper">
 <!-- 공통 WHERE -->
   <sql id="baseWhere">
-    WHERE TYPE = 'TRAVEL'
-      AND NVL(DELETE_YN,'N') = 'N'
+    WHERE NVL(DELETE_YN,'N') = 'N'
     <if test="destination != null and destination != ''">
       AND (
            LOWER(ROAD_NAME)     LIKE '%' || LOWER(#{destination}) || '%'
@@ -28,9 +27,7 @@
       ROAD_STYLE     AS roadStyle,
       ROAD_INTRO     AS roadIntro,
       DELETE_YN      AS deleteYn,
-      WRITE_DATE     AS writeDate,
-      TYPE           AS type,
-      MEMBER_ID      AS memberId
+      WRITE_DATE     AS writeDate
     FROM ROAD
     <include refid="baseWhere"/>
     ORDER BY WRITE_DATE DESC NULLS LAST, ROAD_NO DESC
@@ -58,12 +55,9 @@
       ROAD_STYLE     AS roadStyle,
       ROAD_INTRO     AS roadIntro,
       DELETE_YN      AS deleteYn,
-      WRITE_DATE     AS writeDate,
-      TYPE           AS type,
-      MEMBER_ID      AS memberId
+      WRITE_DATE     AS writeDate
     FROM ROAD
     WHERE ROAD_NO = #{id}
-      AND TYPE = 'TRAVEL'
       AND NVL(DELETE_YN,'N') = 'N'
   </select>
 </mapper>

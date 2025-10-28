@@ -25,7 +25,6 @@ public class TripController {
         List<TripView> courses = tripService.findTrips(req);
         int total = tripService.countTrips(req);
         int totalPages = (int) Math.ceil((double) total / req.getSize());
-
         model.addAttribute("courses", courses);
         model.addAttribute("page", req.getPage());
         model.addAttribute("size", req.getSize());
@@ -39,5 +38,20 @@ public class TripController {
         TripView course = tripService.findTrip(id);
         model.addAttribute("course", course);
         return "trip/coursedetail";
+    }
+    
+    @GetMapping("/add")
+    public String courseAdd() {
+    	return "trip/tripAdd";
+    }
+    
+    @GetMapping("/map")
+    public String coursemap() {
+    	return "trip/map";
+    }
+    
+    @GetMapping("/info")
+    public String tourList() {
+    	return "tourInfo/tourInfo";
     }
 }

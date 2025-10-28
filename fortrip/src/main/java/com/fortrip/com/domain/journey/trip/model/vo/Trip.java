@@ -21,7 +21,5 @@ public class Trip {
     private String roadIntro;      // VARCHAR2(2000)
     private String deleteYn;       // VARCHAR2(1)
     private Timestamp writeDate;   // TIMESTAMP
-    private String type;           // 'ROAD','TRAVEL'
-    private String memberId;       // VARCHAR2(50)
 }
 
