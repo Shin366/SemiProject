@@ -38,19 +38,115 @@
         .reaction-buttons .btn.liked { background-color: #ffe0e0; border-color: #ffc2c2; color: #dc3545; font-weight: bold; }
         .social-share a { color: #adb5bd; font-size: 24px; margin-left: 15px; text-decoration: none; transition: color 0.2s ease; }
         .social-share a:hover { color: #343a40; }
-
-        /* --- 댓글 영역 --- */
-        .comments-section { margin-top: 50px; }
-        .comment-form textarea { width: 100%; min-height: 80px; padding: 12px; border: 1px solid #ced4da; border-radius: 6px; resize: vertical; box-sizing: border-box; font-size: 15px; }
-        .comment-form-actions { text-align: right; margin-top: 10px; }
-        .btn { padding: 8px 18px; border-radius: 6px; text-decoration: none; font-size: 14px; font-weight: 500; border: 1px solid #ced4da; background-color: #fff; cursor: pointer; }
-        .btn-submit { background-color: #007bff; color: white; border: none; }
-        
-        .comment-list { margin-top: 30px; list-style: none; padding: 0; }
-        .comment-item { padding: 20px 0; border-top: 1px solid #f1f3f5; }
-        .comment-item:first-child { border-top: 2px solid #343a40; }
-        .comment-author { font-weight: bold; margin-bottom: 5px; }
-        .comment-content { color: #495057; line-height: 1.6; }
+       /* --- 댓글 영역 --- */
+		.comments-section {
+		  margin-top: 60px;
+		  background-color: #fff;
+		  padding: 30px;
+		  border-radius: 8px;
+		  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+		  border: 1px solid #e9ecef;
+		}
+		
+		/* 댓글 입력 폼 */
+		.comment-form {
+		  margin-bottom: 25px;
+		}
+		
+		.comment-form textarea {
+		  width: 100%;
+		  min-height: 100px;
+		  padding: 14px 16px;
+		  border: 1px solid #ced4da;
+		  border-radius: 8px;
+		  font-size: 15px;
+		  resize: vertical;
+		  line-height: 1.6;
+		  box-sizing: border-box;
+		  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+		}
+		
+		.comment-form textarea:focus {
+		  border-color: #007bff;
+		  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+		  outline: none;
+		}
+		
+		.comment-form .btn-submit {
+		  margin-top: 10px;
+		  padding: 8px 18px;
+		  background-color: #007bff;
+		  color: white;
+		  border: none;
+		  border-radius: 6px;
+		  font-weight: 600;
+		  cursor: pointer;
+		  transition: background-color 0.2s ease;
+		}
+		
+		.comment-form .btn-submit:hover {
+		  background-color: #0056b3;
+		}
+		
+		/* 댓글 리스트 */
+		.comment-list {
+		  list-style: none;
+		  margin: 0;
+		  padding: 0;
+		}
+		
+		.comment-item {
+		  padding: 18px 0;
+		  border-top: 1px solid #e9ecef;
+		}
+		
+		.comment-item:first-child {
+		  border-top: 2px solid #343a40;
+		}
+		
+		.comment-info {
+		  display: flex;
+		  justify-content: space-between;
+		  align-items: center;
+		  color: #868e96;
+		  font-size: 14px;
+		  margin-bottom: 8px;
+		}
+		
+		.comment-author {
+		  font-weight: 600;
+		  color: #343a40;
+		}
+		
+		.comment-content {
+		  font-size: 15px;
+		  color: #495057;
+		  line-height: 1.7;
+		  margin: 10px 0 12px 0;
+		  white-space: pre-wrap;
+		}
+		
+		/* 댓글 버튼들 */
+		.comment-actions {
+		  text-align: right;
+		}
+		
+		.comment-actions button {
+		  margin-left: 6px;
+		  padding: 5px 12px;
+		  font-size: 13px;
+		  border: 1px solid #dee2e6;
+		  border-radius: 6px;
+		  background-color: #f8f9fa;
+		  cursor: pointer;
+		  transition: all 0.15s ease;
+		}
+		
+		.comment-actions button:hover {
+		  background-color: #007bff;
+		  color: white;
+		  border-color: #007bff;
+		}
 
         /* --- 하단 버튼 (목록, 수정, 삭제) --- */
         .bottom-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 40px; }
@@ -111,8 +207,8 @@
             <section class="comments-section">
             <!-- 댓글 입력 -->
 			<div class="comment-form">
-			    <input type="hidden" id="commentBoardNo" value="${free.postNo}">
-			    <input type="hidden" id="commentBoardType" value="FREE">
+			    <input type="hidden" id="boardNo" value="${free.postNo}">
+			    <input type="hidden" id="boardType" value="FREE">
 			
 			    <textarea id="commentContent" placeholder="따뜻한 댓글을 남겨주세요..."></textarea>
 			    <div style="text-align: right; margin-top: 10px;">
@@ -121,8 +217,6 @@
 			</div>
 			
 			<!-- 댓글 목록 -->
-			<input type="hidden" id="commentBoardNo" value="${free.postNo}">
-			<input type="hidden" id="commentBoardType" value="FREE">
 			<ul class="comment-list" id="commentListArea">
 			    <c:forEach var="comment" items="${commentList}">
 			        <li class="comment-item">
@@ -131,7 +225,8 @@
 			            
 			            <c:if test="${sessionScope.loginMember.memberNo == comment.memberNo}">
 			                <div class="comment-actions" style="text-align:right; font-size:12px; margin-top: 10px;">
-			                    <a href="#">수정</a> | <a href="#">삭제</a>
+			                    <button type="button" class="edit-btn">수정</button>	
+								<button type="button" class="delete-btn">삭제</button>
 			                </div>
 			            </c:if>
 			        </li>
@@ -158,6 +253,175 @@
 	const isUserLiked = ${isLiked != null ? isLiked : false}; // Controller 값이 null일 경우 false 기본값
 	console.log("isLiked from server:", isUserLiked); // 콘솔에 값 출력해보기
 		document.addEventListener('DOMContentLoaded', () => {
+			
+			  const boardNo = document.getElementById('boardNo')?.value;
+			  const boardType = document.getElementById('boardType')?.value;
+			  const commentListArea = document.getElementById('commentListArea');
+			  const contentTextArea = document.getElementById('commentContent');
+			  const submitBtn = document.getElementById('commentSubmitBtn');
+
+			  function loadComments() {
+				  console.log(`댓글 로딩 요청: /board/comment/list?boardType=${"$"}{boardType}&boardNo=${"$"}{boardNo}`);
+				  
+				  fetch("/board/comment/list?boardType=" + boardType + "&boardNo=" + boardNo)
+					.then(response => response.json())
+					.then(cmList => {
+						const cmListUl = document.querySelector("#commentListArea");
+						cmListUl.innerHTML = ""; // 기존 댓글 초기화
+						
+						if (!Array.isArray(cmList)) {
+					        console.error("⚠️ 댓글 응답이 배열이 아님:", cmList);
+					        return;
+					      }
+						
+						cmList.forEach(comment => {
+							// li태그 생성
+							const li = document.createElement("li");
+							li.classList.add("comment-item");
+							li.dataset.commentNo = comment.commentNo;
+							
+							const infoDiv = document.createElement("div");
+							infoDiv.classList.add("comment-info");
+							
+							const name = document.createElement("span");
+							name.innerText = comment.writerNickname || comment.memberId || "익명";
+							
+							const commentDate = document.createElement("span");
+							const date = new Date(comment.commentDate);
+							commentDate.innerText = date.toLocaleString("ko-KR", {
+								  year: "numeric",
+								  month: "2-digit",
+								  day: "2-digit",
+								  hour: "2-digit",
+								  minute: "2-digit"
+								});
+							
+							infoDiv.append(name, commentDate);
+							
+							const commentContent = document.createElement("p");
+							commentContent.innerText = comment.commentContent;
+							commentContent.classList.add("comment-content");
+							
+							const btnDiv = document.createElement("div");
+							btnDiv.classList.add("comment-actions");
+							
+							const replyBtn = document.createElement("button");
+							replyBtn.innerText = "답글";
+							
+							const modifyBtn = document.createElement("button");
+							modifyBtn.innerText = "수정";
+							modifyBtn.classList.add("edit-btn");
+							
+							const deleteBtn = document.createElement("button");
+							deleteBtn.innerText = "삭제";
+							
+							// 삭제 기능
+							 deleteBtn.addEventListener("click", () => {
+					          if (!confirm("정말 삭제하시겠습니까?")) return;
+					
+					          fetch("/board/comment/delete", {
+					            method: "POST",
+					            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+					            body: new URLSearchParams({ commentNo: comment.commentNo })
+					          })
+					            .then(res => {
+					              if (!res.ok) throw new Error("서버 오류: " + res.status);
+					              return res.json();
+					            })
+					            .then(result => {
+					              if (result.status === "success") {
+					                alert("댓글이 삭제되었습니다.");
+					                loadComments();
+					              } else {
+					                alert(result.message || "댓글 삭제 실패");
+					              }
+					            })
+					            .catch(err => alert("삭제 중 오류 발생: " + err));
+					        });
+						
+							 btnDiv.append(replyBtn, modifyBtn, deleteBtn);
+				        	li.append(infoDiv, commentContent, btnDiv);
+					        cmListUl.append(li);
+						});
+					})
+					.catch(error => alert("Error : " + error));
+				}
+			  loadComments();
+
+			  // 등록
+			  if (submitBtn) {
+			    submitBtn.addEventListener('click', () => {
+			      const content = contentTextArea.value.trim();
+			      if (!content) return alert('댓글 내용을 입력하세요.');
+
+			      const params = new URLSearchParams();
+			      params.append('boardType', boardType);
+			      params.append('boardNo', boardNo);
+			      params.append('commentContent', content);
+
+			      fetch('/board/comment/insert', {
+			        method: 'POST',
+			        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+			        body: params.toString()
+			      })
+			        .then(res => res.json())
+			        .then(r => {
+			          if (r.status === 'success') {
+			            contentTextArea.value = '';
+			            loadComments();
+			          } else alert(r.message || '댓글 등록 실패');
+			        });
+			    });
+			  }
+
+			  // 수정 / 삭제
+			  commentListArea.addEventListener('click', e => {
+				  e.stopPropagation();
+				  e.preventDefault();  
+				  
+			    const target = e.target;
+			    const li = target.closest('.comment-item');
+			    if (!li) return;
+			    const commentNo = li.dataset.commentNo;
+
+			    // 수정
+			    if (target.classList.contains('edit-btn')) {
+			    e.preventDefault(); // 링크 이동 방지
+			      const contentP = li.querySelector('.comment-content');
+			      const oldContent = contentP.textContent;
+			      const textarea = document.createElement('textarea');
+			      textarea.value = oldContent;
+			      textarea.style.width = '100%';
+			      contentP.replaceWith(textarea);
+			      
+			      target.textContent = '저장';
+			      target.classList.remove('edit-btn');
+			      target.classList.add('save-btn');
+			      return;
+			    }
+
+			    // 저장
+			    if (target.classList.contains('save-btn')) {
+			      const textarea = li.querySelector('textarea');
+			      const newContent = textarea.value.trim();
+			      if (!newContent) return alert('내용을 입력하세요.');
+			      const params = new URLSearchParams();
+			      params.append('commentNo', commentNo);
+			      params.append('commentContent', newContent);
+			      fetch('/board/comment/update', {
+			        method: 'POST',
+			        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+			        body: params
+			      })
+			        .then(res => res.json())
+			        .then(r => {
+			          if (r.status === 'success') {
+			        	  loadComments();
+			          }
+			          else alert(r.message || '수정 실패');
+			        });
+			    }
+			  });
 		
 		    // ===== 좋아요 기능 =====
 		    const likeBtn = document.getElementById('likeBtn');
@@ -207,6 +471,59 @@
 		            .catch(err => console.error('좋아요 오류:', err));
 		        });
 		    }
+		 // ===== 북마크 기능 =====
+		    const bookmarkBtn = document.getElementById('bookmarkBtn');
+		    if (bookmarkBtn) {
+		      const targetType = bookmarkBtn.dataset.targetType;
+		      const targetNo = bookmarkBtn.dataset.targetNo;
+		      const icon = bookmarkBtn.querySelector('i');
+
+		      // 초기 상태 불러오기
+		      fetch(`/board/bookmark/check?targetType=${targetType}&targetNo=${targetNo}`)
+		        .then(res => res.json())
+		        .then(isBookmarked => {
+		          if (isBookmarked) {
+		            bookmarkBtn.classList.add('bookmarked');
+		            icon.classList.replace('fa-regular', 'fa-solid');
+		            icon.style.color = '#007bff';
+		          }
+		        });
+
+		      // 클릭 시 토글
+		      bookmarkBtn.addEventListener('click', () => {
+		        const isLoggedIn = "${sessionScope.loginMember != null}";
+		        if (isLoggedIn !== "true") {
+		          alert('로그인 후 이용 가능합니다.');
+		          location.href = '<c:url value="/member/login"/>';
+		          return;
+		        }
+
+		        fetch('/board/bookmark/toggle', {
+		          method: 'POST',
+		          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+		          body: new URLSearchParams({
+		            targetType: targetType,
+		            targetNo: targetNo
+		          })
+		        })
+		          .then(res => res.json())
+		          .then(data => {
+		            if (data.status === 'success') {
+		              if (data.isBookmarked) {
+		                bookmarkBtn.classList.add('bookmarked');
+		                icon.classList.replace('fa-regular', 'fa-solid');
+		                icon.style.color = '#007bff';
+		              } else {
+		                bookmarkBtn.classList.remove('bookmarked');
+		                icon.classList.replace('fa-solid', 'fa-regular');
+		                icon.style.color = '';
+		              }
+		            }
+		          })
+		          .catch(err => console.error('북마크 오류:', err));
+		      });
+		    }
+		    
 		});
 </script>
 	

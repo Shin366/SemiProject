@@ -41,13 +41,120 @@
         .reaction-buttons .btn.liked { background-color: #ffe0e0; border-color: #ffc2c2; color: #dc3545; font-weight: bold; }
         .social-share a { color: #888; font-size: 24px; margin-left: 15px; }
         
-        .comments-section { margin-top: 30px; }
-        .comment-form textarea { width: 100%; min-height: 80px; padding: 12px; border: 1px solid #ccc; border-radius: 6px; resize: vertical; box-sizing: border-box; }
-        .comment-form-actions { text-align: right; margin-top: 10px; }
-        .btn-submit { background-color: #007bff; color: white; border: none; padding: 8px 18px; }
-        .comment-list { margin-top: 30px; }
-        .comment-item { padding: 20px 0; border-top: 1px solid #f1f1f1; }
-        .comment-author { font-weight: bold; margin-bottom: 5px; }
+       .comment-list {
+		  margin-top: 30px;
+		  display: flex;
+		  flex-direction: column;
+		  gap: 15px;
+		}
+		
+		.comment-card {
+		  background: #fdfdfd;
+		  border: 1px solid #eee;
+		  border-radius: 8px;
+		  padding: 15px 20px;
+		  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+		}
+		
+		.comment-header {
+		  display: flex;
+		  justify-content: space-between;
+		  align-items: center;
+		  margin-bottom: 8px;
+		  font-size: 14px;
+		  color: #555;
+		}
+		
+		.comment-author {
+		  font-weight: bold;
+		  color: #333;
+		}
+		
+		.comment-date {
+		  font-size: 12px;
+		  color: #999;
+		}
+		
+		.comment-content {
+		  font-size: 15px;
+		  line-height: 1.6;
+		  color: #444;
+		  margin-bottom: 10px;
+		  white-space: pre-line;
+		}
+		
+		.comment-actions {
+		  text-align: right;
+		}
+		
+		.comment-actions button {
+		  background: none;
+		  border: none;
+		  color: #007bff;
+		  cursor: pointer;
+		  font-size: 13px;
+		  margin-left: 8px;
+		  padding: 2px 5px;
+		}
+		
+		.comment-actions button:hover {
+		  text-decoration: underline;
+		}
+		.comment-form {
+		  background: #fafafa;
+		  border: 1px solid #e0e0e0;
+		  border-radius: 10px;
+		  padding: 15px 20px;
+		  margin-top: 25px;
+		  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+		}
+		
+		.comment-form textarea {
+		  width: 100%;
+		  min-height: 100px;
+		  padding: 12px 14px;
+		  border: 1px solid #ccc;
+		  border-radius: 8px;
+		  resize: vertical;
+		  font-size: 15px;
+		  line-height: 1.6;
+		  box-sizing: border-box;
+		  outline: none;
+		  transition: border-color 0.2s, box-shadow 0.2s;
+		}
+		
+		.comment-form textarea:focus {
+		  border-color: #007bff;
+		  box-shadow: 0 0 4px rgba(0,123,255,0.25);
+		}
+		
+		.comment-form-actions {
+		  text-align: right;
+		  margin-top: 10px;
+		}
+		
+		.btn-submit {
+		  background-color: #007bff;
+		  color: white;
+		  border: none;
+		  padding: 10px 22px;
+		  border-radius: 6px;
+		  font-size: 14px;
+		  font-weight: 500;
+		  cursor: pointer;
+		  transition: background-color 0.2s, transform 0.1s;
+		}
+		
+		.btn-submit:hover {
+		  background-color: #0069d9;
+		  transform: translateY(-1px);
+		}
+		
+		.btn-submit:active {
+		  background-color: #0056b3;
+		  transform: translateY(0);
+		}
+
 
         .bottom-actions { text-align: center; margin-top: 40px; }
         .btn-list { background-color: #007bff; color: white; border: none; padding: 12px 30px; text-decoration: none; border-radius: 6px; }
@@ -112,7 +219,8 @@
                         <button class="btn" id="bookmarkBtn" data-target-type="REVIEW" data-target-no="${review.reviewNo}">
                             <i class="fa-regular fa-bookmark"></i> 북마크
                         </button>
-                    <button class="btn">신고</button>
+                    <button class="btn" id="reportBtn">신고</button>
+
                 </div>
                 <div class="social-share">
                     <a href="#"><i class="fab fa-facebook-square"></i></a>
@@ -121,196 +229,346 @@
                 </div>
             </footer>
             
-            <section class="comments-section">
-				  <div class="comment-form">
-				      <textarea name="commentContent" placeholder="댓글을 입력해주세요..."></textarea>
-				      <div class="comment-form-actions">
-				          <button type="button" class="btn btn-submit">작성</button>
-				      </div>
-				  </div>
-				
-				  <ul class="comment-list" id="commentListArea">
-				      <p style="text-align:center; color:#888; padding:20px 0;">댓글을 불러오는 중...</p>
-				  </ul>
+            <!-- 댓글 영역 -->
+			<section class="comments-section">
+			  <div class="comment-form">
+			    <input type="hidden" id="boardNo" value="${review.reviewNo}">
+			    <input type="hidden" id="boardType" value="REVIEW">
+			
+			    <textarea id="commentContent" name="commentContent" placeholder="댓글을 입력해주세요..."></textarea>
+			    <div style="text-align: right; margin-top: 10px;">
+			      <button id="commentSubmitBtn" type="button" class="btn btn-submit">등록</button>
+			    </div>
+			  </div>
+			
+			  <!-- 댓글 목록 -->
+			  <div id="commentListArea" class="comment-list">
+			    <c:forEach var="comment" items="${commentList}">
+			      <div class="comment-card" data-comment-no="${comment.commentNo}">
+			        <div class="comment-header">
+			          <span class="comment-author">${comment.writerNickname}</span>
+			          <span class="comment-date">
+			            <fmt:formatDate value="${comment.commentDate}" pattern="yyyy.MM.dd HH:mm"/>
+			          </span>
+			        </div>
+			
+			        <div class="comment-content">${comment.commentContent}</div>
+			
+			        <c:if test="${sessionScope.loginMember.memberNo == comment.memberNo}">
+			          <div class="comment-actions">
+			            <button type="button" class="edit-btn">수정</button>
+			            <button type="button" class="delete-btn">삭제</button>
+			          </div>
+			        </c:if>
+			      </div>
+			    </c:forEach>
+			
+			    <c:if test="${empty commentList}">
+			      <p style="text-align:center; color:#888; padding: 30px 0;">작성된 댓글이 없습니다.</p>
+			    </c:if>
+			  </div>
 			</section>
             
             <div class="bottom-actions">
-                <a href="/board/review/list" class="btn-list">게시글 목록</a>
+                <div>
+                    <c:if test="${sessionScope.loginMember.memberNo == review.memberNo}">
+                        <a href="<c:url value='/board/review/update?reviewNo=${review.reviewNo}'/>" class="btn">수정</a>
+                        <a href="<c:url value='/board/review/delete?reviewNo=${review.reviewNo}'/>" class="btn">삭제</a>
+                    </c:if>
+                </div>
+                <a href="<c:url value='/board/review/list'/>" class="btn btn-list">목록</a>
             </div>
         </main>
     </div>
-    <script>
+<script>
 	const isUserLiked = ${isLiked != null ? isLiked : false}; // Controller 값이 null일 경우 false 기본값
 	console.log("isLiked from server:", isUserLiked); // 콘솔에 값 출력해보기
-	
-	document.addEventListener('DOMContentLoaded', () => {
+		document.addEventListener('DOMContentLoaded', () => {
+			
+			  const boardNo = document.getElementById('boardNo')?.value;
+			  const boardType = document.getElementById('boardType')?.value;
+			  const commentListArea = document.getElementById('commentListArea');
+			  const contentTextArea = document.getElementById('commentContent');
+			  const submitBtn = document.getElementById('commentSubmitBtn');
+			  
+
+			  function loadComments() {
+				  console.log(`댓글 로딩 요청: /board/comment/list?boardType=${"$"}{boardType}&boardNo=${"$"}{boardNo}`);
+				  
+				  fetch("/board/comment/list?boardType=" + boardType + "&boardNo=" + boardNo)
+					.then(response => response.json())
+					.then(cmList => {
+						const cmListUl = document.querySelector("#commentListArea");
+						cmListUl.innerHTML = ""; // 기존 댓글 초기화
+						
+						if (!Array.isArray(cmList)) {
+					        console.error("⚠️ 댓글 응답이 배열이 아님:", cmList);
+					        return;
+					      }
+						
+						cmList.forEach(comment => {
+							// li태그 생성
+							const li = document.createElement("li");
+							li.classList.add("comment-item");
+							li.dataset.commentNo = comment.commentNo;
+							
+							const infoDiv = document.createElement("div");
+							infoDiv.classList.add("comment-info");
+							
+							const name = document.createElement("span");
+							name.innerText = comment.writerNickname || comment.memberId || "익명";
+							
+							const commentDate = document.createElement("span");
+							const date = new Date(comment.commentDate);
+							commentDate.innerText = date.toLocaleString("ko-KR", {
+								  year: "numeric",
+								  month: "2-digit",
+								  day: "2-digit",
+								  hour: "2-digit",
+								  minute: "2-digit"
+								});
+							
+							infoDiv.append(name, commentDate);
+							
+							const commentContent = document.createElement("p");
+							commentContent.innerText = comment.commentContent;
+							commentContent.classList.add("comment-content");
+							
+							const btnDiv = document.createElement("div");
+							btnDiv.classList.add("comment-actions");
+							
+							const replyBtn = document.createElement("button");
+							replyBtn.innerText = "답글";
+							
+							const modifyBtn = document.createElement("button");
+							modifyBtn.innerText = "수정";
+							modifyBtn.classList.add("edit-btn");
+							
+							const deleteBtn = document.createElement("button");
+							deleteBtn.innerText = "삭제";
+							
+							// 삭제 기능
+							 deleteBtn.addEventListener("click", () => {
+					          if (!confirm("정말 삭제하시겠습니까?")) return;
+					
+					          fetch("/board/comment/delete", {
+					            method: "POST",
+					            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+					            body: new URLSearchParams({ commentNo: comment.commentNo })
+					          })
+					            .then(res => {
+					              if (!res.ok) throw new Error("서버 오류: " + res.status);
+					              return res.json();
+					            })
+					            .then(result => {
+					              if (result.status === "success") {
+					                alert("댓글이 삭제되었습니다.");
+					                loadComments();
+					              } else {
+					                alert(result.message || "댓글 삭제 실패");
+					              }
+					            })
+					            .catch(err => alert("삭제 중 오류 발생: " + err));
+					        });
+						
+							 btnDiv.append(replyBtn, modifyBtn, deleteBtn);
+				        	li.append(infoDiv, commentContent, btnDiv);
+					        cmListUl.append(li);
+						});
+					})
+					.catch(error => alert("Error : " + error));
+				}
+			  loadComments();
+
+			  // 등록
+			  if (submitBtn) {
+			    submitBtn.addEventListener('click', () => {
+			      const content = contentTextArea.value.trim();
+			      if (!content) return alert('댓글 내용을 입력하세요.');
+
+			      const params = new URLSearchParams();
+			      params.append('boardType', boardType);
+			      params.append('boardNo', boardNo);
+			      params.append('commentContent', content);
+
+			      fetch('/board/comment/insert', {
+			        method: 'POST',
+			        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+			        body: params.toString()
+			      })
+			        .then(res => res.json())
+			        .then(r => {
+			          if (r.status === 'success') {
+			            contentTextArea.value = '';
+			            loadComments();
+			          } else alert(r.message || '댓글 등록 실패');
+			        });
+			    });
+			  }
+
+			  // 수정 / 삭제
+			  commentListArea.addEventListener('click', e => {
+				  e.stopPropagation();
+				  e.preventDefault();  
+				  
+			    const target = e.target;
+			    const li = target.closest('.comment-item');
+			    if (!li) return;
+			    const commentNo = li.dataset.commentNo;
+
+			    // 수정
+			    if (target.classList.contains('edit-btn')) {
+			    e.preventDefault(); // 링크 이동 방지
+			      const contentP = li.querySelector('.comment-content');
+			      const oldContent = contentP.textContent;
+			      const textarea = document.createElement('textarea');
+			      textarea.value = oldContent;
+			      textarea.style.width = '100%';
+			      contentP.replaceWith(textarea);
+			      
+			      target.textContent = '저장';
+			      target.classList.remove('edit-btn');
+			      target.classList.add('save-btn');
+			      return;
+			    }
+
+			    // 저장
+			    if (target.classList.contains('save-btn')) {
+			      const textarea = li.querySelector('textarea');
+			      const newContent = textarea.value.trim();
+			      if (!newContent) return alert('내용을 입력하세요.');
+			      const params = new URLSearchParams();
+			      params.append('commentNo', commentNo);
+			      params.append('commentContent', newContent);
+			      fetch('/board/comment/update', {
+			        method: 'POST',
+			        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+			        body: params
+			      })
+			        .then(res => res.json())
+			        .then(r => {
+			          if (r.status === 'success') {
+			        	  loadComments();
+			          }
+			          else alert(r.message || '수정 실패');
+			        });
+			    }
+			  });
 		
-		 const boardNo = "${review.reviewNo}";
-		  const boardType = "REVIEW";
-
-		  console.log("✅ boardNo:", boardNo);
-		  console.log("✅ boardType:", boardType);
-
-		  if (!boardNo || boardNo === "null" || boardNo.trim() === "") {
-		    console.error("❌ boardNo 비어 있음");
-		    return;
-		  }
-		 // ===== 댓글 목록 불러오기 =====
-		  function loadComments() {
-		    const boardNo = "${review.reviewNo}";
-		    const boardType = "REVIEW";
+		    // ===== 좋아요 기능 =====
+		    const likeBtn = document.getElementById('likeBtn');
 		    
-		    if (!boardNo || boardNo.trim() === "") {
-		        console.error("boardNo 값이 비어 있음:", boardNo);
-		        return;
-		      }   
+		    if (likeBtn) {
+		    	const likeCountSpan = document.getElementById('likeCount');
+	
+		        const isUserLiked = ${isLiked != null ? isLiked : false};   // JS boolean로 렌더링
+		        if (isUserLiked) {
+		          likeBtn.classList.add('liked');
+		          likeBtn.querySelector('i').classList.replace('fa-regular', 'fa-solid');
+		        }
+		
+		        likeBtn.addEventListener('click', () => {
+		            const isLoggedIn = "${sessionScope.loginMember != null}";
+		            if (isLoggedIn !== "true") {
+		                alert('로그인 후 이용 가능합니다.');
+		                location.href = '<c:url value="/member/login"/>';
+		                return;
+		            }
+		
+		            const boardType = likeBtn.dataset.boardType.trim();;
+		            const boardNo = likeBtn.dataset.boardNo.trim();;
+		          
+		            console.log('boardType=', likeBtn.dataset.boardType, 'boardNo=', likeBtn.dataset.boardNo);
+		
+		            fetch('<c:url value="/board/like/toggle"/>', {
+		                method: 'POST',
+		                headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+		                body: new URLSearchParams({
+		                    boardType: boardType,
+		                    boardNo: boardNo
+		                })
+		            })
+		            .then(res => res.json())
+		            .then(data => {
+		                likeCountSpan.textContent = data.likeCount;
+		                const icon = likeBtn.querySelector('i');
+		                if (data.isLiked) {
+		                    likeBtn.classList.add('liked');
+		                    icon.classList.replace('fa-regular', 'fa-solid');
+		                } else {
+		                    likeBtn.classList.remove('liked');
+		                    icon.classList.replace('fa-solid', 'fa-regular');
+		                } 
+		            })
+		            .catch(err => console.error('좋아요 오류:', err));
+		        });
+		    }
+		 // ===== 북마크 기능 =====
+		    const bookmarkBtn = document.getElementById('bookmarkBtn');
+		    if (bookmarkBtn) {
+		      const targetType = bookmarkBtn.dataset.targetType;
+		      const targetNo = bookmarkBtn.dataset.targetNo;
+		      const icon = bookmarkBtn.querySelector('i');
 
-		    fetch(`/board/comment/list?boardNo=${boardNo}&boardType=${boardType}`)
-		      .then(res => res.json())
-		      .then(commentList => {
-		        const listArea = document.getElementById("commentListArea");
-		        listArea.innerHTML = ""; // 초기화
+		      // 초기 상태 불러오기
+		      fetch(`/board/bookmark/check?targetType=${targetType}&targetNo=${targetNo}`)
+		        .then(res => res.json())
+		        .then(isBookmarked => {
+		          if (isBookmarked) {
+		            bookmarkBtn.classList.add('bookmarked');
+		            icon.classList.replace('fa-regular', 'fa-solid');
+		            icon.style.color = '#007bff';
+		          }
+		        });
 
-		        if (commentList.length === 0) {
-		          listArea.innerHTML = `<p style="text-align:center; color:#888; padding:20px 0;">작성된 댓글이 없습니다.</p>`;
+		      // 클릭 시 토글
+		      bookmarkBtn.addEventListener('click', () => {
+		        const isLoggedIn = "${sessionScope.loginMember != null}";
+		        if (isLoggedIn !== "true") {
+		          alert('로그인 후 이용 가능합니다.');
+		          location.href = '<c:url value="/member/login"/>';
 		          return;
 		        }
 
-		        commentList.forEach(c => {
-		        	  const li = document.createElement("li");
-		        	  li.classList.add("comment-item");
-
-		        	  li.innerHTML = `
-		        	    <p class="comment-author">${c.writerNickname}</p>
-		        	    <p class="comment-content">${c.commentContent}</p>
-		        	  `;
-
-		        	  if (c.isOwner) {
-		        	    const actionsDiv = document.createElement("div");
-		        	    actionsDiv.classList.add("comment-actions");
-		        	    actionsDiv.style.textAlign = "right";
-		        	    actionsDiv.style.fontSize = "12px";
-		        	    actionsDiv.style.marginTop = "10px";
-
-		        	    const deleteLink = document.createElement("a");
-		        	    deleteLink.href = "#";
-		        	    deleteLink.classList.add("delete-comment");
-		        	    deleteLink.dataset.commentNo = c.commentNo;
-		        	    deleteLink.textContent = "삭제";
-
-		        	    actionsDiv.appendChild(deleteLink);
-		        	    li.appendChild(actionsDiv);
-		        	  }
-
-		        	  listArea.appendChild(li);
-		        	});
-
-		        // 삭제 버튼 이벤트 등록
-		        document.querySelectorAll(".delete-comment").forEach(btn => {
-		          btn.addEventListener("click", e => {
-		            e.preventDefault();
-		            const commentNo = btn.dataset.commentNo;
-		            if (confirm("정말 삭제하시겠습니까?")) {
-		              fetch(`/board/comment/delete?commentNo=${commentNo}`, { method: "POST" })
-		                .then(res => res.json())
-		                .then(result => {
-		                  if (result > 0) {
-		                    loadComments();
-		                  } else {
-		                    alert("댓글 삭제에 실패했습니다.");
-		                  }
-		                })
-		                .catch(() => alert("댓글 삭제 중 오류가 발생했습니다."));
+		        fetch('/board/bookmark/toggle', {
+		          method: 'POST',
+		          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+		          body: new URLSearchParams({
+		            targetType: targetType,
+		            targetNo: targetNo
+		          })
+		        })
+		          .then(res => res.json())
+		          .then(data => {
+		            if (data.status === 'success') {
+		              if (data.isBookmarked) {
+		                bookmarkBtn.classList.add('bookmarked');
+		                icon.classList.replace('fa-regular', 'fa-solid');
+		                icon.style.color = '#007bff';
+		              } else {
+		                bookmarkBtn.classList.remove('bookmarked');
+		                icon.classList.replace('fa-solid', 'fa-regular');
+		                icon.style.color = '';
+		              }
 		            }
-		          });
-		        });
-		      })
-		      .catch(() => alert("댓글 불러오기 중 오류가 발생했습니다."));
-		  }
-
-		  // ===== 댓글 등록 =====
-		  const submitBtn = document.querySelector(".btn-submit");
-		  submitBtn.addEventListener("click", e => {
-		    e.preventDefault();
-		    const content = document.querySelector("textarea[name='commentContent']").value.trim();
-		    if (content === "") {
-		      alert("댓글 내용을 입력하세요.");
-		      return;
+		          })
+		          .catch(err => console.error('북마크 오류:', err));
+		      });
 		    }
-
-		    const boardNo = "${review.reviewNo}";
-		    const boardType = "REVIEW";
-
-		    fetch("/board/comment/insert", {
-		      method: "POST",
-		      headers: { "Content-Type": "application/json" },
-		      body: JSON.stringify({ boardNo, boardType, commentContent: content })
-		    })
-		      .then(res => res.json())
-		      .then(result => {
-		        if (result > 0) {
-		          document.querySelector("textarea[name='commentContent']").value = "";
-		          loadComments();
-		        } else {
-		          alert("댓글 등록에 실패했습니다.");
-		        }
-		      })
-		      .catch(() => alert("댓글 등록 중 오류가 발생했습니다."));
-		  });
-
-		  // 초기 로드
-		  loadComments();
-		
-	    // ===== 좋아요 기능 =====
-	    const likeBtn = document.getElementById('likeBtn');
-	    
-	    if (likeBtn) {
-	    	const likeCountSpan = document.getElementById('likeCount');
-
-	        const isUserLiked = ${isLiked != null ? isLiked : false};   // JS boolean로 렌더링
-	        if (isUserLiked) {
-	          likeBtn.classList.add('liked');
-	          likeBtn.querySelector('i').classList.replace('fa-regular', 'fa-solid');
-	        }
-	
-	        likeBtn.addEventListener('click', () => {
-	            const isLoggedIn = "${sessionScope.loginMember != null}";
-	            if (isLoggedIn !== "true") {
-	                alert('로그인 후 이용 가능합니다.');
-	                location.href = '<c:url value="/member/login"/>';
-	                return;
-	            }
-	
-	            const boardType = likeBtn.dataset.boardType.trim();;
-	            const boardNo = likeBtn.dataset.boardNo.trim();;
-	          
-	            console.log('boardType=', likeBtn.dataset.boardType, 'boardNo=', likeBtn.dataset.boardNo);
-	
-	            fetch('<c:url value="/board/like/toggle"/>', {
-	                method: 'POST',
-	                headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
-	                body: new URLSearchParams({
-	                    boardType: boardType,
-	                    boardNo: boardNo
-	                })
-	            })
-	            .then(res => res.json())
-	            .then(data => {
-	                likeCountSpan.textContent = data.likeCount;
-	                const icon = likeBtn.querySelector('i');
-	                if (data.isLiked) {
-	                    likeBtn.classList.add('liked');
-	                    icon.classList.replace('fa-regular', 'fa-solid');
-	                } else {
-	                    likeBtn.classList.remove('liked');
-	                    icon.classList.replace('fa-solid', 'fa-regular');
-	                } 
-	            })
-	            .catch(err => console.error('좋아요 오류:', err));
-	        });
-	    }
-	});
-
+			// ===== 신고 버튼 이동 =====
+			  const reportBtn = document.getElementById('reportBtn');
+			  if (reportBtn) {
+			    reportBtn.addEventListener('click', () => {
+			      const isLoggedIn = "${sessionScope.loginMember != null}";
+			      if (isLoggedIn !== "true") {
+			        alert("로그인 후 이용 가능합니다.");
+			        location.href = "<c:url value='/member/login'/>";
+			        return;
+			      }
+			      location.href = "<c:url value='/board/report/insert'/>";
+			    });
+			  }
+		});
 </script>
 </body>
 </html>
