@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.fortrip.com.domain.board.faq.model.mapper.BoardFaqMapper">
+    <select id="selectAll" resultType="BoardFaq">
+        SELECT 
+            QUESTION_NO,
+            QUESTION_CATEGORY,
+            QUESTION_TITLE,
+            QUESTION_CONTENT,
+            DELETE_YN
+        FROM QUESTION
+        WHERE DELETE_YN = 'N'  
+        ORDER BY QUESTION_NO DESC
+    </select>
+    
+</mapper>

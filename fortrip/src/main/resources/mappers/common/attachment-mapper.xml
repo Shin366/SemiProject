@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fortrip.com.domain.attachment.mapper.AttachmentMapper">
+    <insert id="insertAttachment" parameterType="Attachment">
+        INSERT INTO ATTACHMENT (
+            ATTACH_NO,
+            BOARD_TYPE,
+            BOARD_NO,
+            ORIGINAL_NAME,
+            SAVED_NAME,
+            ATTACH_PATH
+        ) VALUES (
+            SEQ_ATTACH_NO.NEXTVAL,
+            #{boardType},
+            #{boardNo},
+            #{originalName},
+            #{savedName},
+            #{attachPath}
+        )
+    </insert>
+    
+    <!-- 첨부파일 개별 삭제 -->
+    <select id="selectAttachmentsByIds" resultType="Attachment">
+	    SELECT ATTACH_NO, SAVED_NAME, ATTACH_PATH
+	    FROM ATTACHMENT
+	    WHERE ATTACH_NO IN
+	    <foreach item="item" collection="list" open="(" separator="," close=")">
+	        #{item}
+	    </foreach>
+	</select>
+	
+	<delete id="deleteAttachmentsByIds">
+	    DELETE FROM ATTACHMENT
+	    WHERE ATTACH_NO IN
+	    <foreach item="item" collection="list" open="(" separator="," close=")">
+	        #{item}
+	    </foreach>
+	</delete>
+	
+	<!-- 첨부파일 전체 삭제 -->
+	<select id="selectAttachmentList" resultType="Attachment">
+	    SELECT
+	        ATTACH_NO, BOARD_TYPE, BOARD_NO,
+	        ORIGINAL_NAME, SAVED_NAME, ATTACH_PATH
+	    FROM ATTACHMENT
+	    WHERE BOARD_TYPE = #{boardType} AND BOARD_NO = #{boardNo}
+	</select>
+	
+	<delete id="deleteAttachment">
+	    DELETE FROM ATTACHMENT WHERE ATTACH_NO = #{attachNo}
+	</delete>
+	
+	<delete id="deleteAttachmentsByBoard">
+	    DELETE FROM ATTACHMENT
+	    WHERE BOARD_TYPE = #{boardType} AND BOARD_NO = #{boardNo}
+	</delete>
+</mapper>

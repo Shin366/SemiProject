@@ -19,9 +19,9 @@
     <aside class="sidebar">
       <nav>
         <ul class="sidemenu">
-          <li class="active"><a href="/trip/course">여행코스</a></li>
-          <li><a href="/roadmap/my">관리자 추천코스</a></li>
-          <li><a href="/recommend/user">사용자 추천코스</a></li>
+          <li class="active"><a href="${pageContext.request.contextPath}/trip/course">여행코스</a></li>
+	        <li><a href="${pageContext.request.contextPath}/trip/course1">관리자 추천코스</a></li>
+	        <li><a href="${pageContext.request.contextPath}/trip/course2">사용자 추천코스</a></li>
           <li><a href="/recommend/season">계절 추천코스</a></li>
           <li><a href="/info">관광지 정보</a></li>
         </ul>
@@ -114,9 +114,17 @@
               <article class="course-card">
                 <a class="card-link" href="${pageContext.request.contextPath}/trip/course/${course.id}">
                   <div class="card-thumb">
-                    <img src="<c:out value='${empty course.thumbnailUrl ? pageContext.request.contextPath += "/resources/img/trip/seoul-img.png" : course.thumbnailUrl}'/>"
-                         alt="<c:out value='${course.title}'/>">
-                  </div>
+					  <c:choose>
+					    <c:when test="${empty course.thumbnailUrl}">
+					      <img src="${pageContext.request.contextPath}/resources/img/trip/seoul-img.png"
+					           alt="<c:out value='${course.title}'/>">
+					    </c:when>
+					    <c:otherwise>
+					      <img src="<c:out value='${course.thumbnailUrl}'/>"
+					           alt="<c:out value='${course.title}'/>">
+					    </c:otherwise>
+					  </c:choose>
+				  </div>
                   <div class="card-body">
                     <h3 class="card-title"><c:out value="${course.title}"/></h3>
 
@@ -184,8 +192,9 @@
       <section class="user-recommend">
         <h2>당신만을 위한 사용자 추천 특별한 여행</h2>
         <p>모든 경험이 담긴 특별한 여행을 지금 바로 만나보세요!</p>
-        <a class="cta" href="${pageContext.request.contextPath}/recommend/user">지금부터 찾아보기</a>
+        <a class="cta" href="${pageContext.request.contextPath}/trip/course">지금부터 찾아보기</a>
       </section>
+      <button class="new-btn" onclick="location.href='/trip/add'">새 로드맵 만들기</button>
     </main>
   </div>
 </body>

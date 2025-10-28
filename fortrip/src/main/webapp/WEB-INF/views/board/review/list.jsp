@@ -38,12 +38,12 @@
 </head>
 <body>
     <%-- 헤더 영역 --%>
-    <%-- <jsp:include page="/WEB-INF/views/common/header.jsp" /> --%>
+    <jsp:include page="/WEB-INF/views/common/header.jsp"/>
 
     <div class="container">
         <aside class="sidebar">
-            <a href="#">자유 소통</a>
-            <a href="#" class="active">코스 리뷰</a>
+            <a href="/board/free/list">자유 소통</a>
+            <a href="/board/review/list" class="active">코스 리뷰</a>
         </aside>
 
         <main class="main-content">
@@ -55,7 +55,7 @@
             <div class="review-grid">
                 <%-- Controller에서 전달한 리뷰 목록(reviewList)을 반복문으로 출력 --%>
                 <c:forEach var="review" items="${reviewList}">
-                    <a href="/review/detail?no=${review.reviewNo}" class="review-card">
+                    <a href="/board/review/detail?reviewNo=${review.reviewNo}" class="review-card">
                         <div class="card-thumbnail">
                             <%-- 썸네일 이미지가 있으면 표시, 없으면 기본 이미지 --%>
                             <c:choose>
@@ -68,13 +68,13 @@
                             </c:choose>
                         </div>
                         <div class="card-body">
-                            <h3 class="card-title">${review.title}</h3>
-                            <p class="card-subtitle">${review.subtitle}</p>
+                            <h3 class="card-title">${review.reviewTitle}</h3>
+                            <p class="card-subtitle">${review.reviewSubtitle}</p>
                             <div class="card-rating">
                                 <%-- 별점 표시 로직 (예: 5점 만점) --%>
                                 <c:forEach begin="1" end="5" var="i">
                                     <c:choose>
-                                        <c:when test="${i <= review.rating}">
+                                        <c:when test="${i <= review.reviewRating}">
                                             <i class="fa-solid fa-star" style="color:#ffc107;"></i>
                                         </c:when>
                                         <c:otherwise>
@@ -92,21 +92,23 @@
                     </a>
                 </c:forEach>
             </div>
-            
+           
             <div class="actions">
-                <a href="/review/write" class="btn-write">게시글 작성</a>
+                <a href="/board/review/insert" class="btn-write">게시글 작성</a>
             </div>
 
-            <nav class="pagination">
-                <%-- 페이지네이션 로직 --%>
-                <a href="#">&lt;</a>
-                <strong>1</strong>
-                <a href="#">2</a>
-                <a href="#">...</a>
-                <a href="#">9</a>
-                <a href="#">10</a>
-                <a href="#">&gt;</a>
-            </nav>
+            <%-- 페이지네이션 로직 --%>
+           <div class="pagination">
+                <c:if test="${startNavi ne 1 }">
+                    <a href="/board/review/list?page=${startNavi - 1 }" class="prev">&laquo; 이전</a>
+               	</c:if>
+                    <c:forEach begin="${startNavi }" end="${endNavi }" var="n">
+                      <a href="/board/review/list?page=${n }" class='page-number <c:if test="${currentPage eq n }">active</c:if>'>${n }</a>
+                    </c:forEach>
+                    <c:if test="${endNavi ne maxPage }">
+                      <a href="/board/review/list?page=${endNavi + 1 }" class="next">다음 &raquo;</a>
+                    </c:if>
+            </div>
         </main>
     </div>
 </body>

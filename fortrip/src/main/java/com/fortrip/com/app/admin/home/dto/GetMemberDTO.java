@@ -16,5 +16,5 @@ public class GetMemberDTO {
 	private String gender;
 	private Date enrollDate;
 	private String phone;
-	private String activeYn;
+	private String statusYsn;
 }

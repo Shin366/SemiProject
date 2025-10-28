@@ -69,7 +69,7 @@
       <button>2</button>
     </div>
 
-    <button class="new-btn" onclick="location.href='trip/tripAdd'">새 로드맵 만들기</button>
+    <button class="new-btn" onclick="location.href='/trip/add'">새 로드맵 만들기</button>
   </main>
 </div>
 </body>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.fortrip.com.domain.board.review.model.mapper.BoardReviewMapper">
+	<select id="getTotalCount" resultType="_int">
+        SELECT COUNT(*)
+        FROM REVIEW
+        WHERE DELETE_YN = 'N'
+    </select>
+
+    <select id="selectReviewList" resultType="com.fortrip.com.domain.board.review.model.vo.BoardReview">
+        SELECT *
+        FROM (
+            SELECT
+                ROWNUM AS RNUM,
+                R_SUB.*
+            FROM (
+                SELECT
+                    R.REVIEW_NO,
+                    R.MEMBER_NO,
+                    R.ROAD_NO,          
+                    R.REVIEWER_TYPE,    
+                    R.REVIEW_TITLE,
+                    R.REVIEW_SUBTITLE,  
+                    R.REVIEW_RATING,    
+                    M.NICKNAME AS REVIEWWRITER, 
+                    R.VIEW_COUNT,
+                    R.WRITE_DATE,
+
+                    -- 좋아요 수 (서브쿼리)
+                    (SELECT COUNT(*) FROM BOARD_LIKE L
+                     WHERE L.BOARD_TYPE = 'REVIEW' AND L.BOARD_NO = R.REVIEW_NO) AS LIKE_COUNT,
+
+                    -- 북마크 수 (서브쿼리)
+                    (SELECT COUNT(*) FROM BOOKMARK B
+                     WHERE B.TARGET_TYPE = 'REVIEW' AND B.TARGET_NO = R.REVIEW_NO) AS BOOKMARK_COUNT,
+
+                    -- 댓글 수 (서브쿼리) - 삭제되지 않은 댓글만
+                    (SELECT COUNT(*) FROM BOARD_COMMENT C
+                     WHERE C.BOARD_TYPE = 'REVIEW' AND C.BOARD_NO = R.REVIEW_NO AND C.DELETE_YN = 'N') AS COMMENT_COUNT
+
+                FROM REVIEW R
+                JOIN MEMBER M ON R.MEMBER_NO = M.MEMBER_NO
+                WHERE R.DELETE_YN = 'N'
+                ORDER BY R.REVIEW_NO DESC
+            ) R_SUB
+        )
+        WHERE RNUM BETWEEN #{offset} + 1 AND #{offset} + #{reviewCountPerPage}
+	</select>
+
+    <update id="increaseViewCount">
+        UPDATE REVIEW
+        SET VIEW_COUNT = VIEW_COUNT + 1
+        WHERE REVIEW_NO = #{reviewNo}
+    </update>
+
+    <select id="selectOneByNo" resultType="com.fortrip.com.domain.board.review.model.vo.BoardReview">
+ 		SELECT
+ 		    R.REVIEW_NO,
+ 		    R.MEMBER_NO,
+            R.ROAD_NO,
+            R.REVIEWER_TYPE,
+ 		    R.REVIEW_TITLE,
+            R.REVIEW_SUBTITLE,
+ 		    R.REVIEW_CONTENT, 
+            R.REVIEW_RATING,
+ 		    R.VIEW_COUNT,
+ 		    R.WRITE_DATE,
+ 		    R.UPDATE_DATE,
+ 		    R.DELETE_YN,
+ 		    M.NICKNAME AS REVIEWWRITER  
+ 		FROM REVIEW R
+ 		JOIN MEMBER M ON R.MEMBER_NO = M.MEMBER_NO
+ 		WHERE R.REVIEW_NO = #{reviewNo} AND R.DELETE_YN = 'N'
+ 	</select>
+
+    <insert id="insertReview" parameterType="com.fortrip.com.app.board.review.dto.BoardReviewAddRequest">
+        <selectKey keyProperty="reviewNo" resultType="_int" order="BEFORE">
+            SELECT SEQ_REVIEW_NO.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO REVIEW (
+            REVIEW_NO,
+            MEMBER_NO,
+            ROAD_NO,
+            REVIEWER_TYPE, 
+            REVIEW_TITLE,
+            REVIEW_SUBTITLE,
+            REVIEW_CONTENT,
+            REVIEW_RATING
+        ) VALUES (
+            #{reviewNo},        
+            #{memberNo},        
+            #{roadNo},
+            #{reviewerType},    
+            #{reviewTitle},
+            #{reviewSubtitle},
+            #{reviewContent},
+            #{reviewRating}
+        )
+    </insert>
+ </mapper>

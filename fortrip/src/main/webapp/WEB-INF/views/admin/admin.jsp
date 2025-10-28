@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <title>fortrip - 관리자 대시보드</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
-<link rel="stylesheet" href="../resources/admin/css/main.css">
+<link rel="stylesheet" href="../../../resources/css/admin/main.css">
 </head>
 <body>
    <div id="container">
@@ -204,14 +204,14 @@
                                 
                                 <tbody>
                                    <c:forEach var="mList" items="${mList }">
+                                   <input type="hidden"  name="memberNo" value="${mList.memberNo }"/>
                                        <tr>
                                            <td>
                                                <div class="profile-cell">
-                                               <img src="../img/son.png" alt="김여행자 프로필">
-                                               <div class="profile-info">
-                                                   <span class="name">${mList.memberName}</span>
-                                                   <span class="email">${mList.email }</span>
-                                               </div>
+	                                               <div class="profile-info">
+	                                                   <span class="name">${mList.memberName}</span>
+	                                                   <span class="email">${mList.email }</span>
+	                                               </div>
                                                </div>
                                            </td>
                                            <c:choose>
@@ -226,10 +226,10 @@
                                            <td>${mList.enrollDate }</td>
                                            <td>${mList.phone }</td>
                                            <c:choose>
-                                          <c:when test="${mList.activeYn == 'Y'}">
+                                          <c:when test="${mList.statusYsn == 'Y'}">
                                              <td><span class="status active">활성</span></td>
                                           </c:when>
-                                          <c:when test="${mList.activeYn == 'N' }">
+                                          <c:when test="${mList.statusYsn == 'N' }">
                                              <td><span class="status inactive">비활성</span></td>
                                           </c:when>
                                           <c:otherwise>
@@ -237,9 +237,11 @@
                                           </c:otherwise>
                                        </c:choose> 
                                            <td>
-                                              <input type="hidden" value="${mList.memberNo}">
-                                               <a href="#" class="action-link">수정</a>              
-                                               <a href="#" class="action-link danger">정지</a>
+	                                           <form action="/admin/user/modify">
+	                                           	   <input type="hidden"  name="memberNo" value="${mList.memberNo }"/>
+		                                           <button type="submit" class="action-link">수정</button>
+		                                           <button type="submit" class="action-link danger">정지</button>
+	                                           </form>
                                            </td>
                                        </tr>
                                     </c:forEach>   
@@ -249,13 +251,13 @@
                                         <td colspan="7">
                                             <nav class="pagination">
                                                 <c:if test="${startNavi ne 1 }">
-                                             <a href="/?page=${startNavi - 1}" class="prev">&laquo; 이전</a>
+                                             <a href="/admin/main?page=${startNavi - 1}" class="prev">&laquo; 이전</a>
                                           </c:if>
                                         <c:forEach begin="${startNavi }" end="${endNavi }" var="n">
-                                             <a href="/?page=${n }" class='page-number <c:if test="${currentPage eq n }">active</c:if>'>${n }</a>
+                                             <a href="/admin/main?page=${n }" class='page-number <c:if test="${currentPage eq n }">active</c:if>'>${n }</a>
                                          </c:forEach>
                                          <c:if test="${endNavi ne maxPage }">
-                                             <a href="/?page=${endNavi + 1}" class="next">다음 &raquo;</a>
+                                             <a href="/admin/main?page=${endNavi + 1}" class="next">다음 &raquo;</a>
                                           </c:if>
                                             </nav>
                                         </td>
@@ -511,73 +513,8 @@
                                 </div>
                             </form>
 
-                            <div class="board-content">
-                                <div class="board-list" style="background-color: #fff5ef">
-                                    <div class="board-list-header">
-                                    <div class="board-category">
-                                        <p style="background-color: #ff7a00;">공지사항</p>
-                                    </div>
-                                    <div class="board-date">2025.10.15&nbsp;&nbsp;09:15</div>
-                                    <div class="board-btn">
-                                        <button class="edit-btn">수정</button>
-                                        <button class="delete-btn">삭제</button>
-                                    </div>
-                                    </div>
-
-                                    <div class="board-list-title">
-                                    <span>여행 코스 추가 안내</span>
-                                    </div>
-
-                                    <div class="board-list-detail">
-                                    서울시 종로구 여행 코스를 추가하였습니다. 많은 관심 바랍니다.
-                                    </div>
-
-                                    <div class="board-list-footer">
-                                    <div class="board-list-view">
-                                        <span class="material-symbols-outlined">visibility</span>
-                                        <span>25 조회</span>
-                                    </div>
-                                    <div class="board-list-comment">
-                                        <span class="material-symbols-outlined">chat_bubble</span>
-                                        <span>20 댓글</span>
-                                    </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="board-content">
-                                <div class="board-list" style="background-color: #fff5ef">
-                                    <div class="board-list-header">
-                                    <div class="board-category">
-                                        <p style="background-color: #ff7a00;">공지사항</p>
-                                    </div>
-                                    <div class="board-date">2025.10.15&nbsp;&nbsp;09:15</div>
-                                    <div class="board-btn">
-                                        <button class="edit-btn">수정</button>
-                                        <button class="delete-btn">삭제</button>
-                                    </div>
-                                    </div>
-
-                                    <div class="board-list-title">
-                                    <span>여행 코스 추가 안내</span>
-                                    </div>
-
-                                    <div class="board-list-detail">
-                                    서울시 종로구 여행 코스를 추가하였습니다. 많은 관심 바랍니다.
-                                    </div>
-
-                                    <div class="board-list-footer">
-                                    <div class="board-list-view">
-                                        <span class="material-symbols-outlined">visibility</span>
-                                        <span>25 조회</span>
-                                    </div>
-                                    <div class="board-list-comment">
-                                        <span class="material-symbols-outlined">chat_bubble</span>
-                                        <span>20 댓글</span>
-                                    </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <!-- 공지사항 리스트 -->
+                            <div class="notice-content"></div>
                                  
                             <div class="board-pagination-wrapper">
                                 <nav class="board-pagination">
@@ -668,69 +605,11 @@
                                 </div>
                             </form>
 
-                            <div class="board-content">
-                                <div class="board-list" style="background-color: #D9FFD9;">
-                                    <div class="board-list-header">
-                                    <div class="board-category">
-                                        <p style="background-color: #059905;">문의글</p>
-                                    </div>
-                                    <div class="board-date">2025.10.15&nbsp;&nbsp;09:15</div>
-                                    <div class="board-btn">
-                                        <button class="delete-btn">삭제</button>
-                                    </div>
-                                    </div>
 
-                                    <div class="board-list-title">
-                                    <span>여행 코스 추가 안내</span>
-                                    </div>
+                            <!-- 문의글 리스트 fetch API -->
+                            <div class="qnaBoard-content"></div>
 
-                                    <div class="board-list-detail">
-                                    서울시 종로구 여행 코스를 추가하였습니다. 많은 관심 바랍니다.
-                                    </div>
-
-                                    <div class="board-list-footer">
-                                    <div class="board-list-view">
-                                        <span class="material-symbols-outlined">visibility</span>
-                                        <span>25 조회</span>
-                                    </div>
-                                    <div class="board-list-comment">
-                                        <span class="material-symbols-outlined">chat_bubble</span>
-                                        <span>20 댓글</span>
-                                    </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="board-content">
-                                <div class="board-list" style="background-color: #D9FFD9;">
-                                    <div class="board-list-header">
-                                    <div class="board-category">
-                                        <p style="background-color: #059905;">문의글</p>
-                                    </div>
-                                    <div class="board-date">2025.10.15&nbsp;&nbsp;09:15</div>
-                                    <div class="board-btn">
-                                        <button class="delete-btn">삭제</button>
-                                    </div>
-                                    </div>
-
-                                    <div class="board-list-title">
-                                    <span>여행 코스 추가 안내</span>
-                                    </div>
-
-                                    <div class="board-list-detail">
-                                    서울시 종로구 여행 코스를 추가하였습니다. 많은 관심 바랍니다.
-                                    </div>
-
-                                    <div class="board-list-footer">
-                                    <div class="board-list-view">
-                                        <span class="material-symbols-outlined">visibility</span>
-                                        <span>25 조회</span>
-                                    </div>
-                                    <div class="board-list-comment">
-                                        <span class="material-symbols-outlined">chat_bubble</span>
-                                        <span>20 댓글</span>
-                                    </div>
-                                    </div>
-                                </div>
+                        
                             </div>
                             
                             <div class="board-pagination-wrapper">
@@ -782,51 +661,8 @@
                                     </ul>
                                 </div>
                                 
-                                <div class="question-list">
-                                    <div class="question-list-header">
-                                    <div class="question-title">
-                                       <h4><span>Q.</span>나만의 여행 코스를 등록할 수 있나요?</h4>
-                                    </div>
-                                    <div class="question-btn">
-                                        <button class="edit-btn">수정</button>
-                                        <button class="delete-btn">삭제</button>
-                                    </div>
-                                    </div>                                
-                                    <div class="question-list-content">
-                                    <p><span>A. </span>로그인 후 '나의 여행 코스 만들기' 메뉴에서 직접 코스를 등록할 수 있습니다. 
-                                        여행지, 일정, 사진, 교통편 등을 자유롭게 추가해보세요.</p>
-                                    </div>
-                                </div>
-                                <div class="question-list">
-                                    <div class="question-list-header">
-                                    <div class="question-title">
-                                       <h4><span>Q.</span>나만의 여행 코스를 등록할 수 있나요?</h4>
-                                    </div>
-                                    <div class="question-btn">
-                                        <button class="edit-btn">수정</button>
-                                        <button class="delete-btn">삭제</button>
-                                    </div>
-                                    </div>                                
-                                    <div class="question-list-content">
-                                    <p><span>A. </span>로그인 후 '나의 여행 코스 만들기' 메뉴에서 직접 코스를 등록할 수 있습니다. 
-                                        여행지, 일정, 사진, 교통편 등을 자유롭게 추가해보세요.</p>
-                                    </div>
-                                </div>
-                            </div>
-      
-                            
-                            <div class="board-pagination-wrapper">
-                                <nav class="board-pagination">
-                                    <c:if test="${startNavi ne 1 }">
-                                        <a href="/?page=${startNavi - 1}" class="prev">&laquo; 이전</a>
-                                    </c:if>
-                                    <c:forEach begin="${startNavi }" end="${endNavi }" var="n">
-                                        <a href="/?page=${n }" class='page-number <c:if test="${currentPage eq n }">active</c:if>'>${n }</a>
-                                    </c:forEach>
-                                    <c:if test="${endNavi ne maxPage }">
-                                        <a href="/?page=${endNavi + 1}" class="next">다음 &raquo;</a>
-                                    </c:if>
-                                </nav>
+                                <!-- 자주하는 질문 리스트  -->
+                                <div class="qna-list"></div>
                             </div>
                         </div>
                         <!--***********************자주하는 질문 관리 끝*******************************-->
@@ -836,59 +672,131 @@
         </section>
    </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+    <script src="../../../resources/css/admin/js/chart.js"></script>
+    <script src="../../../resources/css/admin/js/List-move.js"></script>
     <script>
-      let keyChart = document.querySelector("#keywordChart");
-   
-       let kChart = new Chart(keyChart, {
-           type: 'bar',
-           data: {
-               labels: ['제주도', '부산', '전주', '서울'],
-               datasets: [
-               {
-                   label: '검색 횟수',
-                   data: [10,20,30,40],
-               }
-               ]
-           },
-       });
+        function questionFun() {
+            fetch("/admin/question/list")
+                .then(response => response.json())
+                .then(qList => {
+                    const questionList = document.querySelector(".qna-list");
+                    questionList.innerHTML = '';
+                    qList.forEach(question => {                    
+                    	questionList.innerHTML += `
+                            <div class="question-list">
+                                <div class="question-list-header">
+                                    <div class="question-title">
+                                        <h4><span>Q.</span>\${question.questionTitle}</h4>
+                                    </div>
+                                    <div class="question-btn">
+                                        <a href="/admin/question/modify?question=\${question.questionNo}" class="edit-btn">수정</a>
+                                        <form action="/admin/question/delete" method="post" onsubmit="return confirm('정말 삭제하시겠습니까?');">
+                                            <input type="hidden" name="questionNo" value="\${question.questionNo}">
+                                            <button type="submit" class="delete-btn">삭제</button>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="question-list-content">
+                                    <p><span>A. </span>\${question.questionContent}</p>
+                                </div>
+                            </div> `;
+                    });
+                })
+                .catch(error => console.log(error))
+        }
+        questionFun();
 
-      let userChart = document.querySelector("#userChart");
-      
-      let uChart = new Chart(userChart, {
-          type: 'line',
-          data: {
-              labels: ['1분기', '2분기', '3분기', '4분기'],
-              datasets: [
-              {
-                  label: '가입자',
-                  data: [10,30,60,50],
-              }
-              ]
-          },
-      });
-      document.addEventListener("DOMContentLoaded", () => {
-           // 메뉴 항목을 모두 선택
-           const menuItems = document.querySelectorAll(".menu-item .menu-list");
+        function noticeFun() {
+            fetch("/admin/notice/list")
+            .then(response => response.json())
+            .then(nList => {
+                console.log(nList);
+                const noticeList = document.querySelector(".notice-content");
+                noticeList.innerHTML='';
+                nList.forEach(notice => {
+                    noticeList.innerHTML+=`
+                        <div class="board-list" style="background-color: #fff5ef">
+                            <div class="board-list-header">
+                            <div class="board-category">
+                                <p style="background-color: #ff7a00;">공지사항</p>
+                            </div>
+                            <div class="board-date">\${notice.writeDate}</div>
+                            <div class="board-btn">
+                                <button class="edit-btn">수정</button>
+                                <button class="delete-btn">삭제</button>
+                            </div>
+                            </div>
 
-           menuItems.forEach((item) => {
-             item.addEventListener("click", () => {
-               const text = item.innerText.trim(); // 메뉴 이름 텍스트로 판단
+                            <div class="board-list-title">
+                            <span>\${notice.noticeTitle}</span>
+                            </div>
 
-               let targetId;
+                            <div class="board-list-detail">
+                            \${notice.noticeContent}
+                            </div>
 
-               // 메뉴 이름에 따라 이동할 섹션 ID 설정
-               if (text.includes("통계 개요")) targetId = "dashboard";
-               else if (text.includes("회원") || text.includes("정지")) targetId = "userSetting";
-               else if (text.includes("여행") || text.includes("관광")) targetId = "content";
-               else return; // 해당되지 않으면 아무 동작 안 함
+                            <div class="board-list-footer">
+                            <div class="board-list-view">
+                                <span class="material-symbols-outlined">visibility</span>
+                                <span>\${notice.viewCount} 조회</span>
+                            </div>
+                            <div class="board-list-comment">
+                                <span class="material-symbols-outlined">chat_bubble</span>
+                                <span>\${notice.viewCount} 댓글</span>
+                            </div>
+                            </div>
+                        </div>
+                    `
+                })
+            })
+            .catch(error => console.log(error))
+        }
+        noticeFun();
+        
+        function qnaFun() {
+            fetch("/admin/qna/list")
+            .then(response => response.json())
+            .then(qnaList => {
+                const qnaBoardList = document.querySelector(".qnaBoard-content");
+                qnaBoardList.innerHTML = '';
+                qnaList.forEach(qList => {
+                    qnaBoardList.innerHTML+=`
+                        <div class="board-list" style="background-color: #D9FFD9;">
+                            <div class="board-list-header">
+                            <div class="board-category">
+                                <p style="background-color: #059905;">문의글</p>
+                            </div>
+                            <div class="board-date">\${qList.writeDate}</div>
+                            <div class="board-btn">
+                                <button class="delete-btn">삭제</button>
+                            </div>
+                            </div>
 
-               const target = document.getElementById(targetId);
-               if (target) {
-                 target.scrollIntoView({ behavior: "smooth", block: "start" });
-               }
-             });
-           });
-         });
-   </script>
+                            <div class="board-list-title">
+                            <span>\${qList.qnaTitle}</span>
+                            </div>
+
+                            <div class="board-list-detail">
+                            \${qList.qnaContent}
+                            </div>
+
+                            <div class="board-list-footer">
+                            <div class="board-list-view">
+                                <span class="material-symbols-outlined">visibility</span>
+                                <span>\${qList.viewCount} 조회</span>
+                            </div>
+                            <div class="board-list-comment">
+                                <span class="material-symbols-outlined">chat_bubble</span>
+                                <span>\${qList.viewCount} 댓글</span>
+                            </div>
+                            </div>
+                        </div>
+                    `
+                })
+            })
+            .catch(error => console.log(error))
+        }
+        qnaFun();
+    </script>
 </body>
 </html>
