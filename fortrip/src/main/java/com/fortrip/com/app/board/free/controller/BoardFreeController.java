@@ -17,8 +17,11 @@ import com.fortrip.com.domain.attachment.service.AttachmentService;
 import com.fortrip.com.domain.attachment.vo.Attachment;
 import com.fortrip.com.domain.board.free.model.service.BoardFreeService;
 import com.fortrip.com.domain.board.free.model.vo.BoardFree;
+import com.fortrip.com.domain.board.like.model.service.BoardLikeService;
 import com.fortrip.com.domain.board.notice.model.service.BoardNoticeService;
 import com.fortrip.com.domain.board.notice.model.vo.BoardNotice;
+import com.fortrip.com.domain.comment.model.service.CommentService;
+import com.fortrip.com.domain.comment.model.vo.Comment;
 import com.fortrip.com.domain.member.model.vo.Member;
 
 import jakarta.servlet.http.HttpSession;
@@ -32,13 +35,23 @@ public class BoardFreeController {
 	private final BoardFreeService fService;
 	private final BoardNoticeService nService;
 	private final AttachmentService attachmentService;
+	private final CommentService commentService;
+	private final BoardLikeService likeService;
 	
 	// 자유게시판 상세페이지
 	@GetMapping("/detail")
 	public String showDetailView(
 			@RequestParam("postNo") int postNo
+			,HttpSession session
 			,Model model) {
 		try {
+			
+			Member loginMember = (Member) session.getAttribute("loginMember");
+			
+			 if (loginMember == null) {
+		            model.addAttribute("errorMsg", "로그인 후 이용 가능합니다.");
+		            return "common/error"; // 또는 로그인 페이지로 리다이렉트
+		        }
 			// 게시글 조회
 			BoardFree free = fService.selectOneByNo(postNo);
 			
@@ -48,19 +61,18 @@ public class BoardFreeController {
 			 //조회수 증가
 			 fService.increaseViewCount(postNo);
 			
-			
-			model.addAttribute("free", free);
-			// 첨부파일 저장 코드
-			model.addAttribute("attachmentList", attachmentList);
-			// 좋아요, 댓글 정보 조회 및 모델에 추가
-            /* 
+			 // 좋아요, 댓글 정보 조회 및 모델에 추가
              int likeCount = likeService.getLikeCount("FREE", postNo);
-             boolean isLiked = likeService.checkIsLiked(...);
+             boolean isLiked = likeService.checkIsLiked("FREE", postNo, loginMember.getMemberNo());
+            
+             model.addAttribute("free", free);	
+             // 첨부파일 저장 코드
+			model.addAttribute("attachmentList", attachmentList);
+             
              List<Comment> commentList = commentService.getCommentList("FREE", postNo);
              model.addAttribute("likeCount", likeCount);
              model.addAttribute("isLiked", isLiked);
              model.addAttribute("commentList", commentList);
-             */
 			return "board/free/detail";
 		}catch(Exception e) {
 			model.addAttribute("errorMsg", e.getMessage());

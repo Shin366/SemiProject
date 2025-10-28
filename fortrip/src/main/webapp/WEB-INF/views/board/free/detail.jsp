@@ -10,7 +10,6 @@
     <%-- Font Awesome CDN (아이콘 사용을 위해 추가) --%>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
-	<link rel="stylesheet" href="/resources/css/common/header.css">
     <style>
         /* --- 기본 & 레이아웃 --- */
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; background-color: #f8f9fa; margin: 0; color: #343a40; }
@@ -122,10 +121,12 @@
 			</div>
 			
 			<!-- 댓글 목록 -->
+			<input type="hidden" id="commentBoardNo" value="${free.postNo}">
+			<input type="hidden" id="commentBoardType" value="FREE">
 			<ul class="comment-list" id="commentListArea">
 			    <c:forEach var="comment" items="${commentList}">
 			        <li class="comment-item">
-			            <p class="comment-author">${comment.writerNickName}</p>
+			            <p class="comment-author">${comment.writerNickname}</p>
 			            <p class="comment-content">${comment.commentContent}</p>
 			            
 			            <c:if test="${sessionScope.loginMember.memberNo == comment.memberNo}">
@@ -150,139 +151,63 @@
                 </div>
                 <a href="<c:url value='/board/free/list'/>" class="btn btn-list">목록</a>
             </div>
+            
         </main>
     </div>
 <script>
-	document.addEventListener('DOMContentLoaded', () => {
+	const isUserLiked = ${isLiked != null ? isLiked : false}; // Controller 값이 null일 경우 false 기본값
+	console.log("isLiked from server:", isUserLiked); // 콘솔에 값 출력해보기
+		document.addEventListener('DOMContentLoaded', () => {
+		
+		    // ===== 좋아요 기능 =====
+		    const likeBtn = document.getElementById('likeBtn');
+		    
+		    if (likeBtn) {
+		    	const likeCountSpan = document.getElementById('likeCount');
 	
-	    // ===== 댓글 등록 관련 변수 =====
-	    const boardType = document.getElementById('commentBoardType').value;
-	    const boardNo = document.getElementById('commentBoardNo').value;
-	
-	    const commentListArea = document.getElementById('commentListArea');
-	    const contentTextArea = document.getElementById('commentContent');
-	    const submitBtn = document.getElementById('commentSubmitBtn');
-	
-	    // ===== 댓글 목록 로드 함수 =====
-	    function loadComments() {
-	        fetch(`<c:url value='/board/comment/list'/>?boardType=${boardType}&boardNo=${boardNo}`)
-	            .then(res => res.json())
-	            .then(data => {
-	                commentListArea.innerHTML = '';
-	                if (data && data.length > 0) {
-	                    data.forEach(c => {
-	                        const li = document.createElement('li');
-	                        li.className = 'comment-item';
-	                        li.innerHTML = `
-	                            <p class="comment-author">${c.writerNickname || '익명'}</p>
-	                            <p class="comment-content">${c.commentContent}</p>
-	                            <p style="font-size:12px;color:#888;text-align:right;">${c.commentDate || ''}</p>
-	                        `;
-	                        commentListArea.appendChild(li);
-	                    });
-	                } else {
-	                    commentListArea.innerHTML = '<p style="text-align:center;color:#888;padding:20px 0;">댓글이 없습니다.</p>';
-	                }
-	            })
-	            .catch(err => {
-	                console.error('댓글 불러오기 실패:', err);
-	                commentListArea.innerHTML = '<p style="text-align:center;color:red;">댓글을 불러오는 중 오류가 발생했습니다.</p>';
-	            });
-	    }
-	
-	    // 페이지 로드 시 즉시 호출
-	    loadComments();
-	
-	    // ===== 댓글 등록 이벤트 =====
-	    if (submitBtn) {
-	        submitBtn.addEventListener('click', (e) => {
-	            e.preventDefault();
-	
-	            const content = contentTextArea.value.trim();
-	
-	            // 로그인 체크 (JSP 세션 null 여부)
-	            const isLoggedIn = "${sessionScope.loginMember != null}";
-	            if (isLoggedIn !== "true") {
-	                alert('로그인 후 이용 가능합니다.');
-	                location.href = '<c:url value="/member/login"/>';
-	                return;
-	            }
-	
-	            if (!content) {
-	                alert('댓글 내용을 입력하세요.');
-	                contentTextArea.focus();
-	                return;
-	            }
-	
-	            const params = new URLSearchParams();
-	            params.append('boardType', boardType);
-	            params.append('boardNo', boardNo);
-	            params.append('commentContent', content);
-	
-	            fetch('<c:url value="/board/comment/insert"/>', {
-	                method: 'POST',
-	                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-	                body: params
-	            })
-	            .then(res => res.text()) // ✅ 문자열로 받기 (RestController "success" 대응)
-	            .then(result => {
-	                if (result === 'success') {
-	                    contentTextArea.value = '';
-	                    loadComments();
-	                } else {
-	                    alert('댓글 등록 실패');
-	                }
-	            })
-	            .catch(err => {
-	                console.error('댓글 등록 중 오류:', err);
-	                alert('댓글 등록 중 오류가 발생했습니다.');
-	            });
-	        });
-	    }
-	
-	    // ===== 좋아요 기능 =====
-	    const likeBtn = document.getElementById('likeBtn');
-	    if (likeBtn) {
-	        const likeCountSpan = document.getElementById('likeCount');
-	        const isUserLiked = ${isLiked};
-	        if (isUserLiked) {
-	            likeBtn.classList.add('liked');
-	            likeBtn.querySelector('i').classList.replace('fa-regular', 'fa-solid');
-	        }
-	
-	        likeBtn.addEventListener('click', () => {
-	            const isLoggedIn = "${sessionScope.loginMember != null}";
-	            if (isLoggedIn !== "true") {
-	                alert('로그인 후 이용 가능합니다.');
-	                location.href = '<c:url value="/member/login"/>';
-	                return;
-	            }
-	
-	            const boardType = likeBtn.dataset.boardType;
-	            const boardNo = likeBtn.dataset.boardNo;
-	
-	            fetch('<c:url value="/board/like/toggle"/>', {
-	                method: 'POST',
-	                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-	                body: `boardType=${boardType}&boardNo=${boardNo}`
-	            })
-	            .then(res => res.json())
-	            .then(data => {
-	                likeCountSpan.textContent = data.likeCount;
-	                const icon = likeBtn.querySelector('i');
-	                if (data.isLiked) {
-	                    likeBtn.classList.add('liked');
-	                    icon.classList.replace('fa-regular', 'fa-solid');
-	                } else {
-	                    likeBtn.classList.remove('liked');
-	                    icon.classList.replace('fa-solid', 'fa-regular');
-	                }
-	            })
-	            .catch(err => console.error('좋아요 오류:', err));
-	        });
-	    }
-	
-	});
+		        const isUserLiked = ${isLiked != null ? isLiked : false};   // JS boolean로 렌더링
+		        if (isUserLiked) {
+		          likeBtn.classList.add('liked');
+		          likeBtn.querySelector('i').classList.replace('fa-regular', 'fa-solid');
+		        }
+		
+		        likeBtn.addEventListener('click', () => {
+		            const isLoggedIn = "${sessionScope.loginMember != null}";
+		            if (isLoggedIn !== "true") {
+		                alert('로그인 후 이용 가능합니다.');
+		                location.href = '<c:url value="/member/login"/>';
+		                return;
+		            }
+		
+		            const boardType = likeBtn.dataset.boardType.trim();;
+		            const boardNo = likeBtn.dataset.boardNo.trim();;
+		          
+		            console.log('boardType=', likeBtn.dataset.boardType, 'boardNo=', likeBtn.dataset.boardNo);
+		
+		            fetch('<c:url value="/board/like/toggle"/>', {
+		                method: 'POST',
+		                headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+		                body: new URLSearchParams({
+		                    boardType: boardType,
+		                    boardNo: boardNo
+		                })
+		            })
+		            .then(res => res.json())
+		            .then(data => {
+		                likeCountSpan.textContent = data.likeCount;
+		                const icon = likeBtn.querySelector('i');
+		                if (data.isLiked) {
+		                    likeBtn.classList.add('liked');
+		                    icon.classList.replace('fa-regular', 'fa-solid');
+		                } else {
+		                    likeBtn.classList.remove('liked');
+		                    icon.classList.replace('fa-solid', 'fa-regular');
+		                } 
+		            })
+		            .catch(err => console.error('좋아요 오류:', err));
+		        });
+		    }
+		});
 </script>
 	
 </body>

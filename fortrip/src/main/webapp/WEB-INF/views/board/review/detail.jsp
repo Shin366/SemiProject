@@ -36,7 +36,9 @@
 
         .post-footer { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; border-top: 1px solid #eee; border-bottom: 1px solid #eee;}
         .reaction-buttons { display: flex; gap: 8px; }
-        .reaction-buttons .btn { display: flex; align-items: center; gap: 5px; background-color: #f1f3f5; border: 1px solid #dee2e6; padding: 8px 12px; border-radius: 15px; cursor: pointer; font-size: 14px; }
+        .reaction-buttons .btn { display: flex; align-items: center; gap: 6px; background-color: #f1f3f5; border: 1px solid #dee2e6; padding: 8px 15px; border-radius: 20px; cursor: pointer; font-size: 14px; transition: all 0.2s ease; }
+        .reaction-buttons .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .reaction-buttons .btn.liked { background-color: #ffe0e0; border-color: #ffc2c2; color: #dc3545; font-weight: bold; }
         .social-share a { color: #888; font-size: 24px; margin-left: 15px; }
         
         .comments-section { margin-top: 30px; }
@@ -67,11 +69,11 @@
                     <h2 class="post-title">${review.reviewTitle}</h2>
                     <span class="post-rating">
                         <c:forEach begin="1" end="5" var="i">
-                            <!-- <i class="fa-solid fa-star" style="${i <= review.rating ? '' : 'color:#ddd;'}"></i> -->
+                            <i class="fa-solid fa-star" style="${i <= review.reviewRating ? '' : 'color:#ddd;'}"></i>
                         </c:forEach>
                     </span>
                     <div class="post-meta">
-                        <span>${review.reviewWriter}</span>
+                        <span>${review.writer}</span>
                         <span><fmt:formatDate value="${review.writeDate}" pattern="yyyy.MM.dd HH:mm"/></span>
                         <span>조회 ${review.viewCount}</span>
                     </div>
@@ -104,8 +106,12 @@
 
             <footer class="post-footer">
                 <div class="reaction-buttons">
-                    <button class="btn"><i class="fa-regular fa-heart"></i> ${review.likeCount}</button>
-                    <button class="btn"><i class="fa-regular fa-bookmark"></i> ${review.bookmarkCount}</button>
+                    <button class="btn" id="likeBtn" data-board-type="REVIEW" data-board-no="${review.reviewNo}">
+                            <i class="fa-regular fa-heart"></i> <span id="likeCount">${likeCount}</span>
+                        </button>
+                        <button class="btn" id="bookmarkBtn" data-target-type="REVIEW" data-target-no="${review.reviewNo}">
+                            <i class="fa-regular fa-bookmark"></i> 북마크
+                        </button>
                     <button class="btn">신고</button>
                 </div>
                 <div class="social-share">
@@ -116,31 +122,195 @@
             </footer>
             
             <section class="comments-section">
-                <div class="comment-form">
-                    <form action="/comment/write" method="post">
-                        <input type="hidden" name="boardNo" value="${review.reviewNo}">
-                        <input type="hidden" name="boardType" value="REVIEW">
-                        <textarea name="commentContent" placeholder="댓글을 입력해주세요..."></textarea>
-                        <div class="comment-form-actions">
-                            <button type="submit" class="btn btn-submit">작성</button>
-                        </div>
-                    </form>
-                </div>
-
-                <div class="comment-list">
-                    <c:forEach var="comment" items="${commentList}">
-                        <div class="comment-item">
-                            <p class="comment-author">${comment.authorNickname}</p>
-                            <p class="comment-content">${comment.content}</p>
-                        </div>
-                    </c:forEach>
-                </div>
-            </section>
+				  <div class="comment-form">
+				      <textarea name="commentContent" placeholder="댓글을 입력해주세요..."></textarea>
+				      <div class="comment-form-actions">
+				          <button type="button" class="btn btn-submit">작성</button>
+				      </div>
+				  </div>
+				
+				  <ul class="comment-list" id="commentListArea">
+				      <p style="text-align:center; color:#888; padding:20px 0;">댓글을 불러오는 중...</p>
+				  </ul>
+			</section>
             
             <div class="bottom-actions">
                 <a href="/board/review/list" class="btn-list">게시글 목록</a>
             </div>
         </main>
     </div>
+    <script>
+	const isUserLiked = ${isLiked != null ? isLiked : false}; // Controller 값이 null일 경우 false 기본값
+	console.log("isLiked from server:", isUserLiked); // 콘솔에 값 출력해보기
+	
+	document.addEventListener('DOMContentLoaded', () => {
+		
+		 const boardNo = "${review.reviewNo}";
+		  const boardType = "REVIEW";
+
+		  console.log("✅ boardNo:", boardNo);
+		  console.log("✅ boardType:", boardType);
+
+		  if (!boardNo || boardNo === "null" || boardNo.trim() === "") {
+		    console.error("❌ boardNo 비어 있음");
+		    return;
+		  }
+		 // ===== 댓글 목록 불러오기 =====
+		  function loadComments() {
+		    const boardNo = "${review.reviewNo}";
+		    const boardType = "REVIEW";
+		    
+		    if (!boardNo || boardNo.trim() === "") {
+		        console.error("boardNo 값이 비어 있음:", boardNo);
+		        return;
+		      }   
+
+		    fetch(`/board/comment/list?boardNo=${boardNo}&boardType=${boardType}`)
+		      .then(res => res.json())
+		      .then(commentList => {
+		        const listArea = document.getElementById("commentListArea");
+		        listArea.innerHTML = ""; // 초기화
+
+		        if (commentList.length === 0) {
+		          listArea.innerHTML = `<p style="text-align:center; color:#888; padding:20px 0;">작성된 댓글이 없습니다.</p>`;
+		          return;
+		        }
+
+		        commentList.forEach(c => {
+		        	  const li = document.createElement("li");
+		        	  li.classList.add("comment-item");
+
+		        	  li.innerHTML = `
+		        	    <p class="comment-author">${c.writerNickname}</p>
+		        	    <p class="comment-content">${c.commentContent}</p>
+		        	  `;
+
+		        	  if (c.isOwner) {
+		        	    const actionsDiv = document.createElement("div");
+		        	    actionsDiv.classList.add("comment-actions");
+		        	    actionsDiv.style.textAlign = "right";
+		        	    actionsDiv.style.fontSize = "12px";
+		        	    actionsDiv.style.marginTop = "10px";
+
+		        	    const deleteLink = document.createElement("a");
+		        	    deleteLink.href = "#";
+		        	    deleteLink.classList.add("delete-comment");
+		        	    deleteLink.dataset.commentNo = c.commentNo;
+		        	    deleteLink.textContent = "삭제";
+
+		        	    actionsDiv.appendChild(deleteLink);
+		        	    li.appendChild(actionsDiv);
+		        	  }
+
+		        	  listArea.appendChild(li);
+		        	});
+
+		        // 삭제 버튼 이벤트 등록
+		        document.querySelectorAll(".delete-comment").forEach(btn => {
+		          btn.addEventListener("click", e => {
+		            e.preventDefault();
+		            const commentNo = btn.dataset.commentNo;
+		            if (confirm("정말 삭제하시겠습니까?")) {
+		              fetch(`/board/comment/delete?commentNo=${commentNo}`, { method: "POST" })
+		                .then(res => res.json())
+		                .then(result => {
+		                  if (result > 0) {
+		                    loadComments();
+		                  } else {
+		                    alert("댓글 삭제에 실패했습니다.");
+		                  }
+		                })
+		                .catch(() => alert("댓글 삭제 중 오류가 발생했습니다."));
+		            }
+		          });
+		        });
+		      })
+		      .catch(() => alert("댓글 불러오기 중 오류가 발생했습니다."));
+		  }
+
+		  // ===== 댓글 등록 =====
+		  const submitBtn = document.querySelector(".btn-submit");
+		  submitBtn.addEventListener("click", e => {
+		    e.preventDefault();
+		    const content = document.querySelector("textarea[name='commentContent']").value.trim();
+		    if (content === "") {
+		      alert("댓글 내용을 입력하세요.");
+		      return;
+		    }
+
+		    const boardNo = "${review.reviewNo}";
+		    const boardType = "REVIEW";
+
+		    fetch("/board/comment/insert", {
+		      method: "POST",
+		      headers: { "Content-Type": "application/json" },
+		      body: JSON.stringify({ boardNo, boardType, commentContent: content })
+		    })
+		      .then(res => res.json())
+		      .then(result => {
+		        if (result > 0) {
+		          document.querySelector("textarea[name='commentContent']").value = "";
+		          loadComments();
+		        } else {
+		          alert("댓글 등록에 실패했습니다.");
+		        }
+		      })
+		      .catch(() => alert("댓글 등록 중 오류가 발생했습니다."));
+		  });
+
+		  // 초기 로드
+		  loadComments();
+		
+	    // ===== 좋아요 기능 =====
+	    const likeBtn = document.getElementById('likeBtn');
+	    
+	    if (likeBtn) {
+	    	const likeCountSpan = document.getElementById('likeCount');
+
+	        const isUserLiked = ${isLiked != null ? isLiked : false};   // JS boolean로 렌더링
+	        if (isUserLiked) {
+	          likeBtn.classList.add('liked');
+	          likeBtn.querySelector('i').classList.replace('fa-regular', 'fa-solid');
+	        }
+	
+	        likeBtn.addEventListener('click', () => {
+	            const isLoggedIn = "${sessionScope.loginMember != null}";
+	            if (isLoggedIn !== "true") {
+	                alert('로그인 후 이용 가능합니다.');
+	                location.href = '<c:url value="/member/login"/>';
+	                return;
+	            }
+	
+	            const boardType = likeBtn.dataset.boardType.trim();;
+	            const boardNo = likeBtn.dataset.boardNo.trim();;
+	          
+	            console.log('boardType=', likeBtn.dataset.boardType, 'boardNo=', likeBtn.dataset.boardNo);
+	
+	            fetch('<c:url value="/board/like/toggle"/>', {
+	                method: 'POST',
+	                headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+	                body: new URLSearchParams({
+	                    boardType: boardType,
+	                    boardNo: boardNo
+	                })
+	            })
+	            .then(res => res.json())
+	            .then(data => {
+	                likeCountSpan.textContent = data.likeCount;
+	                const icon = likeBtn.querySelector('i');
+	                if (data.isLiked) {
+	                    likeBtn.classList.add('liked');
+	                    icon.classList.replace('fa-regular', 'fa-solid');
+	                } else {
+	                    likeBtn.classList.remove('liked');
+	                    icon.classList.replace('fa-solid', 'fa-regular');
+	                } 
+	            })
+	            .catch(err => console.error('좋아요 오류:', err));
+	        });
+	    }
+	});
+
+</script>
 </body>
 </html>
