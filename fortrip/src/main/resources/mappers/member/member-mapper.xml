@@ -54,7 +54,7 @@
 	</update>
   	
   	<update id="updateMember">
-  		UPDATE MEMBER SET NICKNAME = #{NickName}, PHONE = #{phone}, EMAIL = #{email} WHERE MEMBER_ID =#{memberId}
+  		UPDATE MEMBER SET NICKNAME = #{nickName}, PHONE = #{phone}, EMAIL = #{email} WHERE MEMBER_ID =#{memberId}
   	</update>
   	
   	

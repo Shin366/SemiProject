@@ -251,19 +251,17 @@ public class MemberController {
 	public String modifyProfile(@ModelAttribute ModifyRequest member
 			,HttpSession session, Model model) {
 		try {
-			
-			String loginMember = (String)session.getAttribute("loginMember");
-			member.setMemberId(loginMember);
+			Member loginMember = (Member)session.getAttribute("loginMember");
 			System.out.println(loginMember);
 			if (loginMember == null) {
 			    model.addAttribute("errorMsg", "로그인 정보가 없습니다.");
 			    return "common/error";
 			}
 			
+			member.setMemberId(loginMember.getMemberId());
 			int result = mService.updateMember(member);
 			
 			if(result > 0) {
-				model.addAttribute("member", loginMember);
 				return "redirect:/member/update";
 			}else {
 				model.addAttribute("errorMsg", "SERVICE_FAILED");
