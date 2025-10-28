@@ -88,7 +88,7 @@
         <form action="/board/free/insert" method="post" enctype="multipart/form-data">
             <div class="top-fields">
                 <input type="text" name="postTitle" placeholder="제목을 입력해주세요..." required>
-                <input type="text" name="writer" value="${loginMember.nickname}" readonly placeholder="작성자 닉네임">
+                <input type="text" name="writer" value="${loginMember.nickName}" readonly placeholder="작성자 닉네임">
             </div>
 
             <textarea name="postContent" placeholder="본문을 입력해주세요..." required></textarea>
