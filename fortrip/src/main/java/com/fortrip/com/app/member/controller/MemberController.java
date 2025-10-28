@@ -368,7 +368,7 @@ public class MemberController {
 	
 	@GetMapping("/admin/user/admin")
 	public String showAdminMain() {
-		return "/admin/admin";	//이 url이 맞는지 모르겠음
+		return "/admin/admin";	//이 url이 맞는지 모르겠음 //test
 	}
 	
 }
