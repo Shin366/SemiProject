@@ -63,6 +63,11 @@
                     </li>
                 </c:forEach>
             </ul>
+            
+             <div class="actions">
+                 <%-- 글쓰기 버튼 링크 수정 --%>
+                <a href="<c:url value='/board/qna/insert'/>" class="btn-write">문의하기</a>
+            </div>
 
             <nav class="pagination">
                 <c:if test="${startNavi ne 1 }">

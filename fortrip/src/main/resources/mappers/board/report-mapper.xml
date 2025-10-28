@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fortrip.com.domain.board.report.model.mapper.BoardReportMapper">
+
+    <update id="increaseViewCount">
+        UPDATE REPORT
+        SET VIEW_COUNT = VIEW_COUNT + 1
+        WHERE REPORT_NO = #{reportNo}
+    </update>
+
+    <select id="selectOneByNo" resultType="com.fortrip.com.domain.board.report.model.vo.BoardReportVO">
+ 		SELECT
+ 		    R.REPORT_NO,
+ 		    R.MEMBER_NO,
+ 		    R.REPORT_TITLE,
+ 		    R.REPORT_CONTENT,
+ 		    R.REPORT_PASSWORD, -- 비밀번호는 필요 시에만 조회 (보안 고려)
+ 		    R.WRITE_DATE,
+ 		    R.UPDATE_DATE,
+ 		    R.DELETE_YN,
+ 		    R.REPORT_REASON AS reportReason,
+ 		    M.NICKNAME AS reportWriter  -- MEMBER 테이블 JOIN 하여 닉네임 조회
+ 		FROM REPORT R
+ 		JOIN MEMBER M ON R.MEMBER_NO = M.MEMBER_NO
+ 		WHERE R.REPORT_NO = #{reportNo} AND R.DELETE_YN = 'N'
+ 	</select>
+
+    <insert id="insertReport" parameterType="com.fortrip.com.app.board.report.dto.BoardReportAddRequest">
+        <selectKey keyProperty="reportNo" resultType="_int" order="BEFORE">
+            SELECT SEQ_REPORT_NO.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO REPORT (
+            REPORT_NO,
+            MEMBER_NO,
+            REPORT_TITLE,
+            REPORT_CONTENT,
+            REPORT_PASSWORD, -- Service에서 암호화된 비밀번호 전달 가정
+            REPORT_REASON
+            -- WRITE_DATE, DELETE_YN은 DEFAULT 값 사용
+        ) VALUES (
+            #{reportNo},
+            #{memberNo},     -- Service에서 설정한 값
+            #{reportTitle},
+            #{reportContent},
+            #{reportPassword}, -- DTO 필드명 확인 필요
+            #{reportReason}
+        )
+    </insert>
+
+    <update id="updateReport" parameterType="com.fortrip.com.app.board.report.dto.BoardReportUpdateRequest">
+        UPDATE REPORT
+        SET
+            REPORT_TITLE = #{reportTitle},
+            REPORT_CONTENT = #{reportContent},
+            REPORT_REASON,
+            -- 비밀번호도 수정 가능하게 하려면 아래 주석 해제 (Service에서 암호화 처리 필요)
+            -- REPORT_PASSWORD = #{reportPassword},
+            UPDATE_DATE = SYSDATE
+        WHERE REPORT_NO = #{reportNo}
+           -- AND MEMBER_NO = #{memberNo} -- (선택) Service에서 권한 확인 대신 쿼리에서 확인 가능
+    </update>
+
+    <update id="deleteReport">
+        UPDATE REPORT
+        SET DELETE_YN = 'Y'
+        WHERE REPORT_NO = #{reportNo}
+    </update>
+
+    <select id="getTotalCount" resultType="_int">
+        SELECT COUNT(*)
+        FROM REPORT
+        WHERE DELETE_YN = 'N'
+    </select>
+
+    <select id="selectReportList" resultType="com.fortrip.com.domain.board.report.model.vo.BoardReportVO">
+        SELECT *
+        FROM (
+            SELECT
+                ROWNUM AS RNUM,
+                R_SUB.*
+            FROM (
+                SELECT
+                    R.REPORT_NO,
+                    R.MEMBER_NO,
+                    R.REPORT_TITLE,
+                    M.NICKNAME AS reportWriter, -- 작성자 닉네임
+                    R.WRITE_DATE,
+
+                    -- 댓글 수 (서브쿼리) - 삭제되지 않은 댓글만
+                    (SELECT COUNT(*) FROM BOARD_COMMENT C
+                     WHERE C.BOARD_TYPE = 'REPORT' AND C.BOARD_NO = R.REPORT_NO AND C.DELETE_YN = 'N') AS commentCount
+
+                FROM REPORT R
+                JOIN MEMBER M ON R.MEMBER_NO = M.MEMBER_NO
+                WHERE R.DELETE_YN = 'N'
+                ORDER BY R.REPORT_NO DESC
+            ) R_SUB
+        )
+        WHERE RNUM BETWEEN #{offset} + 1 AND #{offset} + #{reportCountPerPage}
+    </select>
+</mapper>

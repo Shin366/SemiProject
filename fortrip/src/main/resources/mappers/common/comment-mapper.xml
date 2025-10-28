@@ -8,7 +8,7 @@
         SELECT
             C.COMMENT_NO, C.BOARD_TYPE, C.BOARD_NO, C.MEMBER_NO,
             C.COMMENT_CONTENT, C.COMMENT_DATE,
-            M.MEMBER_NICKNAME AS writerNickname
+            M.NICKNAME AS writerNickname
         FROM BOARD_COMMENT C
         JOIN MEMBER M ON C.MEMBER_NO = M.MEMBER_NO
         WHERE C.BOARD_TYPE = #{boardType}

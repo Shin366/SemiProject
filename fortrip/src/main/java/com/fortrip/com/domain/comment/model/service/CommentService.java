@@ -40,4 +40,5 @@ public interface CommentService {
      * @return 삭제 성공 시 1, 실패 시 0
      */
     int deleteComment(int commentNo, Member loginMember);
+
 }
