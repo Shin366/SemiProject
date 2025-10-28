@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.fortrip.com.domain.board.like.model.mapper.BoardLikeMapper">
+
+    <select id="checkLike" parameterType="com.fortrip.com.domain.board.like.model.vo.BoardLikeVO" resultType="_int">
+        SELECT COUNT(*)
+        FROM BOARD_LIKE
+        WHERE BOARD_TYPE = #{boardType}
+          AND BOARD_NO = #{boardNo}
+          AND MEMBER_NO = #{memberNo}
+    </select>
+
+    <insert id="insertLike" parameterType="com.fortrip.com.domain.board.like.model.vo.BoardLikeVO">
+        INSERT INTO BOARD_LIKE (
+            LIKE_NO,
+            BOARD_TYPE,
+            BOARD_NO,
+            MEMBER_NO
+            -- LIKE_DATE는 DEFAULT SYSDATE 이므로 생략 가능
+        ) VALUES (
+            SEQ_BOARD_LIKE_NO.NEXTVAL,
+            #{boardType},
+            #{boardNo},
+            #{memberNo}
+        )
+    </insert>
+
+    <delete id="deleteLike" parameterType="com.fortrip.com.domain.board.like.model.vo.BoardLikeVO">
+        DELETE FROM BOARD_LIKE
+        WHERE BOARD_TYPE = #{boardType}
+          AND BOARD_NO = #{boardNo}
+          AND MEMBER_NO = #{memberNo}
+    </delete>
+
+    <select id="countLikesByBoard" resultType="_int">
+        SELECT COUNT(*)
+        FROM BOARD_LIKE
+        WHERE BOARD_TYPE = #{boardType}
+          AND BOARD_NO = #{boardNo}
+    </select>
+
+</mapper>
