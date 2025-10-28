@@ -25,10 +25,22 @@
         .page-header p { color: #888; margin-bottom: 30px; }
         
         .board-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .search-box { display: flex; border: 1px solid #ddd; border-radius: 6px; }
-        .search-box select, .search-box input, .search-box button { border: none; background: none; padding: 10px; font-size: 14px; }
-        .search-box input { outline: none; }
-        .sort-options select { padding: 10px; border: 1px solid #ddd; border-radius: 6px; }
+        /* 기존 .search-box -> .board-search-box 로 변경 */
+		.board-search-box {
+		  display: flex;
+		  border: 1px solid #ddd;
+		  border-radius: 6px;
+		}
+		.board-search-box select,
+		.board-search-box input,
+		.board-search-box button {
+		  border: none;
+		  background: none;
+		  padding: 10px;
+		  font-size: 14px;
+		}
+		.board-search-box input { outline: none; }
+
         
         /* --- 게시판 목록 --- */
         .board-list { border-top: 2px solid #333; }
@@ -61,7 +73,7 @@
         <aside class="sidebar">
             <ul>
                 <li><a href="<c:url value='/board/free/list'/>" class="active">자유 소통</a></li>
-                <li><a href="#">코스 리뷰</a></li>
+                <li><a href="<c:url value='/board/review/list'/>">코스 리뷰</a></li>
             </ul>
         </aside>
 
@@ -72,24 +84,24 @@
             </div>
 
             <div class="board-controls">
-                <div class="search-box">
-                    <select name="condition">
-                        <option value="all">전체</option>
-                        <option value="title">제목</option>
-                        <option value="content">내용</option>
-                        <option value="writer">작성자</option>
-                    </select>
-                    <input type="text" name="keyword" placeholder="검색어를 입력해주세요">
-                    <button type="submit">🔍</button>
-                </div>
-                <div class="sort-options">
-                    <select name="sort">
-                        <option value="latest">최신순</option>
-                        <option value="views">조회순</option>
-                        <option value="likes">좋아요순</option>
-                    </select>
-                </div>
-            </div>
+		    <div class="board-search-box">
+		        <select name="condition">
+		            <option value="all">전체</option>
+		            <option value="title">제목</option>
+		            <option value="content">내용</option>
+		            <option value="writer">작성자</option>
+		        </select>
+		        <input type="text" name="keyword" placeholder="검색어를 입력해주세요">
+		        <button type="submit">🔍</button>
+		    </div>
+		    <div class="sort-options">
+		        <select name="sort">
+		            <option value="latest">최신순</option>
+		            <option value="views">조회순</option>
+		            <option value="likes">좋아요순</option>
+		        </select>
+		    </div>
+		</div>
 
             <div class="board-list">
                 <div class="list-item header">

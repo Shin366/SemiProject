@@ -56,8 +56,8 @@
                 <%-- Controller에서 전달한 리뷰 목록(reviewList)을 반복문으로 출력 --%>
                 <c:forEach var="review" items="${reviewList}">
                     <a href="/board/review/detail?reviewNo=${review.reviewNo}" class="review-card">
-                        <div class="card-thumbnail">
-                            <%-- 썸네일 이미지가 있으면 표시, 없으면 기본 이미지 --%>
+                        <%-- <div class="card-thumbnail">
+                            썸네일 이미지가 있으면 표시, 없으면 기본 이미지
                             <c:choose>
                                 <c:when test="${not empty review.thumbnailPath}">
                                     <img src="${review.thumbnailPath}" alt="${review.title}">
@@ -66,7 +66,7 @@
                                     <i class="fa-regular fa-image fa-3x" style="color:#ccc;"></i>
                                 </c:otherwise>
                             </c:choose>
-                        </div>
+                        </div> --%>
                         <div class="card-body">
                             <h3 class="card-title">${review.reviewTitle}</h3>
                             <p class="card-subtitle">${review.reviewSubtitle}</p>
