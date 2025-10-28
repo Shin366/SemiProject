@@ -40,7 +40,7 @@ public class BoardReportController {
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     private final CommentService commentService;
 
-    // 신고 상세페이지
+    // 신고 상세페이지 
     @GetMapping("/detail")
     public String showDetailView(
             @RequestParam("reportNo") Integer reportNo,
@@ -124,7 +124,7 @@ public class BoardReportController {
     // 신고게시판 작성페이지 실행로직
     @PostMapping("/insert")
     public String insertReport(
-            @ModelAttribute BoardReportAddRequest report, // DTO 타입 확인
+            @ModelAttribute BoardReportAddRequest report,
             @RequestParam(value="files", required=false) List<MultipartFile> files,
             HttpSession session,
             Model model) {
@@ -135,7 +135,6 @@ public class BoardReportController {
             return "common/error";
         }
         try {
-             // Service 메소드 이름 insertFree -> insertReport 로 변경 가정
              int result = reportService.insertReport(report, files, loginMember);
             return "redirect:/board/report/list"; // 리다이렉트 경로 수정
         } catch (Exception e) {
