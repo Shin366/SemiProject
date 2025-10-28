@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -147,6 +148,12 @@
 		  color: white;
 		  border-color: #007bff;
 		}
+		
+		/* sns */
+		.link-icon { position: relative; display: inline-block; width: auto; font-size: 14px; font-weight: 500; color: #333; margin-right: 10px; padding-top: 50px; }
+		.link-icon.twitter { background-image: url(./images/icon-twitter.png); background-repeat: no-repeat; }
+		.link-icon.facebook { background-image: url(./images/icon-facebook.png); background-repeat: no-repeat; } 
+		.link-icon.kakao { background-image: url(./images/icon-kakao.png); background-repeat: no-repeat; }
 
         /* --- 하단 버튼 (목록, 수정, 삭제) --- */
         .bottom-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 40px; }
@@ -197,10 +204,16 @@
                         </button>
                     </div>
                     <div class="social-share">
-                        <a href="#" title="페이스북 공유"><i class="fab fa-facebook-square"></i></a>
-                        <a href="#" title="트위터 공유"><i class="fab fa-twitter"></i></a>
-                        <a href="#" title="링크 복사"><i class="fa-solid fa-link"></i></a>
-                    </div>
+					  <a href="javascript:shareTwitter();" title="트위터 공유">
+					    <i class="fab fa-twitter"></i>
+					  </a>
+					  <a href="javascript:shareFacebook();" title="페이스북 공유">
+					    <i class="fab fa-facebook"></i>
+					  </a>
+					  <a href="javascript:shareKakao();" title="카카오톡 공유">
+					    <i class="fa-solid fa-comment"></i>
+					  </a>
+					</div>
                 </div>
             </div>
 
@@ -250,6 +263,65 @@
         </main>
     </div>
 <script>
+
+/* sns */
+function shareTwitter() {
+	  const sendText = document.querySelector(".post-title")?.innerText || "ForTrip 게시글";
+	  const sendUrl = window.location.href; // 현재 페이지 URL
+	  const twitterUrl = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(sendText) + "&url=" + encodeURIComponent(sendUrl);
+	  window.open(twitterUrl, "_blank", "width=600,height=400");
+	}
+	
+	function shareFacebook() {
+	  const sendUrl = window.location.href;
+	  const facebookUrl = "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(sendUrl);
+	  window.open(facebookUrl, "_blank", "width=600,height=400");
+	}
+	
+	/* function shareKakao() {
+
+		  // 사용할 앱의 JavaScript 키 설정
+		  Kakao.init('034bf29dca5f7d44b97a184fa1e175fc');
+
+		  // 카카오링크 버튼 생성
+		  Kakao.Link.createDefaultButton({
+		    container: '#btnKakao', // 카카오공유버튼ID
+		    objectType: 'feed',
+		    content: {
+		      title: "개발새발", // 보여질 제목
+		      description: "개발새발 블로그입니다", // 보여질 설명
+		      imageUrl: "devpad.tistory.com/", // 콘텐츠 URL
+		      link: {
+		         mobileWebUrl: "devpad.tistory.com/",
+		         webUrl: "devpad.tistory.com/"
+		      }
+		    }
+		  });
+		} */
+	
+	function shareKakao() {
+		  if (!window.Kakao) {
+		    alert("카카오 SDK 로드 실패");
+		    return;
+		  }
+		  if (!Kakao.isInitialized()) {
+		    Kakao.init("034bf29dca5f7d44b97a184fa1e175fc");
+		  }
+		  Kakao.Link.sendDefault({
+		    objectType: "feed",
+		    content: {
+		      title: document.querySelector(".post-title")?.innerText || "ForTrip 게시글",
+		      description: "ForTrip 자유게시판 글을 확인해보세요.",
+		      imageUrl: "https://yourdomain.com/resources/img/fortrip-logo.png",
+		      link: { mobileWebUrl: window.location.href, webUrl: window.location.href }
+		    },
+		    buttons: [
+		      { title: "게시글 보기", link: { mobileWebUrl: window.location.href, webUrl: window.location.href } }
+		    ]
+		  });
+		}
+
+
 	const isUserLiked = ${isLiked != null ? isLiked : false}; // Controller 값이 null일 경우 false 기본값
 	console.log("isLiked from server:", isUserLiked); // 콘솔에 값 출력해보기
 		document.addEventListener('DOMContentLoaded', () => {
@@ -260,6 +332,8 @@
 			  const contentTextArea = document.getElementById('commentContent');
 			  const submitBtn = document.getElementById('commentSubmitBtn');
 
+			
+			  
 			  function loadComments() {
 				  console.log(`댓글 로딩 요청: /board/comment/list?boardType=${"$"}{boardType}&boardNo=${"$"}{boardNo}`);
 				  
