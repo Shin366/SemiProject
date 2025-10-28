@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!-- 10월 24일 taglib 추가 -->
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<link rel="stylesheet" href="../resources/css/common/header.css">
+<link rel="stylesheet" href="/resources/css/common/header.css">
 <header class="site-header">
   <div class="container">
     <!-- 왼쪽 로고 -->
