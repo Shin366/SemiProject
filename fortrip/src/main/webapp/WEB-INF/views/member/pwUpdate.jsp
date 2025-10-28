@@ -10,22 +10,22 @@
 <body>
 	<div id="container">
         <main id="main">
-            <div class="pwUpDate-container">
-                <div class="pwUpDate-title">
+            <div class="pwUpdate-container">
+                <div class="pwUpdate-title">
                     <h2>비밀 번호 변경</h2>
                 </div>
-                <form class="pwUpDate-form" action="/member/pwUpDate" method="post">
+                <form class="pwUpdate-form" action="/member/pwUpdate" method="post">
                     <div class="form-group">
-                        <label class="required" for="memberPw">기존 비밀번호</label>
-                        <input type="password" name="memberPw" placeholder="기존 비밀번호를 입력해주세요." required>
+                        <label class="required" for="currentPw">기존 비밀번호</label>
+                        <input type="password" name="currentPw" placeholder="기존 비밀번호를 입력해주세요." required>
                     </div>
                     <div class="form-group">
-                        <label class="required" for="newMemberPw">새 비밀번호</label>
-                        <input type="password" name="newMemberPw" placeholder="새 비밀번호를 입력해주세요." required>
+                        <label class="required" for="newPw">새 비밀번호</label>
+                        <input type="password" name="newPw" placeholder="새 비밀번호를 입력해주세요." required>
                     </div>
                     <div class="form-group">
-                        <label class="required" for="newMemberPwd">새 비밀번호 확인</label>
-                        <input type="password" name="newMemberPwd" placeholder="새 비밀번호를 다시 입력해주세요." required>
+                        <label class="required" for="confirmPw">새 비밀번호 확인</label>
+                        <input type="password" name="confirmPw" placeholder="새 비밀번호를 다시 입력해주세요." required>
                     </div>
                     <button type="submit">변경하기</button>
                 </form>

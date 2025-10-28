@@ -49,8 +49,8 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public int updateMemberPw(String memberId, String encodedPw) {
-		int result = mStore.updateMemberPw(memberId, encodedPw);
+	public int updateTempMemberPw(String memberId, String encodedPw) {
+		int result = mStore.updateTempMemberPw(memberId, encodedPw);
 		return result;
 	}
 

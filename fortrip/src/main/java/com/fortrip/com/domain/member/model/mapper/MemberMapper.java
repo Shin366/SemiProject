@@ -18,7 +18,7 @@ public interface MemberMapper {
 
 	Member selectOneById(String memberId);
 
-	int updateMemberPw(String memberId, String encodedPw);
+	int updateTempMemberPw(String memberId, String encodedPw);
 
 	Member searchMemberId(Member member);
 

@@ -16,6 +16,7 @@ import com.fortrip.com.app.common.util.TempPwUtil;
 import com.fortrip.com.app.member.dto.JoinRequest;
 import com.fortrip.com.app.member.dto.LoginRequest;
 import com.fortrip.com.app.member.dto.ModifyRequest;
+import com.fortrip.com.app.member.dto.pwUpdateRequest;
 import com.fortrip.com.domain.member.model.service.MemberService;
 import com.fortrip.com.domain.member.model.vo.Member;
 
@@ -51,7 +52,7 @@ public class MemberController {
 			String tempPw = TempPwUtil.generateSecureTempPassword(10);
 			// 임시 비번 암호화해서 DB 저장함
 			String encodedPw = bcrypt.encode(tempPw);
-			int result = mService.updateMemberPw(memberId, encodedPw);
+			int result = mService.updateTempMemberPw(memberId, encodedPw);
 			
 			if(result > 0) {
 				model.addAttribute("tempPw", tempPw);
@@ -250,6 +251,7 @@ public class MemberController {
 	public String modifyProfile(@ModelAttribute ModifyRequest member
 			,HttpSession session, Model model) {
 		try {
+			
 			String loginMember = (String)session.getAttribute("loginMember");
 			member.setMemberId(loginMember);
 			System.out.println(loginMember);
@@ -278,9 +280,44 @@ public class MemberController {
 		return "member/pwUpdate";
 	}
 	
-	@PostMapping("pwUpdate")
-	public String pwUpdate() {
-		return "";
+	@PostMapping("pwUpdate")		//기존에 있는 비밀번호랑 작성한 비번이 같고 새로운 비번 두번을 일치하게 적으면 바뀌는 형식
+	public String pwUpdate(@ModelAttribute pwUpdateRequest request
+			, HttpSession session, Model model) {
+		try {
+			Member loginMember = (Member)session.getAttribute("loginMember");
+			
+			if(loginMember == null) {
+				model.addAttribute("errorMsg", "로그인 정보가 없습니다");
+				return "common/error";
+			}
+			String memberId = loginMember.getMemberId();
+			Member dbMember = mService.selectOneById(memberId);
+			
+			if(!bcrypt.matches(request.getCurrentPw(), dbMember.getMemberPw())) {
+				model.addAttribute("errorMsg", "현재 비밀번호가 일치하지 않습니다.");
+				return "common/error";
+			}
+			
+			if(!request.getNewPw().equals(request.getConfirmPw())) {
+				model.addAttribute("errorMsg", "새 비밀번호가 일치하지 않습니다.");
+				return "common/error";
+			}
+			String encodeNewPw = bcrypt.encode(request.getNewPw());
+			int result = mService.updateTempMemberPw(memberId, encodeNewPw);
+			
+			if(result > 0) {
+				session.invalidate();
+				return "member/pwUpdateResult";
+			}else {
+				model.addAttribute("errorMsg", "비밀번호 변경에 실패했습니다.");
+				return "common/error";
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			model.addAttribute("errorMsg", e.getMessage());
+			return "common/error";
+		}
 	}
 	
 	

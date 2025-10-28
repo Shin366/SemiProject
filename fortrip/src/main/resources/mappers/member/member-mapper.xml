@@ -10,7 +10,7 @@
         WHERE MEMBER_NAME = #{memberName} AND EMAIL = #{email}
     </select>
   
-  	<update id="updateMemberPw">
+  	<update id="updateTempMemberPw">
   		UPDATE MEMBER
   		SET MEMBER_PW = #{encodedPw}
   		WHERE MEMBER_ID = #{memberId}
@@ -55,6 +55,11 @@
   	
   	<update id="updateMember">
   		UPDATE MEMBER SET NICKNAME = #{NickName}, PHONE = #{phone}, EMAIL = #{email} WHERE MEMBER_ID =#{memberId}
+  	</update>
+  	
+  	
+  	<update id="updateMemberPw">
+  		UPDATE MEMBER SET MEMBER_PW = #{memberPw} WHERE MEMBER_ID = #{memberId}
   	</update>
   	
   	
