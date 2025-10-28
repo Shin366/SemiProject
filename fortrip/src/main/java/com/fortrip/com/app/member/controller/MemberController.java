@@ -262,7 +262,7 @@ public class MemberController {
 			int result = mService.updateMember(member);
 			
 			if(result > 0) {
-				return "redirect:/member/update";
+				return "/member/updateResult";
 			}else {
 				model.addAttribute("errorMsg", "SERVICE_FAILED");
 				return "common/error";
