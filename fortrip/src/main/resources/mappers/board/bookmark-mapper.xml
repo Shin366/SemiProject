@@ -21,5 +21,12 @@
           AND TARGET_TYPE = #{targetType}
           AND TARGET_NO = #{targetNo}
     </delete>
+    
+    <select id="countBookmarkByBoard" resultType="_int">
+        SELECT COUNT(*)
+        FROM BOOKMARK
+        WHERE TARGET_TYPE = #{targetType}
+          AND TARGET_NO = #{targetNo}
+    </select>
 
 </mapper>

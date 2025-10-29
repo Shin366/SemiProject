@@ -17,4 +17,8 @@ public interface BookmarkMapper {
 	 int deleteBookmark(@Param("memberNo") int memberNo,
              @Param("targetType") String targetType,
              @Param("targetNo") int targetNo);
+
+	 int countBookmarkByBoard(
+			 @Param("targetType") String targetType, 
+			 @Param("targetNo") int targetNo);
 }

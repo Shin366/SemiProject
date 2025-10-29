@@ -6,5 +6,7 @@ public interface BookmarkService {
 
 	boolean isBookmarked(int memberNo, String targetType, int targetNo);
 
+	int getLikeCount(String targetType, int targetNo);
+	
 
 }

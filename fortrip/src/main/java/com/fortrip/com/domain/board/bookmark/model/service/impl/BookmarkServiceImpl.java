@@ -31,4 +31,9 @@ public class BookmarkServiceImpl implements BookmarkService{
 	        return mapper.existsBookmark(memberNo, targetType, targetNo) > 0;
 	    }
 
+		@Override
+		public int getLikeCount(String targetType, int targetNo) {
+			return mapper.countBookmarkByBoard(targetType, targetNo);
+		}
+
 }

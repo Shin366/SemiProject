@@ -22,7 +22,7 @@ public class BookmarkController {
 
     @Autowired
     private BookmarkService bookmarkService;
-//test
+
     @PostMapping("/toggle")
     @ResponseBody
     public Map<String, Object> toggleBookmark(
@@ -40,9 +40,13 @@ public class BookmarkController {
         }
 
         boolean isBookmarked = bookmarkService.toggleBookmark(loginMember.getMemberNo(), targetType, targetNo);
+        
+        int currentBookmarkCount = bookmarkService.getLikeCount(targetType, targetNo);
+        
         result.put("status", "success");
         result.put("isBookmarked", isBookmarked);
-
+        result.put("bookmarkCount", currentBookmarkCount);
+        
         return result;
     }
 
