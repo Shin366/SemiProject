@@ -5,7 +5,11 @@
   <mapper namespace="com.fortrip.com.domain.member.model.mapper.CourseViewHistoryMapper">
   
   	<select id="selectRecentCourses" parameterType="long">
-  		SELECT * FROM(SELECT h.*, )
+  		SELECT h.*, r.road_name, r.road_location
+	    FROM COURSE_VIEW_HISTORY h
+	    JOIN ROAD r ON h.COURSE_ID = r.ROAD_NO
+	    WHERE h.MEMBER_NO = #{memberNo}
+	    ORDER BY h.VIEW_DATE DESC
   	</select>
   	
   	<select id="checkExistiogView" parameterType="map" resultType="int">

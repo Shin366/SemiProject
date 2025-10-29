@@ -19,29 +19,30 @@ import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("member")
 public class CourseViewController {
 	
 	private final CourseViewHistoryService hService;
 	
-	@GetMapping("")
+	@GetMapping("trip/coursedetail/{courseId}")
 	public String viewCourseDetail(@PathVariable long courseId, HttpSession session) {
 		Member loginMember = (Member)session.getAttribute("loginMember");
 		if(loginMember != null) {
 			hService.recordCourseView(loginMember.getMemberNo(),courseId, "U");
 		}
-		return "course/detail";
+		return "trip/coursedetail";
 		
 	}
 	
-	@GetMapping("")
+	@GetMapping("member/recent")
 	public String showRecentCourses(HttpSession session, Model model) {
 		Member loginMember = (Member)session.getAttribute("loginMember");
 		if(loginMember == null) {
+			model.addAttribute("errorMsg", "로그인 후 이용 가능합니다.");
 			return "redirect:/member/login";
 		}
+		int memberNo = loginMember.getMemberNo();
 		List<CourseViewHistory> list = hService.getRecentCourses(loginMember.getMemberNo());
 		model.addAttribute("recentList", list);
-		return "";	
+		return "/WEB-INF/views/member/recent.jsp";	
 	}
 }
