@@ -202,8 +202,35 @@ public class MemberController {
 	
 	
 	@GetMapping("profile")
-	public String showProfilePage() {
-		return "member/profile";
+	public String showProfilePage(HttpSession session, Model model) {
+	   try {
+	        // 세션에서 로그인 회원 정보 가져오기
+	        Member loginMember = (Member) session.getAttribute("loginMember");
+	        
+	        if(loginMember == null) {
+	            model.addAttribute("errorMsg", "로그인이 필요합니다.");
+	            return "common/error";
+	        }
+	        
+	        // DB에서 최신 회원 정보 조회
+	        String memberId = loginMember.getMemberId();
+	        Member member = mService.selectOneById(memberId);
+	        
+	        if(member == null) {
+	            model.addAttribute("errorMsg", "회원 정보를 찾을 수 없습니다.");
+	            return "common/error";
+	        }
+	        
+	        //  Model에 member 객체 담기
+	        model.addAttribute("member", member);
+	        
+	        return "member/profile";
+	        
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        model.addAttribute("errorMsg", e.getMessage());
+	        return "common/error";
+	    }
 	}
 	
 	

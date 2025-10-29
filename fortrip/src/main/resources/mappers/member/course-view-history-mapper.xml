@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.fortrip.com.domain.member.model.mapper.CourseViewHistoryMapper">
+  
+  	<select id="selectRecentCourses" parameterType="long">
+  		SELECT * FROM(SELECT h.*, )
+  	</select>
+  	
+  	<select id="checkExistiogView" parameterType="map" resultType="int">
+  		SELECT COUNT(*)FROM COURSE_VIEW_HISTORY
+  		WHERE MEMBER_NO = #{memberNo} AND COURSE_ID = #{courseId}
+  	</select>
+  	
+  	<insert id="insertView">
+  		INSERT INTO COURSE_VIEW_HISTORY(MEMBER_NO, COURSE_ID, COURSE_TYPE)
+  		VALUES (#{memberNo}, #{courseId}, #{courseType})
+  	</insert>
+  	
+  	<update id="updateViewDate" parameterType="map">
+  		UPDATE COURSE_VIEW_HISTORY SET VIEW_DATE = SYSTIMESTAMP
+  		WHERE MEMBER_NO = #{memberNo} AND COURSE_ID = #{courseId}
+  	</update>
+  </mapper>
