@@ -88,6 +88,10 @@ pom.properties
 /src/test/resources/application.properties
 /src/test/resources/application.yml
 
+!src/main/webapp/resources/css/
+!src/main/webapp/resources/css/**
+
+
 # 로컬 환경 변수 파일 (.env)
 .env
 .env.local
