@@ -1,0 +1,54 @@
+@charset "UTF-8";
+
+/* --- 기본 레이아웃  --- */
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; background-color: white; color: #333; }
+.container { display: flex; max-width: 1200px; margin: 30px auto; gap: 30px; }
+.sidebar { flex: 0 0 200px; }
+.main-content { flex-grow: 1; }
+
+/* --- 사이드바 --- */
+.sidebar ul { list-style: none; padding: 0; background-color: #fff; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); padding: 10px; }
+.sidebar a { display: block; padding: 15px 20px; text-decoration: none; color: #555; border-radius: 6px; font-weight: 600; font-size: 16px; }
+.sidebar a.active, .sidebar a:hover { background-color: #007bff; color: white; }
+
+/* --- 메인 컨텐츠 --- */
+.page-header h1 { font-size: 28px; font-weight: bold; margin-bottom: 8px; }
+.page-header p { color: #888; margin-bottom: 30px; }
+
+.board-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.board-search-box {
+  display: flex;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+.board-search-box select,
+.board-search-box input,
+.board-search-box button {
+  border: none;
+  background: none;
+  padding: 10px;
+  font-size: 14px;
+}
+.board-search-box input { outline: none; }
+
+      
+/* --- 게시판 목록 --- */
+.board-list { border-top: 2px solid #333; }
+.board-list .list-item { display: grid; grid-template-columns: 80px 1fr 120px 180px; align-items: center; padding: 15px 10px; border-bottom: 1px solid #eee; text-align: center; font-size: 15px; }
+.board-list .list-item.header { font-weight: bold; background-color: #f9f9f9; }
+.board-list .post-title { text-align: left; }
+.board-list .post-title a { text-decoration: none; color: #333; }
+.board-list .post-title a:hover { text-decoration: underline; }
+.post-meta { display: flex; justify-content: space-evenly; align-items: center; color: #888; font-size: 14px; }
+
+.list-item.notice { background-color: #fff9f9; }
+.notice .post-no .badge { background-color: #dc3545; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+
+.board-footer { display: flex; justify-content: flex-end; margin-top: 20px; }
+.write-button { background-color: #007bff; color: white; text-decoration: none; padding: 12px 25px; border-radius: 6px; font-weight: bold; }
+
+/* --- 페이지네이션 --- */
+.pagination { display: flex; justify-content: center; align-items: center; gap: 8px; margin: 40px 0; }
+.pagination a, .pagination strong { display: inline-block; width: 36px; height: 36px; line-height: 36px; text-align: center; border-radius: 6px; text-decoration: none; color: #555; border: 1px solid #ddd; }
+.pagination a:hover { background-color: #e9ecef; }
+.pagination strong { background-color: #007bff; color: white; border-color: #007bff; font-weight: bold; }
