@@ -19,7 +19,7 @@
     <aside class="sidebar">
       <ul>
         <li><a class="nav-btn" href="/trip/course">
-          <span class="ico" aria-hidden="true">
+          <span class="ico" aria-hidden="true"> <!-- SVG 그래픽을 담는 컨테이너임  -->
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4.5 8-11a8 8 0 1 0-16 0c0 6.5 8 11 8 11z"/><circle cx="12" cy="11" r="3"/></svg>
           </span> 여행코스
         </a></li>
@@ -45,19 +45,20 @@
       <form id="courseForm" class="card" method="post" action="/trip/course/insert" enctype="multipart/form-data">
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
         <input type="hidden" name="itineraryJson" id="itineraryJson">
-
+		<input type="hidden" name="routeCsv" id="routeCsv">
+		
         <h2 class="section-title" style="margin-top:4px;">새 코스 만들기</h2>
 
         <!-- 기본 정보 -->
         <div class="form-grid">
           <div class="field">
-            <label class="req">플랜의 제목</label>
+            <label class="req">코스 제목</label> 
             <input type="text" name="title" placeholder="예) 봄맞이 부산 2박 3일 감성로드" required>
           </div>
           <div class="field">
             <label>메인사진</label>
             <div class="upload">
-              <img id="thumbPreview" class="thumb" alt="썸네일 미리보기">
+              <img id="thumbPreview" class="thumb" alt="사진 미리보기">
               <div>
                 <input type="file" name="thumbnail" id="thumbnail" accept="image/*">
                 <div class="hint">JPG/PNG 권장, 최대 5MB</div>
@@ -75,7 +76,7 @@
           </div>
 
           <div class="field">
-            <label>핵심 문구</label>
+            <label>코스 한줄 소개</label>
             <input type="text" name="slogan" placeholder="여행의 컨셉/한줄 소개">
           </div>
           <div class="field"></div>
@@ -110,7 +111,7 @@
           <div id="themeChips" class="chips" style="margin-top:8px">
             <label class="chip"><input type="checkbox" name="themes" value="먹방코스">먹방코스</label>
             <label class="chip"><input type="checkbox" name="themes" value="국토대장정">국토대장정</label>
-            <label class="chip"><input type="checkbox" name="themes" value="문화유적">문화유적</label>
+            <label class="chip"><input type="checkbox" name="themes" value="문화유적">문화/유적</label>
             <label class="chip"><input type="checkbox" name="themes" value="액티비티">액티비티</label>
             <label class="chip"><input type="checkbox" name="themes" value="쇼핑">쇼핑</label>
             <label class="chip"><input type="checkbox" name="themes" value="자전거">자전거</label>
@@ -118,7 +119,7 @@
             <label class="chip"><input type="checkbox" name="themes" value="바다/섬">바다/섬</label>
             <label class="chip"><input type="checkbox" name="themes" value="산">산</label>
             <label class="chip"><input type="checkbox" name="themes" value="축제/행사">축제/행사</label>
-            <label class="chip"><input type="checkbox" name="themes" value="바다/섬">문화 관광</label>
+            <label class="chip"><input type="checkbox" name="themes" value="자연/경관">자연/경관</label>
           </div>
         </div>
 
@@ -314,7 +315,7 @@
         <div class="card" style="margin-top:14px">
           <div class="form-row" style="align-items:center">
             <div class="field" style="flex:1">
-              <label>장소 검색 또는 직접 입력 <span class="hint">(엔터로 복수추가)</span></label>
+              <label>장소 직접 입력 <span class="hint">(엔터로 복수추가)</span></label>
               <input id="placeInput" type="text" placeholder="예) 자갈치시장, 감천문화마을">
             </div>
             <!-- 버튼이 가로로 잘 보이도록 .btn에 nowrap/height 지정됨 -->
@@ -409,7 +410,6 @@
             <option value="맛집">맛집</option>
             <option value="카페">카페</option>
             <option value="쇼핑">쇼핑</option>
-            <option value="이동">이동</option>
           </select>
           <div class="time">
             <input type="time" class="start" value="10:00">
@@ -473,12 +473,13 @@
     addDay();
 
     // ===== 제출 직전 직렬화 =====
-    const form = document.getElementById('courseForm');
-    form.addEventListener('submit', (e) => {
-      if(builder.children.length === 0){
-        alert('최소 1일차 이상 입력해주세요.');
-        e.preventDefault(); return;
-      }
+    document.addEventListener('DOMContentLoaded', () => {
+	    const form = document.getElementById('courseForm');
+	    form.addEventListener('submit', (e) => {
+	      if(builder.children.length === 0){
+	        alert('최소 1일차 이상 입력해주세요.');
+	        e.preventDefault(); return;
+	      }    	
       const itinerary = [];
       builder.querySelectorAll('.day').forEach(dayEl=>{
         const day = {
@@ -499,6 +500,13 @@
         itinerary.push(day);
       });
       document.getElementById('itineraryJson').value = JSON.stringify(itinerary);
+      console.log('itinerary len =', itinerary.length, 'json bytes ~', JSON.stringify(itinerary).length);
+      
+      const routeNames = [];
+      itinerary.forEach(d => d.stops.forEach(s => {
+        if (s.name && s.name.trim()) routeNames.push(s.name.trim());
+      }));
+      document.getElementById('routeCsv').value = routeNames.join(',');
 
       const s = form.querySelector('[name="startDate"]').value;
       const eDate = form.querySelector('[name="endDate"]').value;
@@ -521,6 +529,7 @@
         c.querySelector('input').checked = false;
       });
     });
+   	});
   </script>
 </body>
 </html>

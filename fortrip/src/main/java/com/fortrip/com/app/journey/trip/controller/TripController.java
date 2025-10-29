@@ -61,7 +61,7 @@ public class TripController {
             // 비로그인 → 로그인 페이지로
             return "redirect:/member/login?beforeURL=/trip/add";
         }
-        Integer loginMemberNo = loginMember.getMemberNo();
+        Integer loginMemberNo = (loginMember != null ? loginMember.getMemberNo() : null);
 
         // 2) 폼 -> VO 매핑
         Trip vo = form.toTripVo();
@@ -78,11 +78,11 @@ public class TripController {
             thumbnail.transferTo(dest);
 
             // 나중에 ROAD 테이블에 THUMB_URL 추가하면:
-            // vo.setThumbUrl("/resources/tripThumb/" + savedName);
+            vo.setThumbUrl("/resources/tripThumb/" + savedName);
         }
 
         // 4) INSERT 실행
-        int result = tripService.createTrip(vo); // TripService에 메서드 추가되어 있어야 함
+        tripService.createTrip(vo); // TripService에 메서드 추가되어 있어야 함
 
         // 5) 리다이렉트
         return "redirect:/trip/course";

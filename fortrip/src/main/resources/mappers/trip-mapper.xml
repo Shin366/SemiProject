@@ -29,7 +29,10 @@
       ROAD_INTRO     AS roadIntro,
       DELETE_YN      AS deleteYn,
       WRITE_DATE     AS writeDate,
-      MEMBER_NO      AS memberNo
+      MEMBER_NO      AS memberNo,
+      THUMB_URL		 AS thumbUrl,
+      SLOGAN 		 AS slogan,
+      ITINERARY_JSON AS itineraryJson
     FROM ROAD
     <include refid="baseWhere"/>
     ORDER BY WRITE_DATE DESC NULLS LAST, ROAD_NO DESC
@@ -58,7 +61,10 @@
       ROAD_INTRO     AS roadIntro,
       DELETE_YN      AS deleteYn,
       WRITE_DATE     AS writeDate,
-      MEMBER_NO      AS memberNo
+      MEMBER_NO      AS memberNo,
+      THUMB_URL		 AS thumbUrl,
+      SLOGAN 		 AS slogan,
+      ITINERARY_JSON AS itineraryJson
     FROM ROAD
     WHERE ROAD_NO = #{id}
       AND NVL(DELETE_YN,'N') = 'N'
@@ -70,7 +76,8 @@
   INSERT INTO ROAD (
     ROAD_NO, ROAD_NAME, ROAD_START, ROAD_END,
     ROAD_LOCATION, ROAD_YN, ROAD_COST, ROAD_STYLE,
-    ROAD_INTRO, MEMBER_NO, DELETE_YN, WRITE_DATE
+    ROAD_INTRO, MEMBER_NO, DELETE_YN, WRITE_DATE,
+    THUMB_URL, SLOGAN, ITINERARY_JSON
   ) VALUES (
     SEQ_ROAD_NO.NEXTVAL,
     #{roadName},
@@ -83,7 +90,10 @@
     #{roadIntro},
     #{memberNo, jdbcType=NUMERIC},   <!-- ★ 여기 -->
     'N',
-    SYSTIMESTAMP
+    SYSTIMESTAMP,
+    #{thumbUrl, jdbcType=VARCHAR},
+    #{slogan, jdbcType=VARCHAR},
+    #{itineraryJson, jdbcType=CLOB}
   )
 </insert>
 

@@ -22,5 +22,8 @@ public class Trip {
     private String deleteYn;       // VARCHAR2(1)
     private Timestamp writeDate;   // TIMESTAMP
     private Integer memberNo;   // ★ 추가: 작성자 FK
+    
+    private String thumbUrl;
+    private String slogan;
+    private String itineraryJson;
 }
-

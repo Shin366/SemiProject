@@ -60,13 +60,6 @@
               </div>
             </div>
 
-            <div class="field">
-              <label>인원</label>
-              <div class="input-wrap">
-                <input type="text" name="people" placeholder="1명" />
-              </div>
-            </div>
-
             <div class="field btn-field">
               <button type="submit">검색</button>
             </div>
@@ -188,7 +181,7 @@
            aria-disabled="${page >= totalPages}">다음</a>
       </nav>
 
-      <!-- 사용자 추천 섹션 -->
+      <!-- 사용자 추천 섹션 -->   
       <section class="user-recommend">
         <h2>당신만을 위한 사용자 추천 특별한 여행</h2>
         <p>모든 경험이 담긴 특별한 여행을 지금 바로 만나보세요!</p>
