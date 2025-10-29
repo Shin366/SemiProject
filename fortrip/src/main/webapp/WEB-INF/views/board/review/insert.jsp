@@ -8,179 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>코스 리뷰 작성</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <style>
-        /* General Styles */
-        body {
-            font-family: 'pretendard', sans-serif;
-            background-color: #f4f6f9;
-            margin: 0;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background-color: #fff;
-            padding: 30px 40px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        h1 {
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 30px;
-            color: #333;
-        }
-
-        /* Form Layout */
-        .review-form {
-            display: flex;
-            gap: 40px;
-        }
-
-        .main-content {
-            flex: 3; /* 3:1 ratio for main content vs sidebar */
-        }
-
-        .sidebar {
-            flex: 1;
-        }
-
-        /* Form Groups */
-        .form-group {
-            margin-bottom: 25px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #555;
-        }
-
-        .form-group input[type="text"],
-        .form-group textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 15px;
-            box-sizing: border-box;
-            transition: border-color 0.2s;
-        }
-
-        .form-group input[type="text"]:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #007bff;
-        }
-
-        /* WYSIWYG Editor Placeholder */
-        #reviewContent {
-            min-height: 450px; /* 에디터 높이 조정 */
-            resize: vertical;
-        }
-
-        .form-group .guide {
-             font-size: 13px;
-             color: #888;
-             margin-top: 5px;
-        }
-
-        /* Sidebar Widgets */
-        .widget {
-            background-color: #f9fafb;
-            padding: 20px;
-            border-radius: 8px;
-            border: 1px solid #e9ecef;
-            margin-bottom: 25px;
-        }
-
-        .widget h3 {
-            font-size: 18px;
-            margin-top: 0;
-            margin-bottom: 15px;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
-        }
-
-        /* Course Selection Widget */
-        #selectRoadBtn { /* 버튼 ID 수정 */
-            width: 100%;
-            padding: 10px;
-            background-color: #343a40;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 15px;
-        }
-        #selectedCourseName {
-            margin-top: 10px;
-            font-size: 14px;
-            color: #007bff;
-            font-weight: 600;
-        }
-
-        /* Rating Widget */
-        .rating .stars {
-            font-size: 28px;
-            color: #ddd;
-            cursor: pointer;
-        }
-        .rating .stars .fa-star:hover,
-        .rating .stars .fa-star.selected {
-            color: #ffc107;
-        }
-
-        /* Image Uploader Widget */
-        .image-uploader {
-            border: 2px dashed #ddd;
-            border-radius: 8px;
-            padding: 30px;
-            text-align: center;
-            cursor: pointer;
-            transition: background-color 0.2s, border-color 0.2s;
-        }
-        .image-uploader:hover {
-            background-color: #f8f9fa;
-            border-color: #007bff;
-        }
-        .image-uploader i {
-            font-size: 32px;
-            color: #adb5bd;
-        }
-        .image-uploader p {
-            margin: 10px 0 0;
-            color: #6c757d;
-        }
-
-        /* Action Buttons */
-        .form-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            margin-top: 30px; /* 폼과 버튼 사이 간격 */
-        }
-        .btn {
-            padding: 12px 25px;
-            border: none;
-            border-radius: 6px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-        .btn-primary {
-            background-color: #007bff;
-            color: white;
-        }
-        .btn-secondary {
-            background-color: #6c757d;
-            color: white;
-        }
-    </style>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+    <link rel="stylesheet" href="<c:url value='/resources/css/common/header.css'/>">
+    <link rel="stylesheet" href="<c:url value='/resources/css/board/review/insert.css'/>">
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/common/header.jsp"/>
@@ -188,7 +18,6 @@
 <div class="container">
     <h1>코스 리뷰 작성</h1>
 
-    <%-- 폼 ID 추가 --%>
     <form class="review-form" id="review-form" action="/board/review/insert" method="post" enctype="multipart/form-data">
 
         <%-- 왼쪽 메인 콘텐츠 영역 --%>
@@ -214,13 +43,10 @@
         <div class="sidebar">
             <div class="widget">
                 <h3>원본 코스</h3>
-                <%-- 버튼 ID 수정 --%>
                 <button type="button" id="selectRoadBtn">리뷰할 코스 선택하기</button>
                 <div id="selectedCourseName">선택된 코스가 없습니다.</div>
 
-                <%-- Hidden Input ID/Name 수정 ('r' 소문자) --%>
                 <input type="hidden" id="roadNo" name="roadNo">
-                <%-- reviewerType은 로그인 사용자 정보 기반으로 서버에서 설정하는 것이 안전할 수 있음 --%>
                 <input type="hidden" id="reviewerType" name="reviewerType" value="USER">
             </div>
 
@@ -250,7 +76,6 @@
         </div>
     </form> 
 
-    <%-- 버튼들을 form 밖에 두되, submit 버튼에 form 속성 연결 --%>
     <div class="form-actions">
         <button type="button" class="btn btn-secondary" onclick="history.back()">취소</button>
         <button type="submit" form="review-form" class="btn btn-primary">등록하기</button>

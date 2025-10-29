@@ -1,0 +1,173 @@
+@charset "UTF-8";
+
+/* General Styles */
+body {
+    font-family: 'pretendard', sans-serif;
+    background-color: #f4f6f9;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 30px 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+/* Form Layout */
+.review-form {
+    display: flex;
+    gap: 40px;
+}
+
+.main-content {
+    flex: 3; /* 3:1 ratio for main content vs sidebar */
+}
+
+.sidebar {
+    flex: 1;
+}
+
+/* Form Groups */
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #555;
+}
+
+.form-group input[type="text"],
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 15px;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+}
+
+.form-group input[type="text"]:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #007bff;
+}
+
+/* WYSIWYG Editor Placeholder */
+#reviewContent {
+    min-height: 450px; /* 에디터 높이 조정 */
+    resize: vertical;
+}
+
+.form-group .guide {
+     font-size: 13px;
+     color: #888;
+     margin-top: 5px;
+}
+
+/* Sidebar Widgets */
+.widget {
+    background-color: #f9fafb;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+    margin-bottom: 25px;
+}
+
+.widget h3 {
+    font-size: 18px;
+    margin-top: 0;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+/* Course Selection Widget */
+#selectRoadBtn { /* 버튼 ID 수정 */
+    width: 100%;
+    padding: 10px;
+    background-color: #343a40;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 15px;
+}
+#selectedCourseName {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #007bff;
+    font-weight: 600;
+}
+
+/* Rating Widget */
+.rating .stars {
+    font-size: 28px;
+    color: #ddd;
+    cursor: pointer;
+}
+.rating .stars .fa-star:hover,
+.rating .stars .fa-star.selected {
+    color: #ffc107;
+}
+
+/* Image Uploader Widget */
+.image-uploader {
+    border: 2px dashed #ddd;
+    border-radius: 8px;
+    padding: 30px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+.image-uploader:hover {
+    background-color: #f8f9fa;
+    border-color: #007bff;
+}
+.image-uploader i {
+    font-size: 32px;
+    color: #adb5bd;
+}
+.image-uploader p {
+    margin: 10px 0 0;
+    color: #6c757d;
+}
+
+/* Action Buttons */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 30px; /* 폼과 버튼 사이 간격 */
+}
+.btn {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+}
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+}
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+}
