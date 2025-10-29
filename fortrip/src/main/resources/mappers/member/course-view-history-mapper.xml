@@ -12,16 +12,16 @@
             h.COURSE_ID,
             h.COURSE_TYPE,
             h.VIEW_DATE,
-            r.ROAD_NAME AS title,
-            r.ROAD_LOCATION AS location,
-            r.ROAD_COST AS price,
-            r.ROAD_INTRO AS intro,
-            ROW_NUMBER() OVER (ORDER BY h.VIEW_DATE DESC) AS rnum
+            r.ROAD_NAME,
+            r.ROAD_LOCATION,
+            r.ROAD_COST,
+            r.ROAD_INTRO,
+            ROW_NUMBER() OVER (ORDER BY h.VIEW_DATE DESC)
         FROM COURSE_VIEW_HISTORY h
         JOIN ROAD r ON h.COURSE_ID = r.ROAD_NO
         WHERE h.MEMBER_NO = #{memberNo}
     )
-    WHERE rnum BETWEEN #{startRow} AND #{endRow}
+    WHERE ROW_NUMBER BETWEEN #{startRow} AND #{endRow}
   	</select>
   	
   	<select id="checkExistiogView" parameterType="map" resultType="int">

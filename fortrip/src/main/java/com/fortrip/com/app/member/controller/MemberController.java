@@ -259,15 +259,6 @@ public class MemberController {
 		return "member/list";
 	}
 	
-	@GetMapping("recent")
-	public String showRecentPage() {
-		return "member/recent";
-	}
-	
-	@PostMapping("recent")
-	public String recentPage() {
-		return "member/recent";
-	}
 	
 	@GetMapping("update")
 	public String showUpdate() {
