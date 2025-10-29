@@ -22,22 +22,22 @@
   	
   	<select id="selectOneBylogin" parameterType="String" resultType="Member">
 		SELECT
-	    MEMBER_NO AS memberNo
-	    , MEMBER_ID AS memberId
-	    , MEMBER_PW AS memberPw
-	    , MEMBER_NAME AS memberName
-	    , NICKNAME AS nickName
-	    , PHONE AS phone
-	    , BIRTH_DATE_YEAR AS birthDateYear
-	    , BIRTH_DATE_MON AS birthDateMon
-	    , BIRTH_DATE_DAY AS birthDateDay
-	    , EMAIL AS email
-	    , GENDER AS gender
-	    , ENROLL_DATE AS enrollDate
-	    , ADMIN_YN AS adminYN
-	    , TRIP_STYLE AS tripStyle
-	    , TENDENCY AS tendency
-	    , STATUS_YSN AS statusYsn
+	    MEMBER_NO AS memberNo,
+            MEMBER_ID AS memberId,
+            MEMBER_PW AS memberPw,
+            MEMBER_NAME AS memberName,
+            NICKNAME AS nickName,
+            PHONE AS phone,
+            BIRTH_DATE_YEAR AS birthDateYear,
+            BIRTH_DATE_MON AS birthDateMon,
+            BIRTH_DATE_DAY AS birthDateDay,
+            EMAIL AS email,
+            GENDER AS gender,
+            ENROLL_DATE AS enrollDate,
+            ADMIN_YN AS adminYn,
+            TRIP_STYLE AS tripStyle,
+            TENDENCY AS tendency,
+            STATUS_YSN AS statusYsn
 		FROM MEMBER 
 		WHERE MEMBER_ID = #{memberId}
 		AND STATUS_YSN = 'Y' <!-- 활동 회원만 조회 -->
@@ -54,8 +54,9 @@
 	</update>
   	
   	<update id="updateMember">
-  		UPDATE MEMBER SET NICKNAME = #{nickName}, PHONE = #{phone}, EMAIL = #{email} WHERE MEMBER_ID =#{memberId}
-  	</update>
+        UPDATE MEMBER SET NICKNAME = #{nickName}, PHONE = #{phone}, EMAIL = #{email}, TENDENCY = #{tendency}
+        WHERE MEMBER_ID = #{memberId}
+    </update>
   	
   	
   	<update id="updateMemberPw">

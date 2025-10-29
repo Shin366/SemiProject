@@ -12,5 +12,6 @@ public class ModifyRequest {
 	private String nickName;
 	private String phone;
 	private String email;
+	private String tendency;
 	
 }
