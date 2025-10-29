@@ -34,13 +34,26 @@
             </div>
 
             <ul class="qna-list">
-                <c:forEach var="qna" items="${qList}">
-                    <li class="qna-item">
-                        <a href="/board/qna/detail?qnaNo=${qna.qnaNo}">${qna.qnaTitle}</a>
-                        <span class="writer">${qna.writer}</span>
-                    </li>
-                </c:forEach>
-            </ul>
+			  <c:forEach var="qna" items="${qList}">
+			    <li class="qna-item">
+			      <c:choose>
+			        <c:when test="${qna.isPrivate eq 'Y'}">
+			          <a href="/board/qna/detail?qnaNo=${qna.qnaNo}">
+			            🔒 비밀글입니다.
+			          </a>
+			          <span class="writer">익명</span>
+			        </c:when>
+			
+			        <c:otherwise>
+			          <a href="/board/qna/detail?qnaNo=${qna.qnaNo}">
+			            ${qna.qnaTitle}
+			          </a>
+			          <span class="writer">${qna.writer}</span>
+			        </c:otherwise>
+			      </c:choose>
+			    </li>
+			  </c:forEach>
+			</ul>
             
              <div class="actions">
                  <%-- 글쓰기 버튼 링크 수정 --%>
