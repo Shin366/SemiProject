@@ -19,12 +19,12 @@ import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("member")
+@RequestMapping("member/course")
 public class CourseViewController {
 	
 	private final CourseViewHistoryService hService;
 	
-	@GetMapping("")
+	@GetMapping("login")
 	public String viewCourseDetail(@PathVariable long courseId, HttpSession session) {
 		Member loginMember = (Member)session.getAttribute("loginMember");
 		if(loginMember != null) {
@@ -34,7 +34,7 @@ public class CourseViewController {
 		
 	}
 	
-	@GetMapping("")
+	@GetMapping("list")
 	public String showRecentCourses(HttpSession session, Model model) {
 		Member loginMember = (Member)session.getAttribute("loginMember");
 		if(loginMember == null) {
