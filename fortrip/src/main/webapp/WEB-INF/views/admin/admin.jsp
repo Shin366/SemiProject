@@ -248,7 +248,7 @@
                                 <div class="search-course">
                                     <span class="material-symbols-outlined">search</span>
                                     <input type="text" placeholder="코스명, 지역으로 검색..">
-                                    <button id="courseAdd-btn">+ 새 코스</button>
+                                    <button type="button" id="courseAdd-btn" onclick="location.href='/trip/add'">+ 새 코스</button>
                                 </div>
                             </form>
                             <div class="course-content">
