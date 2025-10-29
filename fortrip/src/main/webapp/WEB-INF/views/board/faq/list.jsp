@@ -7,7 +7,7 @@
     <title>ForTrip - 자주 묻는 질문</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
 	<link rel="stylesheet" href="/resources/css/common/header.css">
-    <link rel="stylesheet" href="/resources/css/board/faq.css">
+    <link rel="stylesheet" href="/resources/css/board/faq/faq.css">
     <style>
     </style>
 </head>
