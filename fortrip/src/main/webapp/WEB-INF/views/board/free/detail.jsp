@@ -52,7 +52,9 @@
                         <button class="btn" id="likeBtn" data-board-type="FREE" data-board-no="${free.postNo}">
                             <i class="fa-regular fa-heart"></i> <span id="likeCount">${likeCount}</span>
                         </button>
-                        <button class="btn" id="bookmarkBtn" data-target-type="FREE" data-target-no="${free.postNo}">
+                        <button class="btn" id="bookmarkBtn"
+					        data-target-type="FREE"
+					        data-target-no="${free.postNo != null ? free.postNo : 0}">
 						    <i class="fa-regular fa-bookmark"></i>
 						    <span id="bookmarkCount">${free.bookmarkCount}</span>
 						</button>
@@ -82,7 +84,6 @@
 			        <button id="commentSubmitBtn" type="button" class="btn btn-submit">등록</button>
 			    </div>
 			</div>
-			
 			<!-- 댓글 목록 -->
 			<ul class="comment-list" id="commentListArea">
 			    <c:forEach var="comment" items="${commentList}">
@@ -90,7 +91,8 @@
 			            <p class="comment-author">${comment.writerNickname}</p>
 			            <p class="comment-content">${comment.commentContent}</p>
 			            
-			            <c:if test="${sessionScope.loginMember.memberNo == comment.memberNo}">
+			            <%-- <c:if test="${sessionScope.loginMember.memberNo == comment.memberNo}"> --%>
+			            <c:if test="${not empty sessionScope.loginMember and sessionScope.loginMember.memberNo eq comment.memberNo}">
 			                <div class="comment-actions" style="text-align:right; font-size:12px; margin-top: 10px;">
 			                    <button type="button" class="edit-btn">수정</button>	
 								<button type="button" class="delete-btn">삭제</button>
@@ -106,7 +108,7 @@
 
             <div class="bottom-actions">
                 <div>
-                    <c:if test="${sessionScope.loginMember.memberNo == free.memberNo}">
+                    <c:if test="${not empty sessionScope.loginMember and sessionScope.loginMember.memberNo eq comment.memberNo}">
                         <a href="<c:url value='/board/free/update?postNo=${free.postNo}'/>" class="btn">수정</a>
                         <a href="<c:url value='/board/free/delete?postNo=${free.postNo}'/>" class="btn">삭제</a>
                     </c:if>
@@ -171,6 +173,8 @@ function shareTwitter() {
 			
 			  
 			  function loadComments() {
+				  console.log(`댓글 로딩 요청: /board/comment/list?boardType=${"$"}{boardType}&boardNo=${"$"}{boardNo}`);
+				  
 				  fetch("/board/comment/list?boardType=" + boardType + "&boardNo=" + boardNo)
 					.then(response => response.json())
 					.then(cmList => {
@@ -187,6 +191,7 @@ function shareTwitter() {
 							const li = document.createElement("li");
 							li.classList.add("comment-item");
 							li.dataset.commentNo = comment.commentNo;
+							li.dataset.memberNo = comment.memberNo; // 댓글 작성자 번호 지정
 							
 							const infoDiv = document.createElement("div");
 							infoDiv.classList.add("comment-info");
@@ -220,6 +225,7 @@ function shareTwitter() {
 							const deleteBtn = document.createElement("button");
 							deleteBtn.innerText = "삭제";
 							
+							if (parseInt(comment.memberNo) === loginMemberNo) {
 							// 삭제 기능
 							 deleteBtn.addEventListener("click", () => {
 					          if (!confirm("정말 삭제하시겠습니까?")) return;
@@ -243,8 +249,8 @@ function shareTwitter() {
 					            })
 					            .catch(err => alert("삭제 중 오류 발생: " + err));
 					        });
-						
-							 btnDiv.append(modifyBtn, deleteBtn);
+							 btnDiv.append(modifyBtn, deleteBtn); // 본인만 버튼 추가
+							}
 				        	li.append(infoDiv, commentContent, btnDiv);
 					        cmListUl.append(li);
 						});
@@ -279,22 +285,31 @@ function shareTwitter() {
 			    });
 			  }
 
-			  // 수정 / 삭제
+			  // 수정
 			  commentListArea.addEventListener('click', e => {
 				  e.stopPropagation();
 				  e.preventDefault();  
 				  
-			    const target = e.target;
-			    const li = target.closest('.comment-item');
-			    if (!li) return;
-			    const commentNo = li.dataset.commentNo;
+				  const target = e.target;
+				  const li = target.closest('.comment-item');
+				  if (!li) return;
+				  
+				  const commentWriterNo = parseInt(li.dataset.memberNo); // 댓글 작성자 번호
+				  const commentNo = li.dataset.commentNo;
 
-			    // 수정
+			    // 수정 버튼 클릭 시
 			    if (target.classList.contains('edit-btn')) {
-			    e.preventDefault(); // 링크 이동 방지
+			    	e.preventDefault(); // 링크 이동 방지
+			    	
+				    if (loginMemberNo !== commentWriterNo) {
+				      alert("본인 댓글만 수정할 수 있습니다.");
+				      return;
+				    }
+
 			      const contentP = li.querySelector('.comment-content');
 			      const oldContent = contentP.textContent;
 			      const textarea = document.createElement('textarea');
+			      
 			      textarea.value = oldContent;
 			      textarea.style.width = '100%';
 			      contentP.replaceWith(textarea);
@@ -383,6 +398,11 @@ function shareTwitter() {
 		      const targetType = bookmarkBtn.dataset.targetType;
 		      const targetNo = bookmarkBtn.dataset.targetNo;
 		      const icon = bookmarkBtn.querySelector('i');
+		      
+		      if (!targetType || !targetNo || targetNo === "0") {
+		    	  console.warn("북마크 대상 데이터 누락:", targetType, targetNo);
+		    	  return; // fetch 호출하지 않음
+		    	}
 
 		      console.log("초기 targetType:", targetType, "targetNo:", targetNo);
 

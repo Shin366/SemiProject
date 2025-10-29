@@ -14,6 +14,9 @@
 </head>
 <jsp:include page="/WEB-INF/views/common/header.jsp"/>
 <body>
+<script>
+  const loginMemberNo = ${not empty sessionScope.loginMember ? sessionScope.loginMember.memberNo : 0};
+</script>
     <div class="container">
         <aside class="sidebar">
             <a href="/board/free/list">자유 소통</a>
@@ -163,6 +166,7 @@
 							const li = document.createElement("li");
 							li.classList.add("comment-item");
 							li.dataset.commentNo = comment.commentNo;
+							li.dataset.memberNo = comment.memberNo; // 댓글 작성자 번호 지정
 							
 							const infoDiv = document.createElement("div");
 							infoDiv.classList.add("comment-info");
@@ -189,9 +193,6 @@
 							const btnDiv = document.createElement("div");
 							btnDiv.classList.add("comment-actions");
 							
-							const replyBtn = document.createElement("button");
-							replyBtn.innerText = "답글";
-							
 							const modifyBtn = document.createElement("button");
 							modifyBtn.innerText = "수정";
 							modifyBtn.classList.add("edit-btn");
@@ -199,6 +200,7 @@
 							const deleteBtn = document.createElement("button");
 							deleteBtn.innerText = "삭제";
 							
+							if (parseInt(comment.memberNo) === loginMemberNo) {
 							// 삭제 기능
 							 deleteBtn.addEventListener("click", () => {
 					          if (!confirm("정말 삭제하시겠습니까?")) return;
@@ -222,8 +224,8 @@
 					            })
 					            .catch(err => alert("삭제 중 오류 발생: " + err));
 					        });
-						
-							 btnDiv.append(replyBtn, modifyBtn, deleteBtn);
+							 btnDiv.append(modifyBtn, deleteBtn); // 본인만 버튼 추가
+							}
 				        	li.append(infoDiv, commentContent, btnDiv);
 					        cmListUl.append(li);
 						});
@@ -258,22 +260,31 @@
 			    });
 			  }
 
-			  // 수정 / 삭제
+			  // 수정
 			  commentListArea.addEventListener('click', e => {
 				  e.stopPropagation();
 				  e.preventDefault();  
 				  
-			    const target = e.target;
-			    const li = target.closest('.comment-item');
-			    if (!li) return;
-			    const commentNo = li.dataset.commentNo;
+				  const target = e.target;
+				  const li = target.closest('.comment-item');
+				  if (!li) return;
+				  
+				  const commentWriterNo = parseInt(li.dataset.memberNo); // 댓글 작성자 번호
+				  const commentNo = li.dataset.commentNo;
 
-			    // 수정
+			    // 수정 버튼 클릭 시
 			    if (target.classList.contains('edit-btn')) {
-			    e.preventDefault(); // 링크 이동 방지
+			    	e.preventDefault(); // 링크 이동 방지
+			    	
+				    if (loginMemberNo !== commentWriterNo) {
+				      alert("본인 댓글만 수정할 수 있습니다.");
+				      return;
+				    }
+
 			      const contentP = li.querySelector('.comment-content');
 			      const oldContent = contentP.textContent;
 			      const textarea = document.createElement('textarea');
+			      
 			      textarea.value = oldContent;
 			      textarea.style.width = '100%';
 			      contentP.replaceWith(textarea);
