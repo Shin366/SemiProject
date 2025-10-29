@@ -166,7 +166,17 @@
 	          </choose>
 	        </if>
 	      </where>
-	      ORDER BY F.POST_NO DESC
+	      <choose>
+	        <when test="sort == 'views'">
+	          ORDER BY F.VIEW_COUNT DESC
+	        </when>
+	        <when test="sort == 'likes'">
+			  ORDER BY likeCount DESC
+			</when>
+	        <otherwise>
+	          ORDER BY F.POST_NO DESC
+	        </otherwise>
+	      </choose>
 	    ) A
 	  )
 	  WHERE RNUM BETWEEN (#{page}-1)*5+1 AND #{page}*5

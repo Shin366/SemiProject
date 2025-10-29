@@ -183,7 +183,8 @@ public class BoardFreeController {
 	public String showBoardListView(
 	        @RequestParam(value = "page", defaultValue = "1") int currentPage,
 	        @RequestParam(value = "condition", required = false) String condition,
-	        @RequestParam(value = "keyword", required = false) String searchKeyword,
+	        @RequestParam(value = "keyword", required = false) String searchKeyword,  
+	        @RequestParam(value = "sort", required = false, defaultValue = "latest") String sort,
 	        Model model) {
 
 	    try {
@@ -192,6 +193,7 @@ public class BoardFreeController {
 	        searchMap.put("condition", condition);
 	        searchMap.put("searchKeyword", searchKeyword);
 	        searchMap.put("page", currentPage);
+	        searchMap.put("sort", sort);
 
 	        // ===== 검색어 로그 저장 (선택) =====
 	        if (searchKeyword != null && !searchKeyword.isBlank()) {
@@ -229,6 +231,7 @@ public class BoardFreeController {
 	        model.addAttribute("maxPage", maxPage);
 	        model.addAttribute("startNavi", startNavi);
 	        model.addAttribute("endNavi", endNavi);
+	        model.addAttribute("sort", sort);
 
 	        return "board/free/list";
 
