@@ -41,28 +41,12 @@
 				    </c:if>
 				</div>
             
-            <div class="post-footer">
-                    <div class="reaction-buttons">
-                        <button class="btn" id="likeBtn" data-board-type="FREE" data-board-no="${free.postNo}">
-                            <i class="fa-regular fa-heart"></i> <span id="likeCount">${likeCount}</span>
-                        </button>
-                        <button class="btn" id="bookmarkBtn" data-target-type="FREE" data-target-no="${free.postNo}">
-                            <i class="fa-regular fa-bookmark"></i> 북마크
-                        </button>
-                    </div>
-                    <div class="social-share">
-                        <a href="#" title="페이스북 공유"><i class="fab fa-facebook-square"></i></a>
-                        <a href="#" title="트위터 공유"><i class="fab fa-twitter"></i></a>
-                        <a href="#" title="링크 복사"><i class="fa-solid fa-link"></i></a>
-                    </div>
-             </div>
-
 			<!-- 댓글 영역 -->
             <section class="comment-section">
                 <!-- 댓글 입력 -->
 			<div class="comment-form">
-			    <input type="hidden" id="commentBoardNo" value="${boardQna.qnaNo}">
-			    <input type="hidden" id="commentBoardType" value="QNA">
+			    <input type="hidden" id="BoardNo" value="${boardQna.qnaNo}">
+			    <input type="hidden" id="BoardType" value="QNA">
 			
 			    <textarea id="commentContent" placeholder="따뜻한 댓글을 남겨주세요..."></textarea>
 			    <div style="text-align: right; margin-top: 10px;">
@@ -74,7 +58,7 @@
 			<ul class="comment-list" id="commentListArea">
 			    <c:forEach var="comment" items="${commentList}">
 			        <li class="comment-item">
-			            <p class="comment-author">${comment.writerNickName}</p>
+			            <p class="comment-author">${comment.writerNickname}</p>
 			            <p class="comment-content">${comment.commentContent}</p>
 			            
 			            <c:if test="${sessionScope.loginMember.memberNo == comment.memberNo}">
@@ -101,5 +85,192 @@
             </div>
         </main>
     </div>
+<script>
+
+//로그인 회원 번호 (세션 없을 경우 0)
+const loginMemberNo = ${not empty sessionScope.loginMember ? sessionScope.loginMember.memberNo : 0};
+
+// JSP 숨김 input에서 값 읽기
+const boardNo = document.getElementById("BoardNo")?.value;
+const boardType = document.getElementById("BoardType")?.value;
+
+// 댓글 입력창, 등록 버튼, 댓글 목록 영역
+const contentTextArea = document.getElementById("commentContent");
+const submitBtn = document.getElementById("commentSubmitBtn");
+const commentListArea = document.getElementById("commentListArea");
+
+function loadComments() {
+	  console.log(`댓글 로딩 요청: /board/comment/list?boardType=${"$"}{boardType}&boardNo=${"$"}{boardNo}`);
+	  
+	  fetch("/board/comment/list?boardType=" + boardType + "&boardNo=" + boardNo)
+		.then(response => response.json())
+		.then(cmList => {
+			const cmListUl = document.querySelector("#commentListArea");
+			cmListUl.innerHTML = ""; // 기존 댓글 초기화
+			
+			if (!Array.isArray(cmList)) {
+		        console.error("⚠️ 댓글 응답이 배열이 아님:", cmList);
+		        return;
+		      }
+			
+			cmList.forEach(comment => {
+				// li태그 생성
+				const li = document.createElement("li");
+				li.classList.add("comment-item");
+				li.dataset.commentNo = comment.commentNo;
+				li.dataset.memberNo = comment.memberNo; // 댓글 작성자 번호 지정
+				
+				const infoDiv = document.createElement("div");
+				infoDiv.classList.add("comment-info");
+				
+				const name = document.createElement("span");
+				name.innerText = comment.writerNickname || comment.memberId || "익명";
+				
+				const commentDate = document.createElement("span");
+				const date = new Date(comment.commentDate);
+				commentDate.innerText = date.toLocaleString("ko-KR", {
+					  year: "numeric",
+					  month: "2-digit",
+					  day: "2-digit",
+					  hour: "2-digit",
+					  minute: "2-digit"
+					});
+				
+				infoDiv.append(name, commentDate);
+				
+				const commentContent = document.createElement("p");
+				commentContent.innerText = comment.commentContent;
+				commentContent.classList.add("comment-content");
+				
+				const btnDiv = document.createElement("div");
+				btnDiv.classList.add("comment-actions");
+				
+				const modifyBtn = document.createElement("button");
+				modifyBtn.innerText = "수정";
+				modifyBtn.classList.add("edit-btn");
+				
+				const deleteBtn = document.createElement("button");
+				deleteBtn.innerText = "삭제";
+				
+				if (parseInt(comment.memberNo) === loginMemberNo) {
+				// 삭제 기능
+				 deleteBtn.addEventListener("click", () => {
+		          if (!confirm("정말 삭제하시겠습니까?")) return;
+		
+		          fetch("/board/comment/delete", {
+		            method: "POST",
+		            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+		            body: new URLSearchParams({ commentNo: comment.commentNo })
+		          })
+		            .then(res => {
+		              if (!res.ok) throw new Error("서버 오류: " + res.status);
+		              return res.json();
+		            })
+		            .then(result => {
+		              if (result.status === "success") {
+		                alert("댓글이 삭제되었습니다.");
+		                loadComments();
+		              } else {
+		                alert(result.message || "댓글 삭제 실패");
+		              }
+		            })
+		            .catch(err => alert("삭제 중 오류 발생: " + err));
+		        });
+				 btnDiv.append(modifyBtn, deleteBtn); // 본인만 버튼 추가
+				}
+	        	li.append(infoDiv, commentContent, btnDiv);
+		        cmListUl.append(li);
+			});
+		})
+		.catch(error => alert("Error : " + error));
+	}
+loadComments();
+
+// 등록
+if (submitBtn) {
+  submitBtn.addEventListener('click', () => {
+    const content = contentTextArea.value.trim();
+    if (!content) return alert('댓글 내용을 입력하세요.');
+
+    const params = new URLSearchParams();
+    params.append('boardType', boardType);
+    params.append('boardNo', boardNo);
+    params.append('commentContent', content);
+
+    fetch('/board/comment/insert', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: params.toString()
+    })
+      .then(res => res.json())
+      .then(r => {
+        if (r.status === 'success') {
+          contentTextArea.value = '';
+          loadComments();
+        } else alert(r.message || '댓글 등록 실패');
+      });
+  });
+}
+
+// 수정
+commentListArea.addEventListener('click', e => {
+	  e.stopPropagation();
+	  e.preventDefault();  
+	  
+	  const target = e.target;
+	  const li = target.closest('.comment-item');
+	  if (!li) return;
+	  
+	  const commentWriterNo = parseInt(li.dataset.memberNo); // 댓글 작성자 번호
+	  const commentNo = li.dataset.commentNo;
+
+  // 수정 버튼 클릭 시
+  if (target.classList.contains('edit-btn')) {
+  	e.preventDefault(); // 링크 이동 방지
+  	
+	    if (loginMemberNo !== commentWriterNo) {
+	      alert("본인 댓글만 수정할 수 있습니다.");
+	      return;
+	    }
+
+    const contentP = li.querySelector('.comment-content');
+    const oldContent = contentP.textContent;
+    const textarea = document.createElement('textarea');
+    
+    textarea.value = oldContent;
+    textarea.style.width = '100%';
+    contentP.replaceWith(textarea);
+    
+    target.textContent = '저장';
+    target.classList.remove('edit-btn');
+    target.classList.add('save-btn');
+    return;
+  }
+
+  // 저장
+  if (target.classList.contains('save-btn')) {
+    const textarea = li.querySelector('textarea');
+    const newContent = textarea.value.trim();
+    if (!newContent) return alert('내용을 입력하세요.');
+    const params = new URLSearchParams();
+    params.append('commentNo', commentNo);
+    params.append('commentContent', newContent);
+    fetch('/board/comment/update', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: params
+    })
+      .then(res => res.json())
+      .then(r => {
+        if (r.status === 'success') {
+      	  loadComments();
+        }
+        else alert(r.message || '수정 실패');
+      });
+  }
+});
+
+</script>
+
 </body>
 </html>
