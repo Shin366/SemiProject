@@ -15,15 +15,12 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 public class NoticeVO {
 	private int noticeNo;
 	private String noticeTitle;
 	private String noticeContent;
 	private String noticeWriter;
-	private Timestamp writeDate;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
+	private Timestamp writerDate;
 	private int viewCount;
-	private String attachmentName;
-	private String attachmentPath;
-	private Timestamp attachmentDate;
 }

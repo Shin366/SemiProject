@@ -1,6 +1,7 @@
 package com.fortrip.com.domain.admin.home.model.service.Impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
@@ -19,38 +20,82 @@ public class MemberInfoServiceImpl implements MemberInfoService{
 	
 	@Override
 	public int getMemberCount() {
-		// TODO Auto-generated method stub
 		int result = mMapper.getMemberCount();
 		return result;
 	}
 
 	@Override
 	public int getMemberActive() {
-		// TODO Auto-generated method stub
 		int result = mMapper.getMemberActive();
 		return result;
 	}
 
 	@Override
 	public int getMemberStop() {
-		// TODO Auto-generated method stub
 		int result = mMapper.getMemberStop();
 		return result;
 	}
 
 	@Override
-	public int getTotalCount() {
-		// TODO Auto-generated method stub
-		int getTotalCoun = mMapper.getTotalCount();
-		return getTotalCoun;
+	public List<Map<String, Object>> getSignupChart() {
+		List<Map<String, Object>> chartList = mMapper.getSignupChart();
+		return chartList;
 	}
 
 	@Override
-	public List<MemberVO> getAllMember(int currentPage, int memberCountPerPage) {
-		// TODO Auto-generated method stub
-		int offset = (currentPage - 1) * memberCountPerPage;
-		RowBounds rowBounds = new RowBounds(offset, memberCountPerPage);
-		List<MemberVO> mList = mMapper.getAllMember(rowBounds);
+	public List<MemberVO> userList(int currentPage, int userCountPerPage) {
+		int offset = (currentPage - 1) * userCountPerPage;
+		RowBounds rowBounds = new RowBounds(offset, userCountPerPage);
+		List<MemberVO> mList = mMapper.userList(rowBounds);
 		return mList;
+	}
+
+	@Override
+	public int getTotalCount() {
+		int getTotalCount = mMapper.getTotalCount();
+		return getTotalCount;
+	}
+
+	@Override
+	public int userDelete(int memberNo) {
+		int result = mMapper.userDelete(memberNo);
+		return result;
+	}
+
+	@Override
+	public int getSearchCount(String keyword) {
+		int getSearchCount = mMapper.getSearchCount(keyword);
+		return getSearchCount;
+	}
+
+	@Override
+	public List<MemberVO> userSearchList(int currentPage, int userCountPerPage, String keyword) {
+		int offset = (currentPage - 1) * userCountPerPage;
+		RowBounds rowBounds = new RowBounds(offset, userCountPerPage);
+		List<MemberVO> mList = mMapper.userSearchList(rowBounds, keyword);
+		return mList;
+	}
+
+	@Override
+	public int getfillterCount(String filter) {
+		// TODO Auto-generated method stub
+		int getFillterCount = mMapper.getFillterCount(filter);
+		return getFillterCount;
+	}
+
+	@Override
+	public List<MemberVO> userfillterList(int currentPage, int userCountPerPage, String filter) {
+		// TODO Auto-generated method stub
+		int offset = (currentPage - 1) * userCountPerPage;
+		RowBounds rowBounds = new RowBounds(offset, userCountPerPage);
+		List<MemberVO> mList = mMapper.userFillterList(rowBounds, filter);
+		return mList;
+	}
+
+	@Override
+	public List<Map<String, Object>> getHotKeyWord() {
+		// TODO Auto-generated method stub
+		List<Map<String, Object>> keywordList = mMapper.getKeyWordChart();
+		return keywordList;
 	}
 }

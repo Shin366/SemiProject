@@ -6,15 +6,16 @@
 <head>
 <meta charset="UTF-8">
 <title>forTrip - 회원추가</title>
-<link href="../resources/admin/img/eyes-icon.png" rel="shortcut icon" type="image/x-icon">
-<link rel="stylesheet" href="../resources/admin/css/userSet.css">
+<link href="../../../resources/img/common/eyes-icon.png" rel="shortcut icon" type="image/x-icon">
+<link rel="stylesheet" href="../../../resources/css/admin/userSet.css">
 </head>
 <body>
 	<div id="container">
 		<jsp:include page="/WEB-INF/views/admin/include/header.jsp"/>
 		<c:if test ="${ not empty success }">
 			<script>
-				alert("${success}")
+				alert("${success}");
+				window.location.href='/admin/main';
 			</script>
 		</c:if>
 		<c:if test ="${ not empty error }">
@@ -25,7 +26,7 @@
 		<div id="main">
 	        <div class="userAdd-wrapper">
 				<h1>회원 추가</h1>
-				<form action="/user/insert" method="post">
+				<form action="/admin/user/insert" method="post">
 					<div class="form-row">
 						<div class="form-group">
 							<label for="memberName">이름</label>
@@ -97,11 +98,12 @@
 					</div>
 					<div class="btn-row">
 						<button type="submit" id="user-save-btn">저장</button>
-						<button type="button" id="user-cancel-btn">취소</button>
+						<button type="button" id="user-cancel-btn" onclick="cancelBtn();">취소</button>
 					</div>
 				</form>
 			</div>
 		</div>
 	</div>
+	<script src="../../resources/css/admin/js/cancelBtn.js"></script>
 </body>
 </html>

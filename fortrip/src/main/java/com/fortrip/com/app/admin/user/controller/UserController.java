@@ -39,11 +39,11 @@ public class UserController {
 			} else {
 				model.addAttribute("error", "회원 추가 실패");
 			}
-			return "user/userInsert";
+			return "admin/user/userInsert";
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "user/userInsert";
+			return "admin/user/userInsert";
 		}
 	}
 	
@@ -63,11 +63,11 @@ public class UserController {
 			int result = uService.userModifyPost(user);
 			
 			if (result > 0) {
-				model.addAttribute("success", "수정 완료");
-				return "redirect:/admin/main";
+				model.addAttribute("success", "회원 수정 완료");
+				return "admin/user/usermodify";
 			} else {
-				model.addAttribute("error", "수정 실패");
-				return "redirect:/admin/main";
+				model.addAttribute("error", "회원 수정 실패");
+				return "admin/user/usermodify";
 			}
 		} catch(Exception e) {
 			e.printStackTrace();

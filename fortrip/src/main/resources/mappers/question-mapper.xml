@@ -2,15 +2,34 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    <!-- 관리자 -->
+  <!-- 관리자 -->
+  <!-- 관리자 -->
 <mapper namespace="com.fortrip.com.domain.admin.question.model.mapper.QuestionMapper">
+	<!-- 자주하는 질문 추가 -->
 	<insert id="questionInsert">
-		INSERT INTO QUESTION VALUES (SEQ_QUESTION_NO.NEXTVAL, #{questionTitle}, #{questionCategory}, #{questionContent})
+		INSERT INTO QUESTION VALUES (SEQ_QUESTION_NO.NEXTVAL, #{questionTitle}, #{questionCategory}, #{questionContent}, DEFAULT)
 	</insert>
-	<select id="AllquestionList" resultType="QuestionVO">
-		SELECT * FROM QUESTION
-	</select>
+	<!-- 자주하는 질문 추가 끝 -->
 	
-	<delete id="questionDelete">
-		DELETE FROM QUESTION WHERE NOTICE_NO = #{questionNo}
-	</delete>
+	
+	<!-- 자주하는 질문 리스트 -->
+	<select id="getQuestionList" resultType="QuestionVO">
+		SELECT * FROM QUESTION WHERE QUESTION_CATEGORY = #{category} AND DELETE_YN = 'N' ORDER BY QUESTION_NO DESC
+	</select>
+	<!-- 자주하는 질문 리스트 끝 -->
+	
+	<!-- 자주하는 질문 총 갯수 -->
+	<select id="getQuestionTotalCount" resultType="_int">
+		SELECT COUNT(*) FROM QUESTION WHERE DELETE_YN = 'N'
+	</select>
+	<!-- 자주하는 질문 총 갯수 끝 -->
+	
+	<update id="questionDelete">
+		UPDATE QUESTION SET DELETE_YN = 'Y' WHERE QUESTION_NO = #{questionNo}
+	</update>
+	
+	<select id="selectQuestionNo" resultType="QuestionVO">
+		SELECT * FROM QUESTION WHERE QUESTION_NO = #{questionNo}
+	</select>
 </mapper>

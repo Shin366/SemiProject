@@ -2,29 +2,138 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 관리자 -->
+<!-- 관리자 -->
+<!-- 관리자 -->
 <mapper namespace="com.fortrip.com.domain.admin.home.model.mapper.MemberInfoMapper">
-   <!-- 전체 회원 수 -->
-<!-- 전체 회원 수 -->
+
+	<!-- 전체 회원 수 -->
 	<select id="getMemberCount" resultType="_int">
-		SELECT COUNT(*) FROM MEMBER
+		SELECT COUNT(*) FROM MEMBER WHERE NOT STATUS_YSN = 'N'
 	</select>
 	
 	<!-- 활성 회원 수 -->
 	<select id="getMemberActive" resultType="_int">
-		SELECT COUNT(*) FROM MEMBER WHERE STATUS_YSN = 'N'
+		SELECT COUNT(*) FROM MEMBER WHERE STATUS_YSN = 'Y'
 	</select>
 	
-	<!-- 활동 정지 회원 수 -->
+	<!-- 비활성 회원 수 -->
 	<select id="getMemberStop" resultType="_int">
 		SELECT COUNT(*) FROM MEMBER WHERE STATUS_YSN = 'S'
 	</select>
 	
-	<!-- 멤버 전체 페이징 기법 끝 -->
-	<select id="getAllMember" resultType="MemberVO">
-		SELECT * FROM MEMBER ORDER BY MEMBER_NO DESC
+	<!-- 회원 페이징 리스트 -->
+	<select id="userList" resultType="MemberVO">
+		SELECT * FROM MEMBER WHERE NOT STATUS_YSN = 'N' ORDER BY MEMBER_NO
 	</select>
 	<select id="getTotalCount" resultType="_int">
-		SELECT COUNT(*) FROM MEMBER
+		SELECT COUNT(*) FROM MEMBER WHERE NOT STATUS_YSN = 'N'
 	</select>
-	<!-- 멤버 전체 페이징 기법 끝 -->
+	<!-- 회원 페이징 끝 -->
+	
+	
+	<!-- 회원 가입 차트 -->
+	<select id="getSignupChart" resultType="map">
+		SELECT 
+		    TO_CHAR(ENROLL_DATE, 'YYYY-MM') AS month, 
+		    COUNT(*) AS join_count
+		FROM MEMBER
+		WHERE ENROLL_DATE >= ADD_MONTHS(SYSDATE, -12) AND
+		STATUS_YSN = 'N'
+		GROUP BY TO_CHAR(ENROLL_DATE, 'YYYY-MM')
+		ORDER BY month ASC
+	</select>
+	<!-- 회원 가입 차트 끝 -->
+	
+	<!-- 키워드 차트 -->
+	<select id="getKeyWordChart" resultType="map">
+		SELECT
+        	SEARCH_KEYWORD AS keyword,
+        	COUNT(*) AS count
+    	FROM SEARCH_LOG
+    	GROUP BY SEARCH_KEYWORD
+    	ORDER BY COUNT(*) DESC
+	</select>
+	<!-- 키워드 차트 끝 -->
+	
+	<!-- 회원 강제 탈퇴 처리 -->
+	<delete id="userDelete">
+		UPDATE MEMBER SET STATUS_YSN = 'N' WHERE MEMBER_NO = #{memberNo}
+	</delete>
+	<!-- 회원 강제 탈퇴 처리 -->
+	
+	<!-- 🔹 회원 검색 카운트 -->
+	<select id="getSearchCount" resultType="_int">
+		SELECT COUNT(*) 
+		FROM MEMBER 
+		WHERE NOT STATUS_YSN = 'N'
+		  AND (
+		    MEMBER_ID LIKE '%' || #{keyword} || '%'
+		    OR MEMBER_NAME LIKE '%' || #{keyword} || '%'
+		    OR NICKNAME LIKE '%' || #{keyword} || '%'
+		  )
+	</select>
+	
+	
+	<!-- 🔹 회원 검색 리스트 -->
+	<select id="userSearchList" resultType="MemberVO">
+		SELECT * 
+		FROM MEMBER 
+		WHERE NOT STATUS_YSN = 'N'
+		  AND (
+		    MEMBER_ID LIKE '%' || #{keyword} || '%'
+		    OR MEMBER_NAME LIKE '%' || #{keyword} || '%'
+		    OR NICKNAME LIKE '%' || #{keyword} || '%'
+		  )
+		ORDER BY MEMBER_NO
+	</select>
+	<!-- 회원 검색 리스트 끝 -->
+	
+	<!-- 회원 필터 카운트 -->
+	<select id="getFillterCount" resultType="_int">
+		SELECT COUNT(*) FROM MEMBER  
+		<where>
+			NOT STATUS_YSN = 'N'
+			<choose>
+				<when test="filter == 'active'">
+					AND STATUS_YSN = 'Y'
+				</when>
+				<when test="filter == 'inactive'">
+					AND STATUS_YSN = 'S'
+				</when>
+				<when test="filter == 'man'">
+					AND GENDER = 'M'
+				</when>
+				<when test="filter == 'girl'">
+					AND GENDER = 'F'
+				</when>
+			</choose>
+		</where>
+	</select>
+	<!-- 회원 필터 카운트 끝 -->
+	
+	<!-- 회원 필터 리스트 -->
+	<select id="userFillterList" resultType="MemberVO">
+		SELECT * FROM MEMBER
+		<where>
+			NOT STATUS_YSN = 'N'
+			<choose>
+				<when test="filter == 'active'">
+					AND STATUS_YSN = 'Y'
+				</when>
+				<when test="filter == 'inactive'">
+					AND STATUS_YSN = 'S'
+				</when>
+				<when test="filter == 'man'">
+					AND GENDER = 'M'
+				</when>
+				<when test="filter == 'girl'">
+					AND GENDER = 'F'
+				</when>
+			</choose>
+		</where>
+			ORDER BY MEMBER_NO
+	</select>
+	<!-- 회원 필터 리스트 끝 -->
+
 </mapper>

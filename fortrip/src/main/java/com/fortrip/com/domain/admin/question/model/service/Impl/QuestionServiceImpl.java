@@ -18,25 +18,38 @@ public class QuestionServiceImpl implements QuestionService{
 	
 	private final QuestionMapper qMapper;
 
+	// 자주하는 질문 삽입
 	@Override
 	public int questionInsert(QuestionDTO question) {
-		// TODO Auto-generated method stub
 		int result = qMapper.questionInsert(question);
 		return result;
 	}
-
+	// 자주하는 질문 총 갯수 
 	@Override
-	public List<QuestionVO> AllquestionList() {
+	public int getQuestionTotalCount() {
+		int getTotalCount = qMapper.getQuestionTotalCount();
+		return getTotalCount;
+	}
+	
+	// 자주하는 질문 카테고리 리스트
+	@Override
+	public List<QuestionVO> getQuestionList(String category) {
 		// TODO Auto-generated method stub
-		List<QuestionVO> qList = qMapper.AllquestionList();
+		List<QuestionVO> qList = qMapper.getQuestionList(category);
 		return qList;
 	}
-
 	@Override
 	public int questionDelete(int questionNo) {
 		// TODO Auto-generated method stub
 		int result = qMapper.questionDelete(questionNo);
 		return result;
 	}
+	@Override
+	public QuestionVO selectQuestionNo(int questionNo) {
+		// TODO Auto-generated method stub
+		QuestionVO question = qMapper.selectQuestionNo(questionNo);
+		return question;
+	}
+
 	
 }

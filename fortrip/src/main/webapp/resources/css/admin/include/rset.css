@@ -9,7 +9,11 @@ html {
 }
 
 #container {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
+	width: 1500px;
+	margin: 0 auto;
 }
+
+/* #section { */
+/* 	width: 1300px; */
+/* 	margin: 0 auto; */
+/* } */

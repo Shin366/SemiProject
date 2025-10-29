@@ -2,13 +2,59 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 관리자 -->
+<!-- 관리자 -->
+<!-- 관리자 -->
 <mapper namespace="com.fortrip.com.domain.admin.notice.model.mapper.NoticeMapper">
+	<!-- 공지 삽입 -->
 	<insert id="insertNotice">
-		INSERT INTO NOTICE VALUES (SEQ_NOTICE_NO.NEXTVAL, #{noticeTitle}, #{noticeContent}, 'admin',
-		DEFAULT, 0, #{attachmentName, jdbcType=NULL}, #{attachmentPath, jdbcType=NULL}, #{attachmentDate, jdbcType=NULL}, DEFAULT)
+		INSERT INTO NOTICE VALUES (SEQ_NOTICE_NO.NEXTVAL, #{noticeTitle}, #{noticeContent}, '관리자',
+		DEFAULT, 0, DEFAULT)
 	</insert>
-	
+	<!-- 공지 삭제 -->
+	<update id="noticeDelete">
+		UPDATE NOTICE SET DELETE_YN = 'Y' WHERE NOTICE_NO = #{noticeNo}
+	</update>
+	<!-- 공지 수정 -->
+	<update id="noticeModify">
+    UPDATE NOTICE
+    SET
+        NOTICE_TITLE = #{noticeTitle},
+        NOTICE_CONTENT = #{noticeContent},
+        NOTICE_WRITER = 'admin',
+        WRITER_DATE = SYSDATE
+    WHERE NOTICE_NO = #{noticeNo}
+	</update>
+	<!-- 공지 리스트 -->
 	<select id="AllnoticeList" resultType="NoticeVO">
-		SELECT * FROM NOTICE ORDER BY NOTICE_NO DESC
+		SELECT * FROM NOTICE WHERE DELETE_YN = 'N' ORDER BY NOTICE_NO DESC	    
+	</select>
+	
+	<!-- 공지 갯수 카운트 -->
+	<select id="getNoticeTotalCount" resultType="_int">
+		SELECT COUNT(*) FROM NOTICE WHERE DELETE_YN = 'N'
+	</select>
+	
+	<!-- 검색 공지 리스트 -->
+	<select id="SearchNoticeList" resultType="NoticeVO">
+		SELECT * FROM NOTICE WHERE DELETE_YN = 'N' 
+		AND (NOTICE_TITLE LIKE '%'||#{keyword}||'%' 
+		OR NOTICE_CONTENT LIKE '%'||#{keyword}||'%'
+		)
+		ORDER BY NOTICE_NO DESC
+		
+	</select>
+	<!-- 검색 공지 갯수 카운트 -->
+	<select id="getNoticeSearchCount" resultType="_int">
+		SELECT COUNT(*) FROM NOTICE WHERE DELETE_YN = 'N'
+		 AND (
+		 NOTICE_TITLE LIKE '%'||#{keyword}||'%' 
+		 OR NOTICE_CONTENT LIKE '%'||#{keyword}||'%'
+		 )
+	</select>
+	
+	<!-- 공지번호로 공지 찾기 -->
+	<select id="noticeInfoModify" resultType="NoticeVO">
+		SELECT * FROM NOTICE WHERE NOTICE_NO = ${noticeNo}
 	</select>
 </mapper>

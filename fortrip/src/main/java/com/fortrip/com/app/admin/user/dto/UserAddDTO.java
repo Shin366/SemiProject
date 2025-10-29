@@ -10,8 +10,6 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-@NoArgsConstructor
-@AllArgsConstructor
 public class UserAddDTO {
     private int memberNo;           // 회원 번호
     private String memberName;      // 회원 이름

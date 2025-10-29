@@ -11,7 +11,7 @@
 <body>
 	<div id="header">
            <div id="header-logo">
-               <a href="#">
+               <a href="/admin/main">
                    <img src="../../../resources/img/common/eyes-in-icon.png" alt="LogoImg" width="130px;">
                </a>
            </div>

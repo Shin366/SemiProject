@@ -2,11 +2,14 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <!-- 관리자 -->
+  <!-- 관리자 -->
+  <!-- 관리자 -->
 <mapper namespace="com.fortrip.com.domain.admin.user.model.mapper.UserMapper">
 	<insert id="userAdd">
 		INSERT INTO MEMBER VALUES (SEQ_MEMBER_NO.NEXTVAL,
-		#{memberName}, #{nickName}, #{gender}, #{memberId}, #{memberPw}, #{phone}, #{email}, DEFAULT, #{birthDateYear},
-		#{birthDateMon}, #{birthDateDay}, #{adminYn},DEFAULT)
+		#{memberId}, #{memberPw}, #{memberName}, #{nickName}, #{phone}, #{birthDateYear},
+		#{birthDateMon}, #{birthDateDay}, #{email}, #{gender}, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT)
 	</insert>
 	
 	<select id="userModifyInfo" resultType="UserVO">
@@ -18,7 +21,6 @@
 		MEMBER_NAME = #{memberName},
 		NICKNAME = #{nickName},
 		MEMBER_ID = #{memberId},
-		MEMBER_PW = #{memberPw},
 		PHONE = #{phone},
 		EMAIL = #{email},
 		BIRTH_DATE_YEAR = #{birthDateYear},
