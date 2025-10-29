@@ -1,6 +1,8 @@
 package com.fortrip.com.app.board.free.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,8 +19,11 @@ import com.fortrip.com.domain.attachment.service.AttachmentService;
 import com.fortrip.com.domain.attachment.vo.Attachment;
 import com.fortrip.com.domain.board.free.model.service.BoardFreeService;
 import com.fortrip.com.domain.board.free.model.vo.BoardFree;
+import com.fortrip.com.domain.board.like.model.service.BoardLikeService;
 import com.fortrip.com.domain.board.notice.model.service.BoardNoticeService;
 import com.fortrip.com.domain.board.notice.model.vo.BoardNotice;
+import com.fortrip.com.domain.comment.model.service.CommentService;
+import com.fortrip.com.domain.comment.model.vo.Comment;
 import com.fortrip.com.domain.member.model.vo.Member;
 
 import jakarta.servlet.http.HttpSession;
@@ -32,13 +37,23 @@ public class BoardFreeController {
 	private final BoardFreeService fService;
 	private final BoardNoticeService nService;
 	private final AttachmentService attachmentService;
+	private final CommentService commentService;
+	private final BoardLikeService likeService;
 	
 	// 자유게시판 상세페이지
 	@GetMapping("/detail")
 	public String showDetailView(
 			@RequestParam("postNo") int postNo
+			,HttpSession session
 			,Model model) {
 		try {
+			
+			Member loginMember = (Member) session.getAttribute("loginMember");
+			
+			 if (loginMember == null) {
+		            model.addAttribute("errorMsg", "로그인 후 이용 가능합니다.");
+		            return "common/error"; // 또는 로그인 페이지로 리다이렉트
+		        }
 			// 게시글 조회
 			BoardFree free = fService.selectOneByNo(postNo);
 			
@@ -48,19 +63,18 @@ public class BoardFreeController {
 			 //조회수 증가
 			 fService.increaseViewCount(postNo);
 			
-			
-			model.addAttribute("free", free);
-			// 첨부파일 저장 코드
-			model.addAttribute("attachmentList", attachmentList);
-			// 좋아요, 댓글 정보 조회 및 모델에 추가
-            /* 
+			 // 좋아요, 댓글 정보 조회 및 모델에 추가
              int likeCount = likeService.getLikeCount("FREE", postNo);
-             boolean isLiked = likeService.checkIsLiked(...);
+             boolean isLiked = likeService.checkIsLiked("FREE", postNo, loginMember.getMemberNo());
+            
+             model.addAttribute("free", free);	
+             // 첨부파일 저장 코드
+			model.addAttribute("attachmentList", attachmentList);
+             
              List<Comment> commentList = commentService.getCommentList("FREE", postNo);
              model.addAttribute("likeCount", likeCount);
              model.addAttribute("isLiked", isLiked);
              model.addAttribute("commentList", commentList);
-             */
 			return "board/free/detail";
 		}catch(Exception e) {
 			model.addAttribute("errorMsg", e.getMessage());
@@ -73,11 +87,13 @@ public class BoardFreeController {
 	@GetMapping("/insert")
 	public String showFreeAddView(
 			HttpSession session, Model model) {
-		if (session.getAttribute("memberId") == null) { 
-            model.addAttribute("errorMsg", "로그인 후 이용 가능합니다.");
-            return "common/error";
-		}
-		return "board/free/insert";
+		Member loginMember = (Member) session.getAttribute("loginMember");
+		
+		if (loginMember == null) { 
+	        model.addAttribute("errorMsg", "로그인 후 이용 가능합니다.");
+	        return "common/error";
+	    }
+	    return "board/free/insert";
 	}
 	
 	
@@ -88,6 +104,7 @@ public class BoardFreeController {
 			,@RequestParam(value="files", required=false) List<MultipartFile> files
 			,HttpSession session
 			,Model model) {
+		
 		Member loginMember = (Member) session.getAttribute("loginMember");  
 		
 		// (보안) 비로그인 사용자가 글쓰기를 시도한 경우 차단
@@ -162,47 +179,63 @@ public class BoardFreeController {
         return "redirect:/board/free/list";
     }	
 	
-	// 자유게시판 목록 조회
 	@GetMapping("/list")
 	public String showBoardListView(
-			@RequestParam(value="page", defaultValue="1") int currentPage
-			,Model model) {
-		try{
-			
-			// 게시글 목록 상단 고정 공지 출력
-            try {
-                // 고정할 공지사항의 번호 지정
-                int pinnedNoticeNo = 1; 
-                // 3. NoticeService를 이용해 해당 공지 데이터 조회
-                BoardNotice pinnedNotice = nService.getBasicNoticeInfo(pinnedNoticeNo);
-                // 4. 조회된 공지 객체를 Model에 담기 ("pinnedNotice" 라는 이름으로)
-                model.addAttribute("pinnedNotice", pinnedNotice); 
-            } catch (IllegalArgumentException e) {
-            	model.addAttribute("errorMsg", e.getMessage());
-    	        return "common/error";
-            }
-			
-			int totalCount = fService.getTotalCount();
-			int freeCountPerPage = 5;
-			
-			int maxPage = (int)Math.ceil((double)totalCount/freeCountPerPage);
-			List<BoardFree> fList = fService.selectFreeList(currentPage, freeCountPerPage);
-			
-			int naviCountPerPage = 6;
-			int startNavi = ((currentPage-1)/naviCountPerPage)*naviCountPerPage+1;	// 네비의 시작값
-			int endNavi = (startNavi-1)+naviCountPerPage;							// 네비의 끝값
-			if(endNavi > maxPage) endNavi = maxPage;
-			
-			model.addAttribute("currentPage", currentPage);
-			model.addAttribute("maxPage", maxPage);
-			model.addAttribute("startNavi", startNavi);
-			model.addAttribute("endNavi", endNavi);
-			model.addAttribute("fList", fList);
-			
-			return "board/free/list";
-		}catch(Exception e) {
-			model.addAttribute("errorMsg", e.getMessage());
-			return "common/error";
-		}
+	        @RequestParam(value = "page", defaultValue = "1") int currentPage,
+	        @RequestParam(value = "condition", required = false) String condition,
+	        @RequestParam(value = "keyword", required = false) String searchKeyword,
+	        Model model) {
+
+	    try {
+	        // ===== 검색 조건 처리 =====
+	        Map<String, Object> searchMap = new HashMap<>();
+	        searchMap.put("condition", condition);
+	        searchMap.put("searchKeyword", searchKeyword);
+	        searchMap.put("page", currentPage);
+
+	        // ===== 검색어 로그 저장 (선택) =====
+	        if (searchKeyword != null && !searchKeyword.isBlank()) {
+	            fService.insertSearchKeyword(searchKeyword);
+	        }
+
+	        // ===== 고정 공지 가져오기 =====
+	        try {
+	            int pinnedNoticeNo = 1;
+	            BoardNotice pinnedNotice = nService.getBasicNoticeInfo(pinnedNoticeNo);
+	            model.addAttribute("pinnedNotice", pinnedNotice);
+	        } catch (Exception ignore) {
+	            // 공지가 없어도 예외 무시
+	        }
+
+	        // ===== 게시글 목록 + 페이징 =====
+	        int totalCount = fService.getTotalCount(searchMap); // 검색 조건 반영된 전체 개수
+	        int freeCountPerPage = 5;
+
+	        int maxPage = (int) Math.ceil((double) totalCount / freeCountPerPage);
+	        if (currentPage > maxPage && maxPage != 0) currentPage = maxPage;
+
+	        List<BoardFree> fList = fService.searchFreeBoardList(searchMap); // 검색 또는 전체 조회
+
+	        int naviCountPerPage = 6;
+	        int startNavi = ((currentPage - 1) / naviCountPerPage) * naviCountPerPage + 1;
+	        int endNavi = (startNavi - 1) + naviCountPerPage;
+	        if (endNavi > maxPage) endNavi = maxPage;
+
+	        // ===== 모델 등록 =====
+	        model.addAttribute("fList", fList);
+	        model.addAttribute("condition", condition);
+	        model.addAttribute("searchKeyword", searchKeyword);
+	        model.addAttribute("currentPage", currentPage);
+	        model.addAttribute("maxPage", maxPage);
+	        model.addAttribute("startNavi", startNavi);
+	        model.addAttribute("endNavi", endNavi);
+
+	        return "board/free/list";
+
+	    } catch (Exception e) {
+	        model.addAttribute("errorMsg", e.getMessage());
+	        return "common/error";
+	    }
 	}
+	
 }

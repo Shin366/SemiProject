@@ -2,6 +2,7 @@ package com.fortrip.com.domain.board.free.model.service.Impl;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -152,5 +153,24 @@ public class BoardFreeServiceImpl implements BoardFreeService {
 	@Override
 	public int deleteFree(int postNo) {
 		return fMapper.deleteFree(postNo);
+	}
+
+	@Override
+	public List<BoardFree> searchFreeBoardList(Map<String, Object> searchMap) {
+		return fMapper.searchFreeBoardList(searchMap);
+	}
+
+	/* 검색 조건 포함 전체 카운트 */
+	@Override
+	public int getTotalCount(Map<String, Object> searchMap) {
+		return fMapper.getTotalCountWithSearch(searchMap);
+	}
+
+	/* 검색 키워드 로그 저장 */
+	@Override
+	public void insertSearchKeyword(String searchKeyword) {
+		 if (searchKeyword == null || searchKeyword.isBlank()) return;
+	        fMapper.insertSearchKeyword(searchKeyword);
+		
 	}
 }

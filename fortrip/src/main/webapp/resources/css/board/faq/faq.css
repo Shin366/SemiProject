@@ -1,0 +1,179 @@
+@charset "UTF-8";
+
+/* ===== 기본 레이아웃 ===== */
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: #f8fafc;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 1100px;
+    margin: 60px auto;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    display: flex;
+    padding: 40px 50px;
+    gap: 40px;
+}
+
+/* ===== 사이드바 (자유게시판과 동일) ===== */
+.sidebar {
+    flex: 0 0 200px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    padding: 10px;
+}
+
+.sidebar li {
+    margin-bottom: 5px;
+}
+
+.sidebar a {
+    display: block;
+    padding: 15px 20px;
+    text-decoration: none;
+    color: #555;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 16px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.sidebar a.active,
+.sidebar a:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+/* ===== 메인 콘텐츠 ===== */
+.content {
+    flex: 1;
+}
+
+.content h2 {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 25px;
+    color: #1e293b;
+}
+
+/* ===== 카테고리 버튼 ===== */
+.question-categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 35px;
+}
+
+.question-categories button {
+    border: none;
+    background-color: #f1f5f9;
+    color: #374151;
+    padding: 10px 20px;
+    border-radius: 999px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.question-categories button:hover {
+    background-color: #e2e8f0;
+}
+
+.question-categories button.active {
+    background-color: #2563eb;
+    color: #fff;
+    box-shadow: 0 2px 6px rgba(37,99,235,0.3);
+}
+
+/* ===== FAQ 리스트 ===== */
+.question-list {
+    border-top: 2px solid #e5e7eb;
+}
+
+.question-item {
+    border-bottom: 1px solid #e5e7eb;
+    padding: 18px 0;
+}
+
+.faq-question {
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: #1e3a8a;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: color 0.2s ease;
+}
+
+.faq-question:hover {
+    color: #2563eb;
+}
+
+.toggle-icon {
+    font-size: 1.3rem;
+    color: #9ca3af;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.faq-question.open .toggle-icon {
+    transform: rotate(45deg);
+    color: #2563eb;
+}
+
+.faq-answer {
+    display: none;
+    color: #4b5563;
+    font-size: 0.96rem;
+    margin-top: 10px;
+    padding-left: 16px;
+    line-height: 1.7;
+    border-left: 3px solid #93c5fd;
+    background-color: #f9fafb;
+    padding: 15px 20px;
+    border-radius: 6px;
+    animation: fadeIn 0.3s ease;
+}
+
+.faq-answer.show {
+    display: block;
+}
+
+/* ===== 애니메이션 ===== */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-3px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== 반응형 ===== */
+@media (max-width: 992px) {
+    .container {
+        flex-direction: column;
+        padding: 30px;
+        width: 90%;
+    }
+
+    .sidebar {
+        border-right: none;
+        border-bottom: 1px solid #e5e7eb;
+        padding-bottom: 15px;
+        width: 100%;
+    }
+
+    .content {
+        padding-top: 20px;
+    }
+}

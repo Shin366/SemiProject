@@ -14,6 +14,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fortrip.com.app.board.review.dto.BoardReviewAddRequest;
 import com.fortrip.com.domain.board.review.model.sevice.BoardReviewService;
 import com.fortrip.com.domain.board.review.model.vo.BoardReview;
+import com.fortrip.com.domain.comment.model.service.CommentService;
+import com.fortrip.com.domain.comment.model.vo.Comment;
 import com.fortrip.com.domain.member.model.vo.Member;
 
 import jakarta.servlet.http.HttpSession;
@@ -27,6 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 public class BoardReviewController {
 	
 	private final BoardReviewService reviewService;
+	private final CommentService commentService;
 
 	
 	// 리뷰게시판 상세페이지
@@ -40,6 +43,9 @@ public class BoardReviewController {
                  return "common/error";
             }
 			BoardReview review = reviewService.selectOneByNo(reviewNo);
+			List<Comment> commentList = commentService.getCommentList("REVIEW", reviewNo);
+			
+			model.addAttribute("commentList", commentList);
 			model.addAttribute("review", review);
 			return "board/review/detail";
 		} catch(IllegalArgumentException e) {
