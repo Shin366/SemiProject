@@ -9,38 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
 	<link rel="stylesheet" href="/resources/css/common/header.css">
-    <style>
-        /* 1번 JSP와 공통 스타일 생략 */
-        body { font-family: sans-serif; background-color: #f8f9fa; margin: 0; }
-        .container { display: flex; max-width: 1200px; margin: 20px auto; gap: 20px; }
-        .sidebar { flex: 0 0 180px; }
-        .sidebar a { display: block; padding: 12px 20px; text-decoration: none; color: #333; border-radius: 8px; font-weight: 500; }
-        .sidebar a.active { background-color: #007bff; color: white; font-weight: bold; }
-        .main-content { flex-grow: 1; background-color: #fff; padding: 40px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-        .page-title { font-size: 28px; font-weight: bold; margin-top: 0; margin-bottom: 30px; }
-
-        .post-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #333; padding-bottom: 15px; }
-        .post-title { font-size: 24px; margin: 0; }
-        .post-author { color: #888; }
-        .post-body { padding: 30px 0; min-height: 150px; font-size: 16px; line-height: 1.8; border-bottom: 1px solid #dee2e6;}
-        
-         /* --- 댓글 영역 --- */
-        .comments-section { margin-top: 50px; }
-        .comment-form textarea { width: 100%; min-height: 80px; padding: 12px; border: 1px solid #ced4da; border-radius: 6px; resize: vertical; box-sizing: border-box; font-size: 15px; }
-        .comment-form-actions { text-align: right; margin-top: 10px; }
-        .btn { padding: 8px 18px; border-radius: 6px; text-decoration: none; font-size: 14px; font-weight: 500; border: 1px solid #ced4da; background-color: #fff; cursor: pointer; }
-        .btn-submit { background-color: #007bff; color: white; border: none; }
-        
-        .comment-list { margin-top: 30px; list-style: none; padding: 0; }
-        .comment-item { padding: 20px 0; border-top: 1px solid #f1f3f5; }
-        .comment-item:first-child { border-top: 2px solid #343a40; }
-        .comment-author { font-weight: bold; margin-bottom: 5px; }
-        .comment-content { color: #495057; line-height: 1.6; }
-        
-        /* --- 하단 버튼 (목록, 수정, 삭제) --- */
-        .bottom-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 40px; }
-        .btn-list { background-color: #343a40; color: white; border-color: #343a40; padding: 12px 25px; font-weight: bold; }
-    </style>
+	<link rel="stylesheet" href="/resources/css/board/qna/detail.css">
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/common/header.jsp"/>
