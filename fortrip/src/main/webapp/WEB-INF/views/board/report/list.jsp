@@ -8,56 +8,15 @@
     <title>신고 게시판 - 고객지원</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
 	<link rel="stylesheet" href="<c:url value='/resources/css/common/header.css'/>"> 
-    <style>
-        /* --- 기본 & 레이아웃 --- */
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; background-color: #f8f9fa; margin: 0; color: #343a40; }
-        .container { display: flex; max-width: 1200px; margin: 30px auto; gap: 30px; }
-        .sidebar { flex: 0 0 200px; }
-        .main-content { flex-grow: 1; background-color: #fff; padding: 40px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
-
-        /* --- 사이드바 --- */
-        .sidebar ul { list-style: none; padding: 0; background-color: #fff; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); padding: 10px; }
-        .sidebar a { display: block; padding: 15px 20px; text-decoration: none; color: #555; border-radius: 6px; font-weight: 600; font-size: 16px; }
-        .sidebar a.active, .sidebar a:hover { background-color: #007bff; color: white; }
-
-        /* --- 메인 컨텐츠 --- */
-        .page-title { font-size: 28px; font-weight: bold; margin-top: 0; margin-bottom: 30px; }
-        .list-header { display: flex; justify-content: flex-end; margin-bottom: 20px; }
-        .search-form { display: flex; gap: 5px; }
-        .search-form select, .search-form input, .search-form button { padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
-        .search-form button { background-color: #6c757d; color: white; border-color: #6c757d; cursor: pointer;}
-
-        /* --- 목록 스타일 --- */
-        .report-list { list-style: none; padding: 0; margin: 0; border-top: 2px solid #333; }
-        .list-item { display: grid; grid-template-columns: 80px 1fr 150px; /* 번호, 제목, 작성일 */ align-items: center; padding: 15px 10px; border-bottom: 1px solid #eee; text-align: center; font-size: 15px; }
-        .list-item.header { font-weight: bold; background-color: #f9f9f9; }
-        .item-no { color: #888; }
-        .item-title { text-align: left; }
-        .item-title a { text-decoration: none; color: #333; }
-        .item-title a:hover { text-decoration: underline; }
-        .item-date { color: #888; font-size: 14px;} /* 작성일 컬럼 추가 */
-
-        /* 공지 스타일 */
-        .list-item.notice { background-color: #fff9f9; }
-        .notice-tag { display: inline-block; background-color: #dc3545; color: white; font-size: 12px; padding: 3px 8px; border-radius: 4px; font-weight: bold; }
-
-        .actions { text-align: right; margin-top: 20px; }
-        .btn-write { background-color: #007bff; color: white; border: none; padding: 10px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; }
-
-        /* 페이지네이션 스타일 */
-        .pagination { display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 40px; }
-        .pagination a, .pagination strong { display: inline-block; width: 36px; height: 36px; line-height: 36px; text-align: center; border-radius: 6px; text-decoration: none; color: #555; border: 1px solid #ddd; }
-        .pagination a:hover { background-color: #e9ecef; }
-        .pagination strong { background-color: #007bff; color: white; border-color: #007bff; font-weight: bold; }
-    </style>
+	<link rel="stylesheet" href="<c:url value='/resources/css/board/report/list.css'/>"> 
 </head>
 <body>
-    <%-- 헤더 --%>
+    <!-- header -->
     <jsp:include page="/WEB-INF/views/common/header.jsp"/>
 
     <div class="container">
         <aside class="sidebar">
-            <ul> <%-- 사이드바 링크 수정 --%>
+            <ul>
                 <li><a href="<c:url value='/board/notice/list'/>">공지 사항</a></li>
                 <li><a href="<c:url value='/board/faq/list'/>">자주 묻는 질문</a></li>
                 <li><a href="<c:url value='/board/qna/list'/>">1:1 문의</a></li>
@@ -68,7 +27,6 @@
         <main class="main-content">
             <h1 class="page-title">신고 게시판</h1>
             <div class="list-header">
-                 <%-- 검색 기능 구현 시 Controller 수정 필요 --%>
                 <form action="<c:url value='/board/report/list'/>" class="search-form" method="get">
                     <select name="condition">
                         <option value="title">제목</option>
@@ -81,11 +39,10 @@
             </div>
 
             <ul class="report-list">
-                <%-- 헤더 컬럼 --%>
                 <li class="list-item header">
                     <div class="item-no">번호</div>
                     <div class="item-title">제목</div>
-                    <div class="item-date">작성일</div> <%-- 작성일 컬럼 추가 --%>
+                    <div class="item-date">작성일</div> 
                 </li>
 
                 <%-- Controller에서 고정 공지(pinnedNotice) 객체를 전달받았을 경우 --%>

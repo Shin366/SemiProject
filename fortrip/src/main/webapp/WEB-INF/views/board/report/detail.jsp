@@ -11,54 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
     <link rel="stylesheet" href="<c:url value='/resources/css/common/header.css'/>">
-    <style>
-        /* --- 기본 & 레이아웃 --- */
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; background-color: #f8f9fa; margin: 0; padding: 20px; color: #343a40; }
-        .report-container { max-width: 800px; margin: 40px auto; background-color: #fff; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); overflow: hidden; }
-        .report-card { padding: 40px 50px; }
-        .card-header h2 { margin: 0 0 30px 0; font-size: 26px; font-weight: 700; color: #212529; border-bottom: 1px solid #e0e0e0; padding-bottom: 20px; display: flex; align-items: center; gap: 10px; }
-        .card-header h2 i { color: #dc3545; }
-
-        /* --- 상세 내용 --- */
-        .detail-section { margin-bottom: 35px; }
-        .detail-section h3 { font-size: 18px; margin-bottom: 15px; font-weight: 600; color: #343a40; }
-        .detail-value { font-size: 16px; color: #212529; padding: 15px; background-color: #f8f9fa; border-radius: 6px; border: 1px solid #e9ecef; white-space: pre-wrap; word-wrap: break-word; line-height: 1.7; }
-        
-        .reason-group { display: flex; flex-wrap: wrap; gap: 10px; }
-        .reason-option { display: flex; align-items: center; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 6px; padding: 8px 14px; cursor: default; font-size: 15px; }
-        .reason-option input { margin-right: 8px; }
-        .reason-option input:checked + span { font-weight: 600; color: #0d6efd; }
-        .reason-option input[disabled] + span { opacity: 1; }
-
-        .attachment-list ul { list-style: none; padding: 0; margin: 0; }
-        .attachment-list li { margin-bottom: 8px; }
-        .attachment-list a { text-decoration: none; color: #007bff; font-size: 15px; }
-        .attachment-list a:hover { text-decoration: underline; }
-
-        /* --- 댓글 --- */
-        .comments-section { border-top: 1px solid #e0e0e0; padding-top: 30px; }
-        .no-comments { color: #888; text-align: center; padding: 20px; }
-        .comment-form textarea { width: 100%; min-height: 80px; padding: 10px; font-size: 14px; border: 1px solid #dee2e6; border-radius: 6px; box-sizing: border-box; resize: vertical; margin-bottom: 10px;}
-        .comment-form-actions { text-align: right; }
-        .comment-list { margin-top: 30px; list-style: none; padding: 0; }
-        .comment-item { padding: 15px 0; border-top: 1px solid #f1f3f5; }
-        .comment-item:first-child { border-top: 2px solid #343a40; }
-        .comment-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;}
-        .comment-author { font-weight: bold; font-size: 15px; }
-        .comment-date { font-size: 12px; color: #888; }
-        .comment-content { color: #495057; line-height: 1.6; margin-bottom: 10px; font-size: 14px; white-space: pre-wrap;}
-        .edit-comment-textarea { width: 100%; min-height: 60px; margin-top: 5px; display: none; box-sizing: border-box; }
-        .comment-actions { text-align: right; font-size: 12px; }
-        .comment-actions button { background: none; border: none; color: #007bff; cursor: pointer; padding: 0 5px; font-size: 12px; }
-        .comment-actions button:hover { text-decoration: underline; }
-
-        /* --- 하단 버튼 --- */
-        .button-group { text-align: right; margin-top: 30px; padding-top: 20px; border-top: 1px solid #e9ecef; }
-        .btn { padding: 10px 20px; border: none; border-radius: 6px; font-size: 16px; cursor: pointer; text-decoration: none; font-weight: 500; }
-        .btn-secondary { background-color: #6c757d; color: white; margin-right: 10px; }
-        .btn-danger { background-color: #dc3545; color: white; }
-        .btn-submit { background-color: #007bff; color: white; border: none; }
-    </style>
+    <link rel="stylesheet" href="<c:url value='/resources/css/board/report/detail.css'/>">
 </head>
 
 <body>
