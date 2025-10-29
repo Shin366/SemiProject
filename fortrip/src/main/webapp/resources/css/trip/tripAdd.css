@@ -109,13 +109,7 @@ input:focus, select:focus, textarea:focus{
   outline:none;
 }
 .chip input{ display:none }
-.chip::before{
-  content:"";
-  position:absolute; left:10px; top:50%; transform:translateY(-50%);
-  width:18px; height:18px;
-  border:2px solid #cbd5e1; border-radius:50%;
-  background:#fff;
-}
+
 
 /* 잘못된 색상코드 수정 */
 .chip.active{ background:var(--primary-weak); border-color:#dbeafe; color:var(--primary) }

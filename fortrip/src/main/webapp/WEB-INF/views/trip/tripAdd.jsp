@@ -481,9 +481,9 @@
 	        e.preventDefault(); return;
 	      }    	
       const itinerary = [];
-      builder.querySelectorAll('.day').forEach(dayEl=>{
+      builder.querySelectorAll('.day').forEach((dayEl, i)=>{
         const day = {
-          dayIndex: +dayEl.dataset.day,
+          dayIndex: + i + 1,
           date: dayEl.querySelector('.day-date')?.value || null,
           title: dayEl.querySelector('.day-name')?.value || '',
           stops: []

@@ -46,20 +46,6 @@
               </div>
             </div>
 
-            <div class="field">
-              <label>체크인</label>
-              <div class="input-wrap">
-                <input type="date" name="checkin"/>
-              </div>
-            </div>
-
-            <div class="field">
-              <label>체크아웃</label>
-              <div class="input-wrap">
-                <input type="date" name="checkout"/>
-              </div>
-            </div>
-
             <div class="field btn-field">
               <button type="submit">검색</button>
             </div>

@@ -1,5 +1,6 @@
 package com.fortrip.com.app.comment.controller;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,24 +22,23 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping("/board/comment")
 public class CommentController {
-    
+
     private final CommentService commentService;
 
-    // 댓글 목록 조회
+    // 댓글 조회
     @GetMapping("/list")
     public List<Comment> getCommentList(
             @RequestParam String boardType,
-            @RequestParam int boardNo) {
+            @RequestParam(required = false) Integer boardNo) {
+
+        if (boardNo == null) return Collections.emptyList();
         return commentService.getCommentList(boardType, boardNo);
     }
 
     // 댓글 등록
     @PostMapping("/insert")
-    public Map<String, Object> addComment(
-            Comment comment, // boardType, boardNo, commentContent 바인딩
-            HttpSession session) {
-
-        Map<String, Object> response = new HashMap<>(); // 응답용 Map 생성
+    public Map<String, Object> addComment(Comment comment, HttpSession session) {
+        Map<String, Object> response = new HashMap<>();
         Member loginMember = (Member) session.getAttribute("loginMember");
 
         if (loginMember == null) {
@@ -48,19 +48,69 @@ public class CommentController {
         }
 
         try {
-            // 서비스 호출 (서비스 내부에서 memberNo 설정)
             int result = commentService.addComment(comment, loginMember);
-
-            if (result > 0) {
-                response.put("status", "success");
-            } else {
-                 response.put("status", "fail");
-                 response.put("message", "댓글 등록에 실패했습니다.");
-            }
+            response.put("status", result > 0 ? "success" : "fail");
+            if (result <= 0) response.put("message", "댓글 등록 실패");
         } catch (Exception e) {
-             response.put("status", "error");
-             response.put("message", "댓글 처리 중 오류가 발생했습니다.");
+            e.printStackTrace();
+            response.put("status", "error");
+            response.put("message", "댓글 등록 중 오류 발생");
         }
-        return response; // JSON 객체 반환 {"status": "success"} 또는 {"status": "fail", ...}
+        return response;
+    }
+
+    // 댓글 수정
+    @PostMapping("/update")
+    public Map<String, Object> updateComment(
+            @RequestParam int commentNo,
+            @RequestParam String commentContent,
+            HttpSession session) {
+
+        Map<String, Object> map = new HashMap<>();
+        Member loginMember = (Member) session.getAttribute("loginMember");
+
+        if (loginMember == null) {
+            map.put("status", "error");
+            map.put("message", "로그인이 필요합니다.");
+            return map;
+        }
+
+        try {
+            int result = commentService.updateComment(commentNo, commentContent, loginMember);
+            map.put("status", result > 0 ? "success" : "fail");
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("status", "error");
+            map.put("message", "댓글 수정 중 오류 발생");
+        }
+
+        return map;
+    }
+
+    // 댓글 삭제
+    @PostMapping("/delete")
+    public Map<String, Object> deleteComment(
+            @RequestParam int commentNo,
+            HttpSession session) {
+
+        Map<String, Object> map = new HashMap<>();
+        Member loginMember = (Member) session.getAttribute("loginMember");
+
+        if (loginMember == null) {
+            map.put("status", "error");
+            map.put("message", "로그인이 필요합니다.");
+            return map;
+        }
+
+        try {
+            int result = commentService.deleteComment(commentNo, loginMember);
+            map.put("status", result > 0 ? "success" : "fail");
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("status", "error");
+            map.put("message", "댓글 삭제 중 오류 발생");
+        }
+
+        return map;
     }
 }

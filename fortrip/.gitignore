@@ -48,6 +48,9 @@ pom.properties
 .settings/
 .springBeans
 .sts4-cache
+# Eclipse Maven Integration generated files
+*.prefs
+*.pom.properties
 
 # ===============================
 # 🧠 IntelliJ IDEA
@@ -109,6 +112,7 @@ pom.properties
 .recommenders/
 .classpath
 .project
+
 
 # Windows 전용: 자동 백업, 임시 파일 제거
 *.bat~
