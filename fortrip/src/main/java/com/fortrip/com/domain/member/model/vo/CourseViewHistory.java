@@ -23,6 +23,8 @@ public class CourseViewHistory {
 	//join
 	private String roadName;
 	private String roadLocation;
+    private String roadCost;      
+    private String roadIntro;     
 	
 	
 }

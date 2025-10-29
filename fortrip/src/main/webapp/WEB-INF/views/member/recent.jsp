@@ -16,22 +16,29 @@
                 </div>
                 <button onclick="edit">편집</button>
             </div>
-            <div class="sidebar">
-                <ul class="menu-list">
-                    <li><a href="profile">내 프로필</a></li>
-                    <li><a href="myBoard">내 게시글</a></li>
-                    <li><a href="list">찜 목록</a></li>
-                    <li><a href="recent">최근 본 코스</a></li>
-                    <li><a href="update">개인 정보 수정</a></li>
-                    <li><a href="delete">회원탈퇴</a></li>
-                </ul>
-            </div>
             <div class="mainbar">
-                <div class="img"></div>
-                <div class="tripdate">여행날짜</div>
-                <div class="title">제목</div>
-                <div class="price">가격</div>
-            </div>
+    		<c:forEach var="trip" items="${recentList}">
+        <div class="trip-item" onclick="location.href='/trip/coursedetail/${trip.courseId}'">
+    		<div class="img">
+        <img src="/resources/img/course/${trip.courseId}.jpg" alt="${trip.roadName}" />
+				</div>
+				    <div class="tripdate">${trip.viewDate}</div>
+				    <div class="title">${trip.roadName}</div>
+				    <div class="price">${trip.roadCost}</div>
+				    <div class="location">${trip.roadLocation}</div>
+				</div>
+		    </c:forEach>
+		
+		    <div class="pagination">
+		        <c:if test="${page > 1}">
+		            <a href="?page=${page - 1}">이전</a>
+		        </c:if>
+		        <span>${page}</span>
+		        <c:if test="${recentList.size() == 20}">
+		            <a href="?page=${page + 1}">다음</a>
+		        </c:if>
+		    </div>
+		</div>
         </main>
     </div>
 </body>

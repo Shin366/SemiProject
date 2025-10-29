@@ -10,9 +10,9 @@ import com.fortrip.com.domain.member.model.vo.CourseViewHistory;
 @Service
 public interface CourseViewHistoryService {
 
-	void recordCourseView(long memberNo, long courseId, String string);
+	void recordCourseView(long memberNo, long courseId, String courseType);
 
-	List<CourseViewHistory> getRecentCourses(int memberNo);
+	List<CourseViewHistory> getRecentCourses(long memberNo, int page, int pageSize);
 	
 	
 

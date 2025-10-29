@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fortrip.com.domain.member.model.service.CourseViewHistoryService;
 import com.fortrip.com.domain.member.model.service.MemberService;
@@ -34,15 +35,24 @@ public class CourseViewController {
 	}
 	
 	@GetMapping("member/recent")
-	public String showRecentCourses(HttpSession session, Model model) {
-		Member loginMember = (Member)session.getAttribute("loginMember");
-		if(loginMember == null) {
-			model.addAttribute("errorMsg", "로그인 후 이용 가능합니다.");
-			return "redirect:/member/login";
-		}
-		int memberNo = loginMember.getMemberNo();
-		List<CourseViewHistory> list = hService.getRecentCourses(loginMember.getMemberNo());
-		model.addAttribute("recentList", list);
-		return "/WEB-INF/views/member/recent.jsp";	
+	public String showRecentCourses(
+	        @RequestParam(defaultValue = "1") int page,
+	        HttpSession session,
+	        Model model) {
+
+	    Member loginMember = (Member) session.getAttribute("loginMember");
+	    if (loginMember == null) {
+	        model.addAttribute("errorMsg", "로그인 후 이용 가능합니다.");
+	        return "redirect:/member/login";
+	    }
+
+	    long memberNo = loginMember.getMemberNo();
+	    int pageSize = 20; // 한 페이지당 20개씩 보여줌
+
+	    List<CourseViewHistory> list = hService.getRecentCourses(memberNo, page, pageSize);
+	    model.addAttribute("recentList", list);
+	    model.addAttribute("page", page);
+
+	    return "member/course/recent"; // recent.jsp로 이동
 	}
 }
