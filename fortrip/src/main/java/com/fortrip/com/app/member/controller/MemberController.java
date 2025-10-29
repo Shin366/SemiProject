@@ -118,7 +118,13 @@ public class MemberController {
 					return "common/error"; //에러 페이지 만들면 url 넣기
 				}
 			 */
-			if (loginMember != null && bcrypt.matches(member.getMemberPw(), loginMember.getMemberPw())) {
+			if (loginMember == null || "N".equals(loginMember.getStatusYsn())) {
+			    model.addAttribute("msg", "회원 정보가 없습니다.");
+			    model.addAttribute("url", "/member/login");
+			    return "common/alert";
+			}
+			
+			if (bcrypt.matches(member.getMemberPw(), loginMember.getMemberPw())) {
 			    session.setAttribute("loginMember", loginMember);
 			    session.setAttribute("adminYn", loginMember.getAdminYn());
 			    
@@ -129,7 +135,7 @@ public class MemberController {
 					return "admin/admin";
 				}else {
 					
-					return "redirect:"+beforeURL;
+					return "redirect:" + (beforeURL != null ? beforeURL : "/");
 				}
 				
 			}else {

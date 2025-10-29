@@ -40,7 +40,6 @@
             STATUS_YSN AS statusYsn
 		FROM MEMBER 
 		WHERE MEMBER_ID = #{memberId}
-		AND STATUS_YSN = 'Y' <!-- 활동 회원만 조회 -->
 	</select>
   	  	
   	<insert id="insertMember">
