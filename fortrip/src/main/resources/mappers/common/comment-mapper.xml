@@ -18,7 +18,7 @@
 	    WHERE C.BOARD_TYPE = #{boardType}
 	      AND C.BOARD_NO = #{boardNo}
 	      AND C.DELETE_YN = 'N'
-	    ORDER BY C.COMMENT_NO ASC
+	    ORDER BY C.COMMENT_NO DESC
 	</select>
     
     <insert id="insertComment" parameterType="com.fortrip.com.domain.comment.model.vo.Comment">

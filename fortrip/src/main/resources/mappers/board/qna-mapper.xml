@@ -3,54 +3,63 @@
  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fortrip.com.domain.board.qna.model.mapper.BoardQnaMapper">
+     <!-- 전체 게시글 수 -->
     <select id="getTotalCount" resultType="_int">
- 		SELECT COUNT(*) FROM QNA WHERE DELETE_YN = 'N'
- 	</select>
- 	
-	 <insert id="insertQna" parameterType="com.fortrip.com.app.board.qna.dto.BoardQnaAddRequest">
-	    <selectKey order="BEFORE" resultType="_int" keyProperty="qnaNo">
-	        SELECT SEQ_QNA_NO.NEXTVAL FROM DUAL
-	    </selectKey>
-	    INSERT INTO QNA (
-	        QNA_NO,
-	        MEMBER_NO,
-	        QNA_TITLE,
-	        QNA_CONTENT,
-	        QNA_PASSWORD
-	    ) VALUES (
-	        #{qnaNo},
-	        #{memberNo},
-	        #{qnaTitle},
-	        #{qnaContent},
-	        #{qnaPassword}
-	    )
-	</insert>
- 	
- 	<update id="deleteQna">
-	    UPDATE QNA
-	    SET DELETE_YN = 'Y'
-	    WHERE QNA_NO = #{qnaNo}
-	</update>
-	
-	<select id="selectOneByNo" resultType="BoardQna">
- 		SELECT 
- 		    Q.QNA_NO,
- 		    Q.MEMBER_NO,
- 		    Q.QNA_TITLE,
- 		    Q.QNA_CONTENT,
- 		    Q.VIEW_COUNT,
- 		    Q.IS_PRIVATE,
- 		    Q.WRITE_DATE,
- 		    Q.UPDATE_DATE,
- 		    Q.DELETE_YN,
- 		    M.NICKNAME AS writer  -- 닉네임 JOIN
- 		FROM QNA Q
- 		JOIN MEMBER M ON Q.MEMBER_NO = M.MEMBER_NO
- 		WHERE Q.QNA_NO = #{qnaNo} AND Q.DELETE_YN = 'N'
- 	</select>
- 	
- 	<select id="selectQnaList" resultType="BoardQna">
- 		SELECT *
+        SELECT COUNT(*) FROM QNA WHERE DELETE_YN = 'N'
+    </select>
+
+    <!-- Q&A 등록 -->
+    <insert id="insertQna" parameterType="com.fortrip.com.app.board.qna.dto.BoardQnaAddRequest">
+        <selectKey order="BEFORE" resultType="_int" keyProperty="qnaNo">
+            SELECT SEQ_QNA_NO.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO QNA (
+            QNA_NO,
+            MEMBER_NO,
+            QNA_TITLE,
+            QNA_CONTENT,
+            IS_PRIVATE,
+            QNA_PASSWORD
+        ) VALUES (
+            #{qnaNo},
+            #{memberNo},
+            #{qnaTitle},
+            #{qnaContent},
+            #{isPrivate, jdbcType=CHAR},
+            #{qnaPassword}
+        )
+    </insert>
+
+    <!-- 게시글 논리 삭제 -->
+    <update id="deleteQna">
+        UPDATE QNA
+        SET DELETE_YN = 'Y'
+        WHERE QNA_NO = #{qnaNo}
+    </update>
+
+    <!-- 단일 조회 -->
+    <select id="selectOneByNo" resultType="BoardQna">
+        SELECT 
+            Q.QNA_NO,
+            Q.MEMBER_NO,
+            Q.QNA_TITLE,
+            Q.QNA_CONTENT,
+            Q.VIEW_COUNT,
+            Q.IS_PRIVATE AS isPrivate,
+            Q.QNA_PASSWORD AS qnaPassword,
+            Q.WRITE_DATE,
+            Q.UPDATE_DATE,
+            Q.DELETE_YN,
+            M.NICKNAME AS writer
+        FROM QNA Q
+        JOIN MEMBER M ON Q.MEMBER_NO = M.MEMBER_NO
+        WHERE Q.QNA_NO = #{qnaNo}
+          AND Q.DELETE_YN = 'N'
+    </select>
+
+    <!-- 목록 조회 -->
+    <select id="selectQnaList" resultType="BoardQna">
+        SELECT *
         FROM (
             SELECT
                 ROWNUM AS RNUM,
@@ -60,10 +69,10 @@
                     Q.QNA_NO,
                     Q.MEMBER_NO,
                     Q.QNA_TITLE,
-                    Q.IS_PRIVATE,
+                    Q.IS_PRIVATE AS isPrivate,
                     Q.WRITE_DATE,
                     Q.DELETE_YN,
-                    M.NICKNAME AS writer -- 닉네임 JOIN
+                    M.NICKNAME AS writer
                 FROM QNA Q
                 JOIN MEMBER M ON Q.MEMBER_NO = M.MEMBER_NO
                 WHERE Q.DELETE_YN = 'N'
@@ -71,14 +80,15 @@
             ) A
         )
         WHERE RNUM BETWEEN #{offset} + 1 AND #{offset} + #{boardCountPerPage}
- 	</select>
- 	
- 	<update id="updateQna" parameterType="com.fortrip.com.app.board.qna.dto.BoardQnaUpdateRequest">
-	    UPDATE QNA
-	    SET
-	        QNA_TITLE = #{qnaTitle},
-	        QNA_CONTENT = #{qnaContent},
-	        UPDATE_DATE = SYSDATE -- 수정 시각 업데이트
-	    WHERE QNA_NO = #{qnaNo}
-	</update>
+    </select>
+
+    <!-- 수정 -->
+    <update id="updateQna" parameterType="com.fortrip.com.app.board.qna.dto.BoardQnaUpdateRequest">
+        UPDATE QNA
+        SET
+            QNA_TITLE = #{qnaTitle},
+            QNA_CONTENT = #{qnaContent},
+            UPDATE_DATE = SYSDATE
+        WHERE QNA_NO = #{qnaNo}
+    </update>
 </mapper>
