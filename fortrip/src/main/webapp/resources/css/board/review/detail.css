@@ -147,5 +147,33 @@ body { font-family: sans-serif; background-color: #f8f9fa; margin: 0; }
 }
 
 
-.bottom-actions { text-align: center; margin-top: 40px; }
-.btn-list { background-color: #007bff; color: white; border: none; padding: 12px 30px; text-decoration: none; border-radius: 6px; }
+.bottom-actions{
+  display:flex;
+  justify-content:space-between;   /* 왼쪽: 수정/삭제, 오른쪽: 목록 */
+  align-items:center;
+  margin-top:40px;
+}
+
+/* 버튼 간격 및 공통 버튼 스타일 보완 */
+.bottom-actions .btn{
+  display:inline-block;
+  text-decoration:none;
+  background:#f1f3f5;
+  color:#007bff;
+  border:1px solid #dee2e6;
+  padding:10px 16px;
+  border-radius:6px;
+  font-weight:600;
+}
+.bottom-actions .btn + .btn{ margin-left:8px; }
+
+/* 목록 버튼은 오른쪽 정렬 유지 */
+.btn-list{
+  background-color:#007bff;
+  color:#fff;
+  border:none;
+  padding:12px 30px;
+  border-radius:6px;
+}
+.btn-list:hover{ background-color:#0056b3; }
+/* .btn-list { background-color: #007bff; color: white; border: none; padding: 12px 30px; text-decoration: none; border-radius: 6px; } */

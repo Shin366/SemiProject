@@ -44,12 +44,12 @@
                 <div class="course-link-wrapper">
                     <c:choose>
                         <c:when test="${review.reviewerType == 'ADMIN'}">
-                            <a href="/road/admin/${review.roadNo}" class="btn-course-link">
+                            <a href="/course/${review.roadNo}" class="btn-course-link">
                                 <i class="fa-solid fa-route"></i>원본 코스 정보 보러가기
                             </a>
                         </c:when>
                         <c:when test="${review.reviewerType == 'USER'}">
-                             <a href="/road/user/${review.roadNo}" class="btn-course-link">
+                             <a href="/course/${review.roadNo}" class="btn-course-link">
                                 <i class="fa-solid fa-route"></i>원본 코스 정보 보러가기
                             </a>
                         </c:when>
@@ -61,7 +61,7 @@
                     <div class="post-content">
                         <%-- 본문 내용 --%>
                         <p>${review.reviewContent}</p>
-                        <img src="https://i.imgur.com/k2jB25m.jpeg" alt="리뷰 이미지">
+                        <img src="${pageContext.request.contextPath}${review.thumbnailPath}" alt="${review.reviewTitle}">
                     </div>
                 </section>
             </article>
@@ -72,15 +72,25 @@
                             <i class="fa-regular fa-heart"></i> <span id="likeCount">${likeCount}</span>
                         </button>
                         <button class="btn" id="bookmarkBtn" data-target-type="REVIEW" data-target-no="${review.reviewNo}">
-                            <i class="fa-regular fa-bookmark"></i> 북마크
-                        </button>
+						  <i class="fa-regular fa-bookmark"></i>
+						  <span id="bookmarkCount">
+						    ${empty review.bookmarkCount ? 0 : review.bookmarkCount}
+						  </span>
+						</button>
+
                     <button class="btn" id="reportBtn">신고</button>
 
                 </div>
                 <div class="social-share">
-                    <a href="#"><i class="fab fa-facebook-square"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="javascript:shareTwitter();" title="트위터 공유">
+					    <i class="fab fa-twitter"></i>
+					  </a>
+					  <a href="javascript:shareFacebook();" title="페이스북 공유">
+					    <i class="fab fa-facebook"></i>
+					  </a>
+					  <a href="javascript:shareKakao();" title="카카오톡 공유">
+					    <i class="fa-solid fa-comment"></i>
+					  </a>
                 </div>
             </footer>
             
@@ -108,14 +118,8 @@
 			        </div>
 			
 			        <div class="comment-content">${comment.commentContent}</div>
-			
-			        <c:if test="${sessionScope.loginMember.memberNo == comment.memberNo}">
-			          <div class="comment-actions">
-			            <button type="button" class="edit-btn">수정</button>
-			            <button type="button" class="delete-btn">삭제</button>
-			          </div>
-			        </c:if>
-			      </div>
+			        
+ 			      </div>
 			    </c:forEach>
 			
 			    <c:if test="${empty commentList}">
@@ -136,6 +140,42 @@
         </main>
     </div>
 <script>
+/* sns */
+function shareTwitter() {
+	  const sendText = document.querySelector(".post-title")?.innerText || "ForTrip 게시글";
+	  const sendUrl = window.location.href; // 현재 페이지 URL
+	  const twitterUrl = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(sendText) + "&url=" + encodeURIComponent(sendUrl);
+	  window.open(twitterUrl, "_blank", "width=600,height=400");
+	}
+	
+	function shareFacebook() {
+	  const sendUrl = window.location.href;
+	  const facebookUrl = "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(sendUrl);
+	  window.open(facebookUrl, "_blank", "width=600,height=400");
+	}
+	
+	function shareKakao() {
+		  if (!window.Kakao) {
+		    alert("카카오 SDK 로드 실패");
+		    return;
+		  }
+		  if (!Kakao.isInitialized()) {
+		    Kakao.init("034bf29dca5f7d44b97a184fa1e175fc");
+		  }
+		  Kakao.Link.sendDefault({
+		    objectType: "feed",
+		    content: {
+		      title: document.querySelector(".post-title")?.innerText || "ForTrip 게시글",
+		      description: "ForTrip 글을 확인해보세요.",
+		      imageUrl: "https://yourdomain.com/resources/img/fortrip-logo.png",
+		      link: { mobileWebUrl: window.location.href, webUrl: window.location.href }
+		    },
+		    buttons: [
+		      { title: "게시글 보기", link: { mobileWebUrl: window.location.href, webUrl: window.location.href } }
+		    ]
+		  });
+		}
+
 	const isUserLiked = ${isLiked != null ? isLiked : false}; // Controller 값이 null일 경우 false 기본값
 	console.log("isLiked from server:", isUserLiked); // 콘솔에 값 출력해보기
 		document.addEventListener('DOMContentLoaded', () => {
@@ -404,6 +444,8 @@
 		          .then(res => res.json())
 		          .then(data => {
 		            if (data.status === 'success') {
+		            	 document.getElementById('bookmarkCount').textContent = data.bookmarkCount ?? 0;
+		            	 const icon = bookmarkBtn.querySelector('i');
 		              if (data.isBookmarked) {
 		                bookmarkBtn.classList.add('bookmarked');
 		                icon.classList.replace('fa-regular', 'fa-solid');
