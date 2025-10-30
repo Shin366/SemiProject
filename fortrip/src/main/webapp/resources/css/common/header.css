@@ -1,124 +1,114 @@
 @charset "UTF-8";
-.site-header {
-  background: #fff;
-  border-bottom: 1px solid #e5e7eb;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
+/* ====== 변수 ====== */
+:root{
+  --bg:#ffffff;                 /* 요청: 헤더 흰색 배경 */
+  --ink:#121417;                /* 본문 텍스트 */
+  --mute:#6b7280;               /* 보조 텍스트 */
+  --line:#e5e8ec;               /* 경계선 */
+  --accent:#0b57d0;             /* 링크 강조 */
+  --shadow:0 14px 38px rgba(15,23,42,.08);
+  --max:1320px;                 /* 컨테이너 폭 */
+  --h:64px;                     /* 헤더 높이 */
+  --radius:12px;
 }
-.site-header .container {
-  max-width: 1280px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 24px;
-}
-
-/* 로고 */
-.logo img {
-  height: 40px;
+*{box-sizing:border-box}
+body{
+  font-family:"Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI",
+              "Noto Sans KR", Roboto, Helvetica, Arial, sans-serif;
 }
 
-/* 네비게이션 */
-.nav-menu ul {
-  display: flex;
-  list-style: none;
-  gap: 32px;
-  margin: 0;
-  padding: 0;
-}
-.nav-menu a {
-  text-decoration: none;
-  color: #111827;
-  font-weight: 600;
-}
-.nav-menu a:hover {
-  color: #2563EB;
+/* ── header base ────────────────────────────────────── */
+.kr-header .container{
+  max-width:var(--max); margin:0 auto;
+  height:var(--h); padding:0 22px;
+  display:grid; grid-template-columns: 140px 1fr auto; align-items:center; column-gap:18px;
 }
 
-/* 검색창 */
-.search-box {
-  display: flex;
-  align-items: center;
-  background: #f3f4f6;
-  border-radius: 999px;
-  padding: 4px 12px;
-  width: 280px;
-}
-.search-box form {
-  display: flex;
-  align-items: center;
-  width: 100%;
-}
-.search-box .icon {
-  border: none;
-  background: none;
-  font-size: 16px;
-  cursor: pointer;
-  color: #6B7280;
-}
-.search-box input {
-  border: none;
-  outline: none;
-  background: transparent;
-  flex: 1;
-  padding: 6px 8px;
-  font-size: 14px;
+/* 로고(흰 배경에서 선명하게 보이도록) */
+.logo{line-height:0;margin:0}
+.logo img{height:40px; display:block}
+
+/* ── nav ────────────────────────────────────────────── */
+.nav{align-self:stretch; display:flex; align-items:center}
+.nav-menu{list-style:none; margin:0; padding:0; display:flex; gap:30px; align-items:center}
+.nav-item{position:relative}
+
+/* ▼ 호버 브리지: 메뉴와 드롭다운 사이 10~12px 투명 영역을 nav-item에 포함시켜 gap 제거 */
+.nav-item::after{
+  content:"";
+  position:absolute; left:0; right:0; top:100%;
+  height:12px;           /* 커서가 지나갈 다리 높이 */
 }
 
-/* 로그인 회원가입 로그아웃 */
-.user-menu {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  font-size: 14px;
+/* 링크 */
+.nav-link{
+  position:relative;
+  display:inline-flex; align-items:center; height:var(--h);
+  color:#1f2937; text-decoration:none; font-weight:700; letter-spacing:.02em;
+  padding:0 2px; transition:color .15s ease, opacity .15s ease;
+}
+.nav-link::after{                       /* 작은 화살표 */
+  content:"▾"; font-size:11px; margin-left:6px; color:#9aa3af;
+  transform:translateY(-1px);
+}
+.nav-item:hover .nav-link{ color:var(--accent) }
+
+/* ── dropdown (좁은 세로패널) ─────── */
+/* ✅ gap 제거: margin-top 지우고 top으로 위치 보정 */
+.dropdown{
+  position:absolute; left:0; top:calc(100% + 6px);
+  /* margin-top:10px;  <- 제거 */
+  width:220px;
+  background:#fff; border:1px solid var(--line); border-radius:10px;
+  box-shadow:var(--shadow);
+  list-style:none; padding:8px 0; margin-bottom:0;
+  pointer-events:none; opacity:0; visibility:hidden;
+  transform: translateY(6px);
+  transition: opacity .18s ease, transform .18s ease, visibility 0s linear .18s;
 }
 
-.user-menu a {
-  text-decoration: none;
-  font-weight: 500;
-  transition: all 0.2s ease;
+/* 드롭다운 자체에 올라가도 유지(안전장치, 대부분 필요X지만 추가) */
+.dropdown:hover,
+.nav-item:hover .dropdown{
+  pointer-events:auto; opacity:1; visibility:visible; transform:translateY(0);
+  transition: opacity .18s ease, transform .18s ease;
 }
 
-/* 로그인/회원가입 */
-.login-btn, .signup-btn {
-  color: #111827;
+.dropdown li{display:block}
+.dropdown a{
+  display:block; padding:10px 14px; text-decoration:none;
+  color:#1f2937; font-weight:600; font-size:14px;
+  transition: background .12s ease, color .12s ease, padding-left .12s ease;
 }
-.login-btn:hover, .signup-btn:hover {
-  color: #2563EB;
-}
-
-/* 환영 문구 */
-.welcome-text {
-  font-weight: 600;
-  color: #333;
+.dropdown a:hover{
+  background:#f6f8ff; color:#0b57d0; padding-left:18px;
 }
 
-.welcome-link {
-    text-decoration: none; 
-    color: inherit;  
+/* ── right: search & user ──────────────────────────── */
+.right{display:flex; align-items:center; gap:16px; justify-self:end}
+
+.search{
+  display:flex; align-items:center; gap:8px; height:36px; width:260px;
+  background:#f3f4f7; border:1px solid #e7eaf0; border-radius:999px; padding:0 12px;
+  transition:background .18s ease, box-shadow .18s ease, border-color .18s ease;
 }
-.welcome-link:hover .welcome-text {
-    text-decoration: underline;
+.search:focus-within{ background:#fff; border-color:#d7deea; box-shadow:var(--shadow) }
+.search input{
+  flex:1; border:0; outline:0; background:transparent; font-size:14px; color:#111827;
+}
+.search svg{
+  width:16px; height:16px; stroke:#6b7280; fill:none; stroke-width:2;
 }
 
-/* 로그아웃 버튼 */
-.logout-btn {
-  background-color: #2563EB;
-  color: white;
-  padding: 8px 16px;
-  border-radius: 8px;
-  font-weight: 600;
-  transition: background-color 0.2s ease, transform 0.1s ease;
+.user{display:flex; align-items:center; gap:10px}
+.link{
+  text-decoration:none; color:#111827; font-weight:700; font-size:14px; transition:color .12s ease;
 }
-.logout-btn:hover {
-  background-color: #1E40AF;
-  transform: translateY(-1px);
-}
+.link:hover{ color:var(--accent) }
+.welcome{ color:#0f172a }
+.sep{ color:#c0c6d4 }
 
-@media (max-width:1024px){
-  .site-header .container{flex-wrap:wrap;gap:12px;}
-  .search-box{width:100%;}
+/* 포커스 표시 */
+a:focus-visible, button:focus-visible, input:focus-visible{
+  outline:2px solid rgba(11,87,208,.35); outline-offset:2px; border-radius:6px;
 }
