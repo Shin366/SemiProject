@@ -21,6 +21,7 @@ import com.fortrip.com.app.member.dto.LoginRequest;
 import com.fortrip.com.app.member.dto.ModifyRequest;
 import com.fortrip.com.app.member.dto.MyBoard;
 import com.fortrip.com.app.member.dto.pwUpdateRequest;
+import com.fortrip.com.domain.board.bookmark.model.vo.BookmarkVO;
 import com.fortrip.com.domain.board.free.model.service.BoardFreeService;
 import com.fortrip.com.domain.board.like.model.service.BoardLikeService;
 import com.fortrip.com.domain.member.model.service.MemberBookmarkService;
@@ -144,7 +145,7 @@ public class MemberController {
 					return "admin/admin";
 				}else {
 					
-					return "redirect:" + (beforeURL != null ? beforeURL : "/");
+					return "redirect:/";
 				}
 				
 			}else {
@@ -255,17 +256,32 @@ public class MemberController {
 	
 	@GetMapping("list")
 	public String showLikedList(HttpSession session, Model model) {
-	    Member loginMember = (Member) session.getAttribute("loginMember");
-	    if (loginMember == null) {
-	        model.addAttribute("errorMsg", "로그인이 필요합니다.");
+	    try {
+	        Member loginMember = (Member) session.getAttribute("loginMember");
+	        if (loginMember == null) {
+	            model.addAttribute("errorMsg", "로그인이 필요합니다.");
+	            return "redirect:/member/login";
+	        }
+
+	        int memberNo = loginMember.getMemberNo();
+	        
+	        System.out.println("=== 찜 목록 조회 ===");
+	        System.out.println("회원 번호: " + memberNo);
+	        
+	        List<BookmarkVO> likedList = bService.selectBookmarksByMember(memberNo);
+	        
+	        System.out.println("조회된 찜 개수: " + (likedList != null ? likedList.size() : 0));
+
+	        model.addAttribute("likedList", likedList);
+	        model.addAttribute("member", loginMember);
+	        
+	        return "member/list";
+	        
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        model.addAttribute("errorMsg", e.getMessage());
 	        return "common/error";
 	    }
-
-	    int memberNo = loginMember.getMemberNo();
-	    List<MyBoard> likedList = bService.selectLikedBoards(memberNo); // 찜 목록 조회
-
-	    model.addAttribute("likedList", likedList);
-	    return "member/list";
 	}
 	
 	@PostMapping("/deleteLiked")

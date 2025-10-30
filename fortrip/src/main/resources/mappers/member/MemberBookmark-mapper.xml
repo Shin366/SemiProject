@@ -2,60 +2,8 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  <mapper namespace="com.fortrip.com.domain.member.model.mapper.MemberBookmarkMapper">
+<mapper namespace="com.fortrip.com.domain.member.model.mapper.MemberBookmarkMapper">
   
-  	<!-- 북마크 존재 여부 확인 -->
-    <select id="existsBookmark" parameterType="map" resultType="int">
-        SELECT COUNT(*) 
-        FROM BOOKMARK
-        WHERE MEMBER_NO = #{memberNo}
-          AND TARGET_TYPE = #{targetType}
-          AND TARGET_NO = #{targetNo}
-    </select>
-
-    <!-- 북마크 추가 -->
-    <insert id="insertBookmark" parameterType="map">
-        INSERT INTO BOOKMARK (BOOKMARK_NO, MEMBER_NO, TARGET_TYPE, TARGET_NO, BOOKMARK_DATE)
-        VALUES (BOOKMARK_SEQ.NEXTVAL, #{memberNo}, #{targetType}, #{targetNo}, SYSDATE)
-    </insert>
-
-    <!-- 북마크 삭제 -->
-    <delete id="deleteBookmark" parameterType="map">
-        DELETE FROM BOOKMARK
-        WHERE MEMBER_NO = #{memberNo}
-          AND TARGET_TYPE = #{targetType}
-          AND TARGET_NO = #{targetNo}
-    </delete>
-
-    <!-- 특정 게시글의 북마크 수 -->
-    <select id="countBookmarkByBoard" parameterType="map" resultType="int">
-        SELECT COUNT(*)
-        FROM BOOKMARK
-        WHERE TARGET_TYPE = #{targetType}
-          AND TARGET_NO = #{targetNo}
-    </select>
-
-    <!-- 특정 회원의 전체 북마크 목록 (리뷰 + 자유게시판 모두) -->
-    <select id="selectBookmarksByMember" parameterType="int" resultType="map">
-        SELECT 
-            b.TARGET_TYPE,
-            b.TARGET_NO,
-            b.BOOKMARK_DATE,
-            CASE 
-                WHEN b.TARGET_TYPE = 'review' THEN r.REVIEW_TITLE
-                ELSE f.POST_TITLE
-            END AS title,
-            CASE 
-                WHEN b.TARGET_TYPE = 'review' THEN r.WRITE_DATE
-                ELSE f.WRITE_DATE
-            END AS writeDate
-        FROM BOOKMARK b
-        LEFT JOIN REVIEW r ON b.TARGET_TYPE = 'review' AND b.TARGET_NO = r.REVIEW_NO
-        LEFT JOIN FREE f ON b.TARGET_TYPE = 'community' AND b.TARGET_NO = f.POST_NO
-        WHERE b.MEMBER_NO = #{memberNo}
-        ORDER BY b.BOOKMARK_DATE DESC
-    </select>
-
     <!-- 회원이 쓴 게시글 수 -->
     <select id="countMyPosts" parameterType="int" resultType="int">
         SELECT (
@@ -66,70 +14,78 @@
     </select>
 
     <!-- 내가 쓴 게시글이 받은 좋아요 수 -->
-	<select id="countLikesOnMyPosts" parameterType="int" resultType="int">
-    SELECT COUNT(*)
-    FROM BOARD_LIKE l
-    WHERE (
-        (l.BOARD_TYPE = 'community' AND l.BOARD_NO IN (
-            SELECT POST_NO FROM FREE WHERE MEMBER_NO = #{memberNo} AND DELETE_YN = 'N'
-        ))
-        OR
-        (l.BOARD_TYPE = 'review' AND l.BOARD_NO IN (
-            SELECT REVIEW_NO FROM REVIEW WHERE MEMBER_NO = #{memberNo} AND DELETE_YN = 'N'
-        ))
-    )
-	</select>
+    <select id="countLikesOnMyPosts" parameterType="int" resultType="int">
+        SELECT COUNT(*)
+        FROM BOARD_LIKE l
+        WHERE (
+            (l.BOARD_TYPE = 'community' AND l.BOARD_NO IN (
+                SELECT POST_NO FROM FREE WHERE MEMBER_NO = #{memberNo} AND DELETE_YN = 'N'
+            ))
+            OR
+            (l.BOARD_TYPE = 'review' AND l.BOARD_NO IN (
+                SELECT REVIEW_NO FROM REVIEW WHERE MEMBER_NO = #{memberNo} AND DELETE_YN = 'N'
+            ))
+        )
+    </select>
 
     <!-- 내가 저장한 북마크 수 -->
     <select id="countMyBookmarks" parameterType="int" resultType="int">
         SELECT COUNT(*) FROM BOOKMARK WHERE MEMBER_NO = #{memberNo}
     </select>
     
-    <select id="selectMyBookmarkList" parameterType="int" resultType="com.fortrip.com.domain.board.bookmark.model.vo.BookmarkVO">
-	    SELECT 
-	        B.BOOKMARK_NO AS bookmarkNo,
-	        B.MEMBER_NO AS memberNo,
-	        B.TARGET_TYPE AS targetType,
-	        B.TARGET_NO AS targetNo,
-	        B.BOOKMARK_DATE AS bookmarkDate,
-	        CASE 
-	            WHEN B.TARGET_TYPE = 'free' THEN F.POST_TITLE
-	            ELSE R.REVIEW_TITLE
-	        END AS title,
-	        CASE 
-	            WHEN B.TARGET_TYPE = 'free' THEN F.WRITE_DATE
-	            ELSE R.WRITE_DATE
-	        END AS writeDate
-	    FROM BOOKMARK B
-	    LEFT JOIN FREE F ON B.TARGET_TYPE = 'free' AND B.TARGET_NO = F.POST_NO
-	    LEFT JOIN REVIEW R ON B.TARGET_TYPE = 'review' AND B.TARGET_NO = R.REVIEW_NO
-	    WHERE B.MEMBER_NO = #{memberNo}
-	    ORDER BY B.BOOKMARK_DATE DESC
-	</select>
-
-	<select id="selectLikedBoards" parameterType="int" resultType="com.fortrip.com.domain.board.like.model.vo.BoardLikeVO">
-	    SELECT
-	        L.LIKE_NO AS likeNo,
-	        L.BOARD_TYPE AS boardType,
-	        L.BOARD_NO AS boardNo,
-	        L.MEMBER_NO AS memberNo,
-	        L.LIKE_DATE AS likeDate
-	    FROM BOARD_LIKE L
-	    WHERE L.MEMBER_NO = #{memberNo}
-	    ORDER BY L.LIKE_DATE DESC
-	</select>
-	  
-	  <delete id="deleteSelectedBookmarks" parameterType="map">
-	    DELETE FROM BOOKMARK
-	    WHERE MEMBER_NO = #{memberNo} AND TARGET_NO IN
-	    <foreach item="no" collection="targetNos" open="(" separator="," close=")">
-	        #{no}
-	    </foreach>
-		</delete>
-		
-		<delete id="deleteAllBookmarks" parameterType="int">
-		    DELETE FROM BOOKMARK
-		    WHERE MEMBER_NO = #{memberNo}
-		</delete>
+    <!-- ✅ 북마크 목록 조회 (이미지 포함) -->
+    <select id="selectBookmarksByMember" parameterType="int" resultType="com.fortrip.com.domain.board.bookmark.model.vo.BookmarkVO">
+        SELECT 
+            B.BOOKMARK_NO AS bookmarkNo,
+            B.MEMBER_NO AS memberNo,
+            B.TARGET_TYPE AS targetType,
+            B.TARGET_NO AS targetNo,
+            B.BOOKMARK_DATE AS bookmarkDate,
+            CASE 
+                WHEN B.TARGET_TYPE = 'community' THEN F.POST_TITLE
+                WHEN B.TARGET_TYPE = 'review' THEN R.REVIEW_TITLE
+                ELSE NULL
+            END AS title,
+            CASE 
+                WHEN B.TARGET_TYPE = 'community' THEN F.WRITE_DATE
+                WHEN B.TARGET_TYPE = 'review' THEN R.WRITE_DATE
+                ELSE NULL
+            END AS writeDate,
+            A.ATTACH_PATH AS thumbnailPath
+        FROM BOOKMARK B
+        LEFT JOIN FREE F ON B.TARGET_TYPE = 'community' AND B.TARGET_NO = F.POST_NO
+        LEFT JOIN REVIEW R ON B.TARGET_TYPE = 'review' AND B.TARGET_NO = R.REVIEW_NO
+        LEFT JOIN (
+            SELECT BOARD_NO, BOARD_TYPE, ATTACH_PATH
+            FROM (
+                SELECT BOARD_NO, BOARD_TYPE, ATTACH_PATH,
+                       ROW_NUMBER() OVER (PARTITION BY BOARD_TYPE, BOARD_NO ORDER BY ATTACH_NO) AS rn
+                FROM ATTACHMENT
+            )
+            WHERE rn = 1
+        ) A ON (
+            (B.TARGET_TYPE = 'community' AND A.BOARD_TYPE = 'community' AND B.TARGET_NO = A.BOARD_NO)
+            OR
+            (B.TARGET_TYPE = 'review' AND A.BOARD_TYPE = 'review' AND B.TARGET_NO = A.BOARD_NO)
+        )
+        WHERE B.MEMBER_NO = #{memberNo}
+        ORDER BY B.BOOKMARK_DATE DESC
+    </select>
     
-  </mapper>
+    <!-- 선택 삭제 -->
+    <delete id="deleteSelectedBookmarks" parameterType="map">
+        DELETE FROM BOOKMARK
+        WHERE MEMBER_NO = #{memberNo} 
+          AND TARGET_NO IN
+        <foreach item="no" collection="targetNos" open="(" separator="," close=")">
+            #{no}
+        </foreach>
+    </delete>
+    
+    <!-- 전체 삭제 -->
+    <delete id="deleteAllBookmarks" parameterType="int">
+        DELETE FROM BOOKMARK
+        WHERE MEMBER_NO = #{memberNo}
+    </delete>
+    
+</mapper>

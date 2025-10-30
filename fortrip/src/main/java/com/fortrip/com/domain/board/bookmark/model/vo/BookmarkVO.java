@@ -19,5 +19,5 @@ public class BookmarkVO {
 	private Timestamp bookmarkDate;
 	private String title;       // 게시글 제목
 	private Timestamp writeDate; // 작성일
-	
+	private String thumbnailPath;   // 썸네일 경로 추가
 }
