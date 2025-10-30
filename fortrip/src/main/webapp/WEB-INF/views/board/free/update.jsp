@@ -7,13 +7,15 @@
     <meta charset="UTF-8">
     <title>자유 게시판 글 수정</title>
     <link rel="stylesheet" href="/resources/css/common/header.css">
+    <link rel="stylesheet" href="/resources/css/common/rset.css">
+    <link rel="stylesheet" href="/resources/css/common/base-layout.css">
     <link rel="stylesheet" href="/resources/css/board/free/update.css">
     <style>
         
     </style>
 </head>
 <body>
-    <%-- 공통 헤더 --%>
+    <!-- header -->
     <jsp:include page="/WEB-INF/views/common/header.jsp"/>
 
     <div class="container">
@@ -23,16 +25,16 @@
         </aside>
 
         <main class="main-content">
-            <h1 class="page-title">자유게시판 게시글 수정</h1>
+            <h2 class="page-title">자유게시판 게시글 수정</h2>
 
             <form action="<c:url value='/board/free/update'/>" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="postNo" value="${free.postNo}">
-
-                <label>제목</label>
-                <input type="text" name="postTitle" value="${free.postTitle}" required>
+				<div class="top-fields">
+	                <input type="text" name="postTitle" value="${free.postTitle}" required>
+	                <input type="text" name="writer" value="${loginMember.nickName}" readonly placeholder="작성자 닉네임">
+				</div>
 
 				<!-- 본문 내용 -->
-                <label>내용</label>
                 <textarea name="postContent" required>${free.postContent}</textarea>
 
 				<!-- 첨부파일 영역 -->	
@@ -56,5 +58,7 @@
             </form>
         </main>
     </div>
+    <!-- footer -->
+    <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 </body>
 </html>

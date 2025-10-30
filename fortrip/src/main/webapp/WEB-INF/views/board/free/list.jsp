@@ -5,8 +5,10 @@
 <head>
    <meta charset="UTF-8">
    <title>ForTrip - 커뮤니티</title>
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
 	<link rel="stylesheet" href="/resources/css/common/header.css">   
+	<link rel="stylesheet" href="/resources/css/common/base-layout.css">   
 	<link rel="stylesheet" href="/resources/css/board/free/list.css">   
 </head>
 <body>
@@ -73,10 +75,10 @@
                        </div>
                        <div class="post-author">${free.postWriter}</div>
                        <div class="post-meta">
-	                        <span>👁️ ${free.viewCount}</span>
-				            <span>❤️ ${free.likeCount}</span>
-				            <span>⭐ ${free.bookmarkCount}</span>
-				            <span>💬 ${free.commentCount}</span>
+	                        <span><i class="fa-regular fa-eye"></i>️ ${free.viewCount}</span>
+				            <span><i class="fa-regular fa-heart"></i> ${free.likeCount}</span>
+				            <span><i class="fa-regular fa-bookmark"></i> ${free.bookmarkCount}</span>
+				            <span><i class="fa-regular fa-comment"></i> ${free.commentCount}</span>
                        </div>
                    </div>
                </c:forEach>
@@ -108,6 +110,6 @@
            </nav>
        </main>
    </div>
-   <%-- <jsp:include page="/WEB-INF/views/include/footer.jsp"/> --%>
+   <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 </body>
 </html>

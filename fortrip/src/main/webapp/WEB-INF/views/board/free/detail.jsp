@@ -11,6 +11,7 @@
     <%-- Font Awesome CDN (아이콘 사용을 위해 추가) --%>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+    <link rel="stylesheet" href="/resources/css/common/base-layout.css">
     <link rel="stylesheet" href="/resources/css/board/free/detail.css">
 </head>
 <body>
@@ -108,7 +109,7 @@
 
             <div class="bottom-actions">
                 <div>
-                    <c:if test="${not empty sessionScope.loginMember and sessionScope.loginMember.memberNo eq comment.memberNo}">
+                    <c:if test="${not empty sessionScope.loginMember and sessionScope.loginMember.memberNo eq free.memberNo}">
                         <a href="<c:url value='/board/free/update?postNo=${free.postNo}'/>" class="btn">수정</a>
                         <a href="<c:url value='/board/free/delete?postNo=${free.postNo}'/>" class="btn">삭제</a>
                     </c:if>
@@ -458,6 +459,6 @@ function shareTwitter() {
 		    }
 		});
 </script>
-	
+<jsp:include page="/WEB-INF/views/common/footer.jsp"/>	
 </body>
 </html>
