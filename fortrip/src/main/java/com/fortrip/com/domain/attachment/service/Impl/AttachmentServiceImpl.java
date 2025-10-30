@@ -2,6 +2,7 @@ package com.fortrip.com.domain.attachment.service.Impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,44 +28,48 @@ public class AttachmentServiceImpl implements AttachmentService{
 	private String uploadPath;
 
     @Override
-    public void saveFiles(List<MultipartFile> files, String boardType, int postNo) throws IOException {
-        if (files == null || files.isEmpty()) return;
+    public List<String> saveFiles(List<MultipartFile> files, String boardType, int postNo) throws IOException {
+        List<String> savedPaths = new ArrayList<>();
+
+        if (files == null || files.isEmpty()) {
+            return savedPaths;
+        }
 
         File dir = new File(uploadPath);
-        if (!dir.exists()) dir.mkdirs(); // 폴더 없으면 생성
+        if (!dir.exists()) dir.mkdirs();
 
         for (MultipartFile file : files) {
             if (file.isEmpty()) continue;
 
-            // 원본 파일 이름
             String originalName = file.getOriginalFilename();
-
-            // 저장될 고유 파일 이름 (UUID + 확장자)
             String ext = originalName.substring(originalName.lastIndexOf("."));
             String savedName = UUID.randomUUID().toString() + ext;
 
-            // 실제 저장 경로
+            // 실제 저장 파일 경로
             File dest = new File(dir, savedName);
-
-            // 파일 저장
             file.transferTo(dest);
+            
+            String webPath = "/uploads/" + savedName;
 
-            // DB 저장용 객체 생성
+            // DB 저장
             Attachment attach = Attachment.builder()
                     .boardType(boardType)
                     .boardNo(postNo)
                     .originalName(originalName)
                     .savedName(savedName)
                     .attachPath(dest.getAbsolutePath())
+                    .webPath(webPath)
                     .build();
 
-            // DB Insert
             attachmentMapper.insertAttachment(attach);
 
             log.info("파일 저장 완료: {}", attach.getAttachPath());
-        }
-	}
 
+            savedPaths.add(webPath);
+        }
+
+        return savedPaths;
+    }
 	@Override
 	public void deleteFilesByIds(List<Integer> attachNos) {
 		if (attachNos == null || attachNos.isEmpty()) {

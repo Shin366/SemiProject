@@ -9,7 +9,7 @@ import com.fortrip.com.domain.attachment.vo.Attachment;
 
 public interface AttachmentService {
 
-	void saveFiles(List<MultipartFile> files, String boardType, int postNo) throws IOException;
+	List<String> saveFiles(List<MultipartFile> files, String boardType, int postNo) throws IOException;
 
 	//첨부파일 고유번호 목록으로 특정 첨부파일들만 삭제
     void deleteFilesByIds(List<Integer> attachNos);

@@ -17,4 +17,5 @@ public class Attachment {
     private String originalName;
     private String savedName;
     private String attachPath;
+    private String webPath;
 }
