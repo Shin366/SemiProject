@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -263,18 +264,29 @@
     <!-- 메인 콘텐츠 -->
     <main class="main">
       <div class="tags">
-        <span class="tag">#먹방코스</span>
-        <span class="tag">#부산코스</span>
-      </div>
+		  <c:if test="${not empty course.roadStyle}">
+		    <c:forEach var="t" items="${fn:split(course.roadStyle, ',')}">
+		      <span class="tag">#<c:out value="${t}"/>#</span>
+		    </c:forEach>
+		  </c:if>
+		</div>
 
       <div class="title-row">
-        <h1>부산 2박 3일 먹방 여행코스</h1>
-        <button type="button" class="btn-like">
-          <span class="heart" aria-hidden="true">❤</span> 찜하기
-        </button>
+        <h1><c:out value="${course.title}"/></h1>
+			<button type="button" class="btn-like">
+				<span class="heart" aria-hidden="true">❤</span> 찜하기
+	  		</button>
       </div>
 
-      <div class="hero">대표 이미지</div>
+      <div class="hero">
+      	<c:choose>
+		    <c:when test="${empty course.thumbnailUrl}">대표 이미지</c:when>
+		    <c:otherwise>
+		      <img src="<c:out value='${course.thumbnailUrl}'/>" alt="<c:out value='${course.title}'/>"
+		           style="max-height:220px; max-width:100%; object-fit:cover; border-radius:12px;">
+		    </c:otherwise>
+		</c:choose>
+      </div>
 
       <div class="author">
         <div class="who">
@@ -293,8 +305,7 @@
 
       <h3 class="section-title">코스소개</h3>
       <section class="card">
-        부산의 대표적인 관광지를 중심으로 맛집을 잇는 2박 3일 먹방코스입니다. 계절과 날씨에 따라 변동될 수 있으며,
-        상세한 운영시간과 휴무, 그리고 부산 맛집의 웨이팅을 고려할 수 있는 핵심 정보를 함께 제공합니다.
+        <c:out value="${course.intro}"/>
       </section>
 
       <h3 class="section-title">지도</h3>
@@ -356,29 +367,24 @@
 
     <!-- 우측 정보 패널 -->
     <aside class="right">
-      <section class="card info-card" aria-labelledby="info-title">
-        <h3 id="info-title" class="section-title" style="margin-top:0;">여행 정보</h3>
-        <div class="row">
-          <span class="key">총 기간</span>
-          <span class="val">2025.10.11 ~ 2025.10.13</span>
-        </div>
-        <div class="row">
-          <span class="key">비용</span>
-          <span class="val">400,000원</span>
-        </div>
-        <div class="row">
-          <span class="key">여행 스타일</span>
-          <span class="val">먹방로드</span>
-        </div>
-      </section>
-      <section class="card">
-        <h3 class="section-title" style="margin-top:0;">유의사항</h3>
-        <p style="margin:0; color:#475569; font-size:14px">
-          영업시간/휴무, 웨이팅은 방문 전 다시 확인해주세요. 기상 악화 시 일부 일정이 변경될 수 있습니다.
-        </p>
-      </section>
+		<section class="card info-card" aria-labelledby="info-title">
+			<h3 id="info-title" class="section-title" style="margin-top:0;">여행 정보</h3>
+			<div class="row">
+				<span class="key">총 기간</span>
+		  		<span class="val">
+		    		<c:out value="${course.start}"/> ~ <c:out value="${course.end}"/>
+		  		</span>
+			</div>
+			<div class="row">
+		  		<span class="key">비용</span>
+		  		<span class="val"><c:out value="${course.cost}"/></span>
+			</div>
+			<div class="row">
+		  		<span class="key">여행 스타일</span>
+		  		<span class="val"><c:out value="${course.roadStyle}"/></span>
+		  	</div>
+		</section>
     </aside>
-
   </div>
 </body>
 </html>
