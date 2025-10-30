@@ -53,6 +53,6 @@ public class CourseViewController {
 	    model.addAttribute("recentList", list);
 	    model.addAttribute("page", page);
 
-	    return "member/course/recent"; // recent.jsp로 이동
+	    return "member/recent"; // recent.jsp로 이동
 	}
 }

@@ -1,0 +1,165 @@
+/* agreement-style.css */
+
+:root {
+    --main-color: #0796E5; /* ForTrip의 주 색상 (파란색 계열) */
+    --main-dark-color: #007bbd; /* 메인 색상보다 약간 어두운 색 */
+    --text-color: #333;
+    --border-color: #ddd;
+    --bg-color: #f9f9f9;
+    --disabled-color: #cccccc; /* 비활성화 버튼 색상 */
+}
+
+body {
+    font-family: 'Malgun Gothic', '맑은 고딕', Arial, sans-serif;
+    background-color: var(--bg-color);
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+#container {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1); /* 그림자 강화 */
+    width: 100%;
+    max-width: 500px;
+}
+
+.use-title h2 {
+    color: var(--main-color);
+    text-align: center;
+    margin-bottom: 5px;
+    font-size: 30px;
+    font-weight: 700;
+}
+
+.use-main-title {
+    padding: 15px 0;
+    margin-bottom: 25px;
+    border-bottom: 3px solid var(--main-color); /* 구분선 강화 */
+}
+
+.use-main-title h4 {
+    margin: 0;
+    color: var(--text-color);
+    font-size: 19px;
+    font-weight: 600;
+}
+
+.use-main-title .user {
+    color: #888;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+/* 체크박스 그룹 스타일 */
+.form-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+/* 전체 동의 스타일 */
+#use-all + label {
+    font-weight: bold;
+    color: var(--text-color);
+    padding-left: 10px;
+    font-size: 18px; /* 글자 크기 키움 */
+}
+
+/* 개별 약관 목록 스타일 */
+.useTerms {
+    list-style: none;
+    padding: 15px 20px;
+    margin: 0 0 25px 0;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: #fafafa;
+}
+
+.useTerms .form-group {
+    margin-bottom: 12px;
+}
+
+/* A 태그 스타일 (내용 보기 링크) */
+.useTerms a {
+    color: var(--main-color);
+    text-decoration: none;
+    border-bottom: 1px solid var(--main-color);
+    margin-left: 10px; /* 간격 늘림 */
+    font-size: 14px;
+    font-weight: normal;
+}
+
+.useTerms a:hover {
+    color: var(--main-dark-color);
+    border-bottom: 1px solid transparent;
+}
+
+/* 필수 라벨 */
+label.required:before {
+    content: "(필수)";
+    color: #ff4757; 
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+/* 버튼 스타일 (기본: 비활성화 상태) */
+.use-button {
+    width: 100%;
+    padding: 15px;
+    background-color: var(--disabled-color); /* 기본 비활성화 색상 */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: not-allowed; /* 커서 변경 */
+    transition: background-color 0.3s, cursor 0.3s;
+}
+
+/* 활성화된 버튼 스타일 */
+.use-button.active {
+    background-color: var(--main-color);
+    cursor: pointer;
+}
+
+.use-button.active:hover {
+    background-color: var(--main-dark-color); /* 마우스 오버 시 색상 */
+}
+
+
+/* 체크박스 커스텀 스타일은 유지 */
+input[type="checkbox"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--border-color);
+    border-radius: 4px;
+    margin-right: 8px;
+    cursor: pointer;
+    position: relative;
+    top: 3px;
+    transition: border-color 0.3s;
+}
+
+input[type="checkbox"]:checked {
+    background-color: var(--main-color);
+    border-color: var(--main-color);
+}
+
+input[type="checkbox"]:checked::after {
+    content: '✔';
+    color: white;
+    font-size: 14px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
