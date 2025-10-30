@@ -19,4 +19,5 @@ public class MyBoard {
     private Date writeDate;          // 작성일 (WRITE_DATE)
     private String category;         // 카테고리 (REVIEWER_TYPE - 리뷰만)
     private String courseName;       // 코스 번호 (ROAD_NO - 리뷰만)
+    private String thumbnailPath;	// 썸네일 경로 추가
 }
