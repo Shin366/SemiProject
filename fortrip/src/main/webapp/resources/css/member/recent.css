@@ -1,68 +1,258 @@
-.recent-header {
-  text-align: center;
-  margin: 30px 0;
+/* 전체 레이아웃 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
+body {
+    font-family: 'Malgun Gothic', '맑은 고딕', Arial, sans-serif;
+    background-color: #f5f7fa;
+}
+
+#container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+#main {
+    display: flex;
+    gap: 30px;
+}
+
+/* 사이드바 */
+.sidebar {
+    flex: 0 0 250px;
+    position: sticky;
+    top: 20px;
+    height: fit-content;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+}
+
+.sidebar li {
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.sidebar li:last-child {
+    border-bottom: none;
+}
+
+.sidebar a {
+    display: block;
+    padding: 16px 24px;
+    text-decoration: none;
+    color: #555;
+    font-weight: 600;
+    font-size: 15px;
+    transition: all 0.3s ease;
+}
+
+.sidebar a:hover {
+    background-color: #f8f9fa;
+    color: #007bff;
+}
+
+.sidebar a.active {
+    background-color: #007bff;
+    color: white;
+}
+
+/* 메인 컨텐츠 */
+.recent-container {
+    flex: 1;
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.recent-header h2 {
+    font-size: 28px;
+    color: #333;
+    font-weight: 700;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+/* 코스 리스트 */
 .recent-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 20px;
-  padding: 0 40px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
 }
 
+/* 코스 카드 */
 .trip-card {
-  border: 1px solid #eee;
-  border-radius: 12px;
-  overflow: hidden;
-  background: #fff;
-  cursor: pointer;
-  transition: transform 0.2s ease;
+    background-color: #fff;
+    border: 1px solid #e8e8e8;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
+
 .trip-card:hover {
-  transform: translateY(-5px);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* 썸네일 */
+.trip-thumbnail {
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+    background-color: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .trip-thumbnail img {
-  width: 100%;
-  height: 160px;
-  object-fit: cover;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
+.no-image {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.no-image svg {
+    stroke: rgba(255, 255, 255, 0.8);
+}
+
+/* 코스 정보 */
 .trip-info {
-  padding: 12px;
+    padding: 20px;
 }
 
 .trip-title {
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 6px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 8px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .trip-location {
-  color: #666;
-  margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 8px;
+}
+
+.trip-location svg {
+    stroke-width: 2;
 }
 
 .trip-cost {
-  color: #2c7a7b;
-  font-weight: bold;
+    font-size: 14px;
+    color: #007bff;
+    font-weight: 600;
+    margin-bottom: 12px;
 }
 
 .trip-date {
-  font-size: 12px;
-  color: #aaa;
-  margin-top: 6px;
+    font-size: 13px;
+    color: #999;
 }
 
-/* 최근 본 코스가 없을 때 */
+/* 빈 상태 */
 .empty-state {
-  text-align: center;
-  margin-top: 100px;
-  color: #777;
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 80px 20px;
 }
 
-.empty-state .empty-icon {
-  width: 80px;
-  opacity: 0.7;
-  margin-bottom: 16px;
+.empty-state svg {
+    stroke: #ddd;
+    margin-bottom: 20px;
+}
+
+.empty-state p {
+    font-size: 16px;
+    color: #999;
+    margin-bottom: 20px;
+}
+
+.btn-primary {
+    display: inline-block;
+    padding: 12px 24px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: background-color 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+/* 페이지네이션 */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-top: 30px;
+    padding-top: 30px;
+    border-top: 1px solid #f0f0f0;
+}
+
+.page-btn {
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: background-color 0.3s;
+}
+
+.page-btn:hover {
+    background-color: #0056b3;
+}
+
+.current-page {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+}
+
+/* 반응형 */
+@media (max-width: 1024px) {
+    #main {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        position: static;
+    }
+}
+
+@media (max-width: 768px) {
+    .recent-list {
+        grid-template-columns: 1fr;
+    }
 }

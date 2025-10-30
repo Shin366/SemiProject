@@ -4,38 +4,47 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="com.fortrip.com.domain.member.model.mapper.CourseViewHistoryMapper">
   
-  	<select id="selectRecentCourses" parameterType="long">
-  		SELECT * FROM (
-        SELECT 
-            h.HISTORY_NO,
-            h.MEMBER_NO,
-            h.COURSE_ID,
-            h.COURSE_TYPE,
-            h.VIEW_DATE,
-            r.ROAD_NAME,
-            r.ROAD_LOCATION,
-            r.ROAD_COST,
-            r.ROAD_INTRO,
-            ROW_NUMBER() OVER (ORDER BY h.VIEW_DATE DESC)
-        FROM COURSE_VIEW_HISTORY h
-        JOIN ROAD r ON h.COURSE_ID = r.ROAD_NO
-        WHERE h.MEMBER_NO = #{memberNo}
-    )
-    WHERE ROW_NUMBER BETWEEN #{startRow} AND #{endRow}
-  	</select>
-  	
-  	<select id="checkExistingView" parameterType="map" resultType="int">
-    SELECT COUNT(*) FROM COURSE_VIEW_HISTORY
-    WHERE MEMBER_NO = #{memberNo} AND COURSE_ID = #{courseId}
-	</select>
-  	
-  	<insert id="insertView">
-  		INSERT INTO COURSE_VIEW_HISTORY(MEMBER_NO, COURSE_ID, COURSE_TYPE)
-  		VALUES (#{memberNo}, #{courseId}, #{courseType})
-  	</insert>
-  	
-  	<update id="updateViewDate" parameterType="map">
-  		UPDATE COURSE_VIEW_HISTORY SET VIEW_DATE = SYSTIMESTAMP
-  		WHERE MEMBER_NO = #{memberNo} AND COURSE_ID = #{courseId}
-  	</update>
+  	<!-- 최근 본 코스 조회 (페이징) -->
+    <select id="selectRecentCourses" parameterType="map" resultType="com.fortrip.com.domain.member.model.vo.CourseViewHistory">
+        SELECT * FROM (
+            SELECT
+                h.HISTORY_NO AS historyNo,
+                h.MEMBER_NO AS memberNo,
+                h.COURSE_ID AS courseId,
+                h.COURSE_TYPE AS courseType,
+                h.VIEW_DATE AS viewDate,
+                r.ROAD_NAME AS roadName,
+                r.ROAD_LOCATION AS roadLocation,
+                r.ROAD_COST AS roadCost,
+                r.ROAD_INTRO AS roadIntro,
+                ROW_NUMBER() OVER (ORDER BY h.VIEW_DATE DESC) AS rnum
+            FROM COURSE_VIEW_HISTORY h
+            JOIN ROAD r ON h.COURSE_ID = r.ROAD_NO
+            WHERE h.MEMBER_NO = #{memberNo}
+        )
+        WHERE rnum BETWEEN #{startRow} AND #{endRow}
+    </select>
+
+    <!-- 기존 조회 이력 확인 -->
+    <select id="checkExistingView" parameterType="map" resultType="int">
+        SELECT COUNT(*) 
+        FROM COURSE_VIEW_HISTORY
+        WHERE MEMBER_NO = #{memberNo} 
+          AND COURSE_ID = #{courseId}
+    </select>
+
+    <!-- 조회 이력 추가 -->
+    <insert id="insertView" parameterType="com.fortrip.com.domain.member.model.vo.CourseViewHistory">
+        INSERT INTO COURSE_VIEW_HISTORY(HISTORY_NO, MEMBER_NO, COURSE_ID, COURSE_TYPE, VIEW_DATE)
+        VALUES (SEQ_HISTORY_NO.NEXTVAL, #{memberNo}, #{courseId}, #{courseType}, SYSTIMESTAMP)
+    </insert>
+
+    <!-- 조회 시간 업데이트 -->
+    <update id="updateViewDate" parameterType="map">
+        UPDATE COURSE_VIEW_HISTORY 
+        SET VIEW_DATE = SYSTIMESTAMP
+        WHERE MEMBER_NO = #{memberNo} 
+          AND COURSE_ID = #{courseId}
+    </update>
+    
   </mapper>

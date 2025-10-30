@@ -24,35 +24,48 @@ public class CourseViewController {
 	
 	private final CourseViewHistoryService hService;
 	
-	@GetMapping("trip/coursedetail/{courseId}")
-	public String viewCourseDetail(@PathVariable long courseId, HttpSession session) {
-		Member loginMember = (Member)session.getAttribute("loginMember");
-		if(loginMember != null) {
-			hService.recordCourseView(loginMember.getMemberNo(),courseId, "U");
+	// 코스 상세 페이지 조회
+		@GetMapping("trip/coursedetail/{courseId}")
+		public String viewCourseDetail(@PathVariable Long courseId, HttpSession session) {
+			Member loginMember = (Member)session.getAttribute("loginMember");
+			if(loginMember != null) {
+				hService.recordCourseView(loginMember.getMemberNo(), courseId, "U");
+			}
+			return "trip/coursedetail";
 		}
-		return "trip/coursedetail";
 		
+		// 최근 본 코스 목록
+		@GetMapping("member/recent")
+		public String showRecentCourses(
+		        @RequestParam(defaultValue = "1") int page,
+		        HttpSession session,
+		        Model model) {
+		    
+			try {
+				Member loginMember = (Member) session.getAttribute("loginMember");
+			    
+			    if (loginMember == null) {
+			        model.addAttribute("errorMsg", "로그인 후 이용 가능합니다.");
+			        return "redirect:/member/login";
+			    }
+			    
+			    long memberNo = loginMember.getMemberNo();
+			    int pageSize = 20; // 한 페이지당 20개씩
+			    
+			    List<CourseViewHistory> list = hService.getRecentCourses(memberNo, page, pageSize);
+			    
+			    System.out.println("조회된 최근 본 코스 수: " + (list != null ? list.size() : 0));
+			    
+			    model.addAttribute("recentList", list);
+			    model.addAttribute("page", page);
+			    model.addAttribute("member", loginMember);
+			    
+			    return "member/recent";
+			    
+			} catch (Exception e) {
+				e.printStackTrace();
+				model.addAttribute("errorMsg", e.getMessage());
+				return "common/error";
+			}
+		}
 	}
-	
-	@GetMapping("member/recent")
-	public String showRecentCourses(
-	        @RequestParam(defaultValue = "1") int page,
-	        HttpSession session,
-	        Model model) {
-
-	    Member loginMember = (Member) session.getAttribute("loginMember");
-	    if (loginMember == null) {
-	        model.addAttribute("errorMsg", "로그인 후 이용 가능합니다.");
-	        return "redirect:/member/login";
-	    }
-
-	    long memberNo = loginMember.getMemberNo();
-	    int pageSize = 20; // 한 페이지당 20개씩 보여줌
-
-	    List<CourseViewHistory> list = hService.getRecentCourses(memberNo, page, pageSize);
-	    model.addAttribute("recentList", list);
-	    model.addAttribute("page", page);
-
-	    return "member/recent"; // recent.jsp로 이동
-	}
-}
