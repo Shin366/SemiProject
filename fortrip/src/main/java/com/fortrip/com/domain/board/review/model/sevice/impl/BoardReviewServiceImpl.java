@@ -1,17 +1,23 @@
 package com.fortrip.com.domain.board.review.model.sevice.impl;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fortrip.com.app.board.review.dto.BoardReviewAddRequest;
+import com.fortrip.com.app.board.review.dto.BoardReviewUpdateRequest;
 import com.fortrip.com.domain.attachment.service.AttachmentService;
 import com.fortrip.com.domain.board.review.model.mapper.BoardReviewMapper;
 import com.fortrip.com.domain.board.review.model.sevice.BoardReviewService;
 import com.fortrip.com.domain.board.review.model.vo.BoardReview;
+import com.fortrip.com.domain.image.model.mapper.ImageMapper;
+import com.fortrip.com.domain.image.model.vo.Image;
 import com.fortrip.com.domain.member.model.vo.Member; // 경로 확인
 
 import lombok.RequiredArgsConstructor;
@@ -24,6 +30,10 @@ public class BoardReviewServiceImpl implements BoardReviewService {
 
 	private final BoardReviewMapper reviewMapper;
 	private final AttachmentService attachmentService;
+	private final ImageMapper imageMapper;
+	
+	@Value("${file.upload-path}")
+	private String uploadPath;
 
 	private static final String BOARD_TYPE = "REVIEW"; 
 
@@ -35,7 +45,6 @@ public class BoardReviewServiceImpl implements BoardReviewService {
 	@Override
 	public List<BoardReview> selectReviewList(int currentPage, int reviewCountPerPage) { // 리뷰 목록 조회 (페이징)
 		int offset = (currentPage - 1) * reviewCountPerPage;
-		// Mapper 인터페이스와 파라미터 개수/이름 일치 확인 필요
 		return reviewMapper.selectReviewList(offset, reviewCountPerPage);
 	}
 
@@ -70,52 +79,150 @@ public class BoardReviewServiceImpl implements BoardReviewService {
 		review.setMemberNo(loginMember.getMemberNo());
 		
 
-		// ※ DTO에 roadNo, reviewerType, reviewSubtitle, reviewRating 값이 Controller에서 넘어왔다고 가정
-		// 만약 Service에서 설정해야 한다면 여기서 로직 추가 필요
-
 		// 2. 리뷰 게시글 DB에 저장
 		int result = reviewMapper.insertReview(review);
 		if (result == 0) {
-            log.warn("리뷰 게시글 INSERT 실패: {}", review);
+            log.warn("리뷰 게시글 작성 실패: {}", review);
             return 0; // 실패 시 0 반환
         }
 
 		int reviewNo = review.getReviewNo();
 
-		// 4. 첨부 파일 저장 (공용 AttachmentService 사용)
+		// 3. 첨부 파일 저장 (공용 AttachmentService 사용)
 		if (files != null && !files.isEmpty()) {
 			try {
                 log.info("리뷰 {}번 게시글 첨부파일 저장 시작...", reviewNo);
-				attachmentService.saveFiles(files, BOARD_TYPE, reviewNo);
-			} catch (IOException e) {
+                
+               for(int i = 0; i < files.size(); i++) {
+            	   MultipartFile file = files.get(i);
+            	   		if(!file.isEmpty()) {
+            	   			String originalName = file.getOriginalFilename();
+            	   			String savedName = UUID.randomUUID() + "_"+ originalName;
+            	   			
+            	   			//실제 서버 저장
+            	   			File saveFile = new File(uploadPath, savedName);
+            	   			file.transferTo(saveFile);
+            	   			
+            	   			//DB 저장
+            	   			String imagePath = "/uploads/"+savedName;
+            	   			Image image = new Image();
+                            image.setBoardType("REVIEW");
+                            image.setBoardNo(reviewNo);
+                            image.setImagePath(imagePath);
+                            image.setOriginalName(originalName);
+                            image.setSavedName(savedName);
+                            image.setIsThumbnail(i == 0 ? "Y" : "N"); // 첫 번째 이미지를 썸네일로 지정
+
+                            imageMapper.insertImage(image);
+
+                            // 첫 번째 이미지면 리뷰 테이블에도 썸네일 경로 업데이트
+                            if (i == 0) {
+                                reviewMapper.updateThumbnailPath(reviewNo, imagePath);
+                                log.info("리뷰 {}번 썸네일 경로: {}", reviewNo, imagePath);
+                            }
+                        }
+                    }
+
+                } catch (IOException e) {
+                    log.error("리뷰 {}번 게시글 이미지 저장 실패", reviewNo, e);
+                    throw new RuntimeException("이미지 저장 중 오류 발생", e);
+                }
+            }
+            return result;
+        }
+/*
+                // 파일 저장 (AttachmentService 공용)
+                List<String> savedPaths = attachmentService.saveFiles(files, BOARD_TYPE, reviewNo);
+
+                // 첫번째 파일을 썸네일로 지정
+                if (!savedPaths.isEmpty()) {
+                    thumbnailPath = savedPaths.get(0);
+                    reviewMapper.updateThumbnailPath(reviewNo, thumbnailPath);
+                    log.info("썸네일 경로 저장 완료: {}", thumbnailPath);
+                }
+
+            } catch (IOException e) {
                 log.error("리뷰 {}번 게시글 파일 저장 실패", reviewNo, e);
-				// 파일 저장 실패 시 RuntimeException 발생 -> 트랜잭션 롤백
-				throw new RuntimeException("리뷰 게시글 파일 저장 중 오류가 발생했습니다.", e);
-			}
-		}
+                throw new RuntimeException("리뷰 게시글 파일 저장 중 오류 발생", e);
+            }
+        }
+
 		return result; // 성공 시 1 반환
 	}
-
-    // TODO: updateReview, deleteReview 메소드 구현 필요
-    /*
+*/
+	// 리뷰게시판 수정
     @Override
     @Transactional(rollbackFor = Exception.class)
     public int updateReview(BoardReviewUpdateRequest reviewUpdateDto, List<MultipartFile> reloadFiles, List<Integer> deletedFiles, Member loginMember) {
-        // 1. 수정 권한 확인 (원본 게시글 조회 후 작성자와 로그인 사용자 비교)
-        // 2. 게시글 텍스트 업데이트 (Mapper.updateReview 호출)
-        // 3. 삭제 파일 처리 (AttachmentService.deleteFilesByIds 호출)
-        // 4. 새 파일 저장 (AttachmentService.saveFiles 호출)
-        return 0; // 임시
+
+    	// 게시글 정보 조회
+    	BoardReview origin = reviewMapper.selectOneByNo(reviewUpdateDto.getReviewNo());
+        if (origin == null) {
+            throw new IllegalArgumentException("존재하지 않는 리뷰 게시글입니다.");
+        }
+
+        // 수정 권한 확인
+        if (origin.getMemberNo() != loginMember.getMemberNo()) {
+            throw new SecurityException("본인 게시글만 수정할 수 있습니다.");
+        }
+
+        // 게시글 내용 수정
+        int result = reviewMapper.updateReview(reviewUpdateDto);
+        if (result == 0) {
+            throw new RuntimeException("리뷰 수정에 실패했습니다.");
+        }
+
+        // 삭제 요청된 첨부파일 삭제
+        if (deletedFiles != null && !deletedFiles.isEmpty()) {
+            attachmentService.deleteFilesByIds(deletedFiles);
+        }
+
+        // 새로운 첨부파일 추가
+        String newThumbnailPath = null;
+        if (reloadFiles != null && !reloadFiles.isEmpty()) {
+            try {
+                List<String> savedPaths = attachmentService.saveFiles(reloadFiles, BOARD_TYPE, reviewUpdateDto.getReviewNo());
+                if (!savedPaths.isEmpty()) {
+                    newThumbnailPath = savedPaths.get(0); // 첫 번째 파일을 썸네일로 지정
+                }
+            } catch (IOException e) {
+                throw new RuntimeException("첨부파일 저장 중 오류 발생", e);
+            }
+        }
+
+        // 썸네일 갱신 (파일이 새로 추가된 경우만)
+        if (newThumbnailPath != null) {
+            reviewMapper.updateThumbnailPath(reviewUpdateDto.getReviewNo(), newThumbnailPath);
+        }
+
+        return result;
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public int deleteReview(int reviewNo, Member loginMember) {
-        // 1. 삭제 권한 확인 (원본 게시글 조회 후 작성자와 로그인 사용자 비교)
-        // 2. 첨부파일 전체 삭제 (AttachmentService.deleteAttachmentsByBoard 호출)
-        // 3. 게시글 논리 삭제 (Mapper.deleteReview 호출 - UPDATE DELETE_YN='Y')
-        return 0; // 임시
+    	
+    	// 원본 게시글 조회
+        BoardReview origin = reviewMapper.selectOneByNo(reviewNo);
+        if (origin == null) {
+            throw new IllegalArgumentException("존재하지 않는 리뷰 게시글입니다.");
+        }
+
+        if (origin.getMemberNo() != loginMember.getMemberNo()) {
+            throw new SecurityException("본인 게시글만 삭제할 수 있습니다.");
+        }
+        
+        // 이미지 삭제
+        imageMapper.deleteImageByBoard(BOARD_TYPE, reviewNo);
+
+        attachmentService.deleteAttachmentsByBoard(BOARD_TYPE, reviewNo);
+
+        int result = reviewMapper.deleteReview(reviewNo);
+        if (result == 0) {
+            throw new RuntimeException("게시글 삭제 실패");
+        }
+
+        return result;
     }
-    */
 
 }

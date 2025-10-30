@@ -24,6 +24,7 @@ public class BoardReview {
     private Timestamp writeDate;  
     private Timestamp updateDate; 
     private String deleteYn;
+    private String thumbnailPath; //썸네일 이미지 추가
 
     // Join
     private String writer;        
