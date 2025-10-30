@@ -13,4 +13,5 @@ public class BoardQnaAddRequest {
 	private String qnaTitle;
 	private String qnaContent;
 	private String qnaPassword;
+	private String isPrivate;
 }

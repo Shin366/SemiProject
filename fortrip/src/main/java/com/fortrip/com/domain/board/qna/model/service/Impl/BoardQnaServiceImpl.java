@@ -47,6 +47,9 @@ public class BoardQnaServiceImpl implements BoardQnaService{
 		if(loginMember == null) {
 			throw new IllegalArgumentException("로그인 정보가 필요합니다.");
 		}
+		if (qna.getIsPrivate() == null || qna.getIsPrivate().isBlank()) {
+		    qna.setIsPrivate("N"); // 기본 공개
+		}
 		
 		qna.setMemberNo(loginMember.getMemberNo());
 		

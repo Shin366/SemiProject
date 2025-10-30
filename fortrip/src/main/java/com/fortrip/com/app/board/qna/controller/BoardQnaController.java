@@ -3,6 +3,7 @@ package com.fortrip.com.app.board.qna.controller;
 import java.io.IOException;
 import java.util.List;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +34,8 @@ public class BoardQnaController { // 문의게시판 컨트롤러
 	private final BoardQnaMapper qMapper;
 	private final BoardQnaService qService;
 	private final AttachmentService attachmentService;
+	private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
 	
 	// 문의게시판 목록 조회
 	@GetMapping("/list")
@@ -69,20 +72,48 @@ public class BoardQnaController { // 문의게시판 컨트롤러
 	// 문의게시판 상세페이지
 	@GetMapping("/detail")
 	public String showDetailView(
-			int qnaNo
-			,Model model) {
+			@RequestParam("qnaNo") Integer qnaNo,
+			@RequestParam(value = "qnaPassword", required = false) String inputPassword,
+            HttpSession session,
+			Model model) {
 		try {
 			// 게시글 조회
 			BoardQna boardQna = qService.selectOneByNo(qnaNo);
+			if (boardQna == null) {
+	               model.addAttribute("errorMsg", "존재하지 않는 문의글입니다.");
+	               return "common/error";
+	           }
 			
+
+            Member loginMember = (Member) session.getAttribute("loginMember");
+            boolean isAdmin = loginMember != null && "Y".equalsIgnoreCase(loginMember.getAdminYn());
+            boolean isWriter = loginMember != null && loginMember.getMemberNo() == boardQna.getMemberNo();
+			
+            // 비밀글 확인
+            if ("Y".equalsIgnoreCase(boardQna.getIsPrivate())) {
+                if (!(isAdmin || isWriter)) {
+                    // 비밀번호가 설정된 경우
+                    if (boardQna.getQnaPassword() != null && !boardQna.getQnaPassword().isEmpty()) {
+                        if (inputPassword == null) {
+                            model.addAttribute("qnaNo", qnaNo);
+                            return "board/qna/password";
+                        }
+                        if (!passwordEncoder.matches(inputPassword, boardQna.getQnaPassword())) {
+                            model.addAttribute("qnaNo", qnaNo);
+                            model.addAttribute("errorMsg", "비밀번호가 일치하지 않습니다.");
+                            return "board/qna/password";
+                        }
+                    }
+                }
+            }
+            
 			//첨부파일 조회
 			List<Attachment> attachmentList = attachmentService.getAttachmentsByBoard("QNA", qnaNo);
-			 
-			//조회수 증가?
 			model.addAttribute("boardQna", boardQna);
-			// 첨부파일 저장
 			model.addAttribute("attachmentList", attachmentList);
+			
 			return "board/qna/detail"; 
+			
 		}catch(Exception e) {
 			model.addAttribute("errorMsg", e.getMessage());
 			return "common/error";
@@ -179,7 +210,12 @@ public class BoardQnaController { // 문의게시판 컨트롤러
 	    }
 
 	    qna.setMemberNo(loginMember.getMemberNo());
-	    int result = qMapper.insertQna(qna);
+	    
+	 // 비밀글 체크 시 암호화
+        if ("Y".equalsIgnoreCase(qna.getIsPrivate()) && qna.getQnaPassword() != null && !qna.getQnaPassword().isEmpty()) {
+            qna.setQnaPassword(passwordEncoder.encode(qna.getQnaPassword()));
+        }
+	    int result = qService.insertQna(qna, files, loginMember);
 	    if (result == 0) return 0;
 
 	    int qnaNo = qna.getQnaNo();
