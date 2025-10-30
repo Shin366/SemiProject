@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fortrip.com.app.common.util.TempPwUtil;
 import com.fortrip.com.app.member.dto.JoinRequest;
@@ -230,8 +231,10 @@ public class MemberController {
 	    }
 
 	    int memberNo = member.getMemberNo();
+
+	    // 게시글 수, 좋아요 수, 북마크 수
 	    int postCount = bService.countMyPosts(memberNo);
-	    int likeCount = bService.countLikesOnMyPosts(memberNo);
+	    int likeCount = bService.countLikesOnMyPosts(memberNo); 
 	    int bookmarkCount = bService.countMyBookmarks(memberNo);
 
 	    model.addAttribute("member", member);
@@ -251,13 +254,34 @@ public class MemberController {
 	
 	
 	@GetMapping("list")
-	public String showListPage() {
-		return "member/list";
+	public String showLikedList(HttpSession session, Model model) {
+	    Member loginMember = (Member) session.getAttribute("loginMember");
+	    if (loginMember == null) {
+	        model.addAttribute("errorMsg", "로그인이 필요합니다.");
+	        return "common/error";
+	    }
+
+	    int memberNo = loginMember.getMemberNo();
+	    List<MyBoard> likedList = bService.selectLikedBoards(memberNo); // 찜 목록 조회
+
+	    model.addAttribute("likedList", likedList);
+	    return "member/list";
 	}
 	
-	@PostMapping("list")
-	public String listPage() {
-		return "member/list";
+	@PostMapping("/deleteLiked")
+	@ResponseBody
+	public String deleteLiked(@RequestBody List<Integer> ids, HttpSession session){
+	    Member loginMember = (Member) session.getAttribute("loginMember");
+	    bService.deleteSelectedBookmarks(loginMember.getMemberNo(), ids);
+	    return "success";
+	}
+
+	@PostMapping("/deleteAllLiked")
+	@ResponseBody
+	public String deleteAllLiked(HttpSession session){
+	    Member loginMember = (Member) session.getAttribute("loginMember");
+	    bService.deleteAllBookmarks(loginMember.getMemberNo());
+	    return "success";
 	}
 	
 	

@@ -5,6 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>ForTrip - 개인 정보 수정 성공!</title>
+<link rel="icon" type="image/png" href="../../../resources/img/common/eyes-icon.png">
 	<script>
 		alert("정보가 수정되었습니다.");
 		window.location.href = "profile";

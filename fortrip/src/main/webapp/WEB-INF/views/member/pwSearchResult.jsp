@@ -5,6 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>ForTrip - 임시 비밀번호 안내</title>
+<link rel="icon" type="image/png" href="../../../resources/img/common/eyes-icon.png">
 	<script>
 		window.onload = function() {
 			const tempPw = "${tempPw }";

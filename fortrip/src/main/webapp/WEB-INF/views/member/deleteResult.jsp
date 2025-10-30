@@ -5,6 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>ForTrip - 회원탈퇴</title>
+<link rel="icon" type="image/png" href="../../../resources/img/common/eyes-icon.png">
     <script>
 		window.onload = function() {
 				alert("회원 탈퇴가 완료되었습니다..")

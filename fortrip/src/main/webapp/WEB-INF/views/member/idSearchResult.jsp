@@ -5,6 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>ForTrip - 아이디 안내</title>
+<link rel="icon" type="image/png" href="../../../resources/img/common/eyes-icon.png">
 	<script>
         window.onload = function() {
             const memberId = "${memberId}";

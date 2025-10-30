@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.fortrip.com.app.member.dto.MyBoard;
 import com.fortrip.com.domain.board.bookmark.model.vo.BookmarkVO;
 
 @Mapper
@@ -33,5 +34,11 @@ public interface MemberBookmarkMapper {
 	 int countMyBookmarks(int memberNo);
 
 	 List<BookmarkVO> selectMyBookmarkList(int memberNo);
+
+	 List<MyBoard> selectLikedBoards(int memberNo);
+
+	 int deleteSelectedBookmarks(@Param("memberNo") int memberNo, @Param("targetNos") List<Integer> targetNos);
+	 
+	 int deleteAllBookmarks(int memberNo);
 
 }
