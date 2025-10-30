@@ -24,10 +24,10 @@
     WHERE ROW_NUMBER BETWEEN #{startRow} AND #{endRow}
   	</select>
   	
-  	<select id="checkExistiogView" parameterType="map" resultType="int">
-  		SELECT COUNT(*)FROM COURSE_VIEW_HISTORY
-  		WHERE MEMBER_NO = #{memberNo} AND COURSE_ID = #{courseId}
-  	</select>
+  	<select id="checkExistingView" parameterType="map" resultType="int">
+    SELECT COUNT(*) FROM COURSE_VIEW_HISTORY
+    WHERE MEMBER_NO = #{memberNo} AND COURSE_ID = #{courseId}
+	</select>
   	
   	<insert id="insertView">
   		INSERT INTO COURSE_VIEW_HISTORY(MEMBER_NO, COURSE_ID, COURSE_TYPE)

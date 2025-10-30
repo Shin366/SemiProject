@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CourseViewHistoryServiceImpl implements CourseViewHistoryService{
 	
-	private CourseViewHistoryMapper mapper;
+	private final CourseViewHistoryMapper mapper;
 	
 	@Override
 	public void recordCourseView(long memberNo, long courseId, String courseType) {

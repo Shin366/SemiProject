@@ -19,19 +19,28 @@
                 <p class="enroll-date">${member.enrollDate}</p>
                 
                 <div class="like-list">
-                    <h2 class="board">게시글</h2>
-                    <h2 class="boardNo"></h2>
-                    <h2 class="like">좋아요</h2>
-                    <h2 class="likeNo"></h2>
-                    <h2 class="myPick">찜</h2>
-                    <h2 class="myPickNo"></h2>
-                </div>
+				    <div>
+				        <h2 class="board">게시글</h2>
+				        <h2 class="boardNo">${postCount}</h2>
+				    </div>
+				    <div>
+				        <h2 class="like">좋아요</h2>
+				        <h2 class="likeNo">${likeCount}</h2>
+				    </div>
+				    <div>
+				        <a href="/member/bookmark">
+				            <h2 class="myPick">북마크</h2>
+				            <h2 class="myPickNo">${bookmarkCount}</h2>
+				        </a>
+				    </div>
+				</div>
             </div>
+            
             <div class="sidebar">
                 <ul class="menu-list">
                     <li><a href="profile">내 프로필</a></li>
                     <li><a href="myBoard">내 게시글</a></li>
-                    <li><a href="list">찜 목록</a></li>
+                    <li><a href="bookmark">찜 목록</a></li>
                     <li><a href="recent">최근 본 코스</a></li>
                     <li><a href="update">개인 정보 수정</a></li>
                     <li><a href="delete">회원탈퇴</a></li>

@@ -20,6 +20,9 @@ import com.fortrip.com.app.member.dto.LoginRequest;
 import com.fortrip.com.app.member.dto.ModifyRequest;
 import com.fortrip.com.app.member.dto.MyBoard;
 import com.fortrip.com.app.member.dto.pwUpdateRequest;
+import com.fortrip.com.domain.board.free.model.service.BoardFreeService;
+import com.fortrip.com.domain.board.like.model.service.BoardLikeService;
+import com.fortrip.com.domain.member.model.service.MemberBookmarkService;
 import com.fortrip.com.domain.member.model.service.MemberService;
 import com.fortrip.com.domain.member.model.service.MyPageService;
 import com.fortrip.com.domain.member.model.vo.Member;
@@ -34,7 +37,7 @@ public class MemberController {
 	
 	private final BCryptPasswordEncoder bcrypt;
 	private final MemberService mService;
-	
+	private final MemberBookmarkService bService;
 	
 	@GetMapping("pwSearch")	// 아이디, 이메일이 같으면 비밀번호 보여주기 > 근데 보호를 해놔서 어떻게 보여줄 수 있는지 여쭤봐야함
 	public String showpwSearchPage() {
@@ -214,34 +217,29 @@ public class MemberController {
 	
 	@GetMapping("profile")
 	public String showProfilePage(HttpSession session, Model model) {
-	   try {
-	        // 세션에서 로그인 회원 정보 가져오기
-	        Member loginMember = (Member) session.getAttribute("loginMember");
-	        
-	        if(loginMember == null) {
-	            model.addAttribute("errorMsg", "로그인이 필요합니다.");
-	            return "common/error";
-	        }
-	        
-	        // DB에서 최신 회원 정보 조회
-	        String memberId = loginMember.getMemberId();
-	        Member member = mService.selectOneById(memberId);
-	        
-	        if(member == null) {
-	            model.addAttribute("errorMsg", "회원 정보를 찾을 수 없습니다.");
-	            return "common/error";
-	        }
-	        
-	        //  Model에 member 객체 담기
-	        model.addAttribute("member", member);
-	        
-	        return "member/profile";
-	        
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        model.addAttribute("errorMsg", e.getMessage());
+	    Member loginMember = (Member) session.getAttribute("loginMember");
+	    if (loginMember == null) {
+	        model.addAttribute("errorMsg", "로그인이 필요합니다.");
 	        return "common/error";
 	    }
+
+	    Member member = mService.selectOneById(loginMember.getMemberId());
+	    if (member == null) {
+	        model.addAttribute("errorMsg", "회원 정보를 찾을 수 없습니다.");
+	        return "common/error";
+	    }
+
+	    int memberNo = member.getMemberNo();
+	    int postCount = bService.countMyPosts(memberNo);
+	    int likeCount = bService.countLikesOnMyPosts(memberNo);
+	    int bookmarkCount = bService.countMyBookmarks(memberNo);
+
+	    model.addAttribute("member", member);
+	    model.addAttribute("postCount", postCount);
+	    model.addAttribute("likeCount", likeCount);
+	    model.addAttribute("bookmarkCount", bookmarkCount);
+
+	    return "member/profile";
 	}
 	
 	
