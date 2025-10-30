@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.fortrip.com.domain.image.model.mapper.ImageMapper">
+	 <insert id="insertImage" parameterType="Image">
+	    INSERT INTO POST_IMAGE (
+	        IMAGE_NO, BOARD_TYPE, BOARD_NO,
+	        IMAGE_PATH, ORIGINAL_NAME, SAVED_NAME, IS_THUMBNAIL
+	    ) VALUES (
+	        SEQ_IMAGE_NO.NEXTVAL,
+	        #{boardType}, #{boardNo},
+	        #{imagePath}, #{originalName}, #{savedName}, #{isThumbnail}
+	    )
+	</insert>
+	
+	<update id="deleteImageByBoard">
+	    UPDATE POST_IMAGE
+	    SET DELETE_YN = 'Y'
+	    WHERE BOARD_TYPE = #{boardType}
+	      AND BOARD_NO = #{boardNo}
+	      AND DELETE_YN = 'N'
+	</update>
+	
+ 
+ </mapper>
