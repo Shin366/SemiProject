@@ -31,14 +31,17 @@
                     <textarea name="qnaContent" placeholder="내용을 입력해주세요..." required></textarea>
                 </div>
                 <div class="form-group options-group" style="display: flex; gap: 20px; align-items: center;">
-			        <div>
-			            <label>비밀번호 (4자리):</label>
-			            <input type="password" name="qnaPassword" maxlength="4" placeholder="숫자 4자리" required>
-			        </div>
-			        <div>
-			            <label><input type="checkbox" name="isPrivate" value="Y" checked> 비밀글로 설정</label>
-			        </div>
-			    </div>
+				  <div>
+				    <label>
+				      <input type="checkbox" id="isPrivate" name="isPrivate" value="Y">
+				      비밀글로 설정
+				    </label>
+				  </div>
+				  <div id="passwordBox" style="display:none;">
+				    <label>비밀번호 (4자리):</label>
+				    <input type="password" id="qnaPassword" name="qnaPassword" maxlength="4" placeholder="숫자 4자리">
+				  </div>
+				</div>
                 <div class="form-group attachment-group">
                     <label>첨부 파일: </label>
                     <input type="file" name="files">
@@ -52,6 +55,21 @@
     </div>
 
     <script>
+    
+    document.getElementById("isPrivate").addEventListener("change", e => {
+    	  const pwBox = document.getElementById("passwordBox");
+    	  const pwInput = document.getElementById("qnaPassword");
+    	  if (e.target.checked) {
+    	    pwBox.style.display = "block";
+    	    pwInput.required = true;
+    	  } else {
+    	    pwBox.style.display = "none";
+    	    pwInput.required = false;
+    	    pwInput.value = "";
+    	  }
+    	});
+    
+    
         document.getElementById("submitBtn").addEventListener("click", function() {
             const form = document.getElementById("qnaForm");
             const formData = new FormData(form);

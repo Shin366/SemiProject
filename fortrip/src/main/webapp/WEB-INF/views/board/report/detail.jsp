@@ -159,9 +159,6 @@ console.log("isLiked from server:", isUserLiked); // 콘솔에 값 출력해보�
 						const btnDiv = document.createElement("div");
 						btnDiv.classList.add("comment-actions");
 						
-						const replyBtn = document.createElement("button");
-						replyBtn.innerText = "답글";
-						
 						const modifyBtn = document.createElement("button");
 						modifyBtn.innerText = "수정";
 						modifyBtn.classList.add("edit-btn");
@@ -193,7 +190,7 @@ console.log("isLiked from server:", isUserLiked); // 콘솔에 값 출력해보�
 				            .catch(err => alert("삭제 중 오류 발생: " + err));
 				        });
 					
-						 btnDiv.append(replyBtn, modifyBtn, deleteBtn);
+						btnDiv.append(modifyBtn, deleteBtn);
 			        	li.append(infoDiv, commentContent, btnDiv);
 				        cmListUl.append(li);
 					});

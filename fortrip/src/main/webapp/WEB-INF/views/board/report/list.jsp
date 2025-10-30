@@ -8,6 +8,7 @@
     <title>신고 게시판 - 고객지원</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
 	<link rel="stylesheet" href="<c:url value='/resources/css/common/header.css'/>"> 
+	<link rel="stylesheet" href="<c:url value='/resources/css/common/rset.css'/>"> 
 	<link rel="stylesheet" href="<c:url value='/resources/css/board/report/list.css'/>"> 
 </head>
 <body>
@@ -26,17 +27,6 @@
 
         <main class="main-content">
             <h1 class="page-title">신고 게시판</h1>
-            <div class="list-header">
-                <form action="<c:url value='/board/report/list'/>" class="search-form" method="get">
-                    <select name="condition">
-                        <option value="title">제목</option>
-                        <option value="content">내용</option>
-                        <%-- 신고 게시판 특성상 작성자 검색은 불필요할 수 있음 --%>
-                    </select>
-                    <input type="text" name="keyword" placeholder="검색어를 입력해주세요" value="${keyword}"> <%-- 검색어 유지 --%>
-                    <button type="submit">검색</button>
-                </form>
-            </div>
 
             <ul class="report-list">
                 <li class="list-item header">
@@ -62,10 +52,8 @@
                     <li class="list-item">
                         <div class="item-no">${report.reportNo}</div>
                         <div class="item-title">
-                            <%-- 링크 경로 및 파라미터 이름 수정, EL 변수명 수정 --%>
                             <a href="<c:url value='/board/report/detail?reportNo=${report.reportNo}'/>">${report.reportTitle}</a>
                         </div>
-                         <%-- 작성일 표시 (fmt 태그 사용) --%>
                         <div class="item-date"><fmt:formatDate value="${report.writeDate}" pattern="yyyy.MM.dd"/></div>
                     </li>
                 </c:forEach>
@@ -107,6 +95,6 @@
             </nav>
         </main>
     </div>
-    <%-- <jsp:include page="/WEB-INF/views/include/footer.jsp"/> --%>
+    <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 </body>
 </html>
