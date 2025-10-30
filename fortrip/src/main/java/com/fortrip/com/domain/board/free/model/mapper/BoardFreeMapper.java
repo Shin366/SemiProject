@@ -1,6 +1,7 @@
 package com.fortrip.com.domain.board.free.model.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -24,5 +25,11 @@ public interface BoardFreeMapper {
 	int increaseViewCount(int postNo); // 조회수 증가
 
 	int deleteFree(int postNo);
+
+	List<BoardFree> searchFreeBoardList(Map<String, Object> searchMap);
+
+	int getTotalCountWithSearch(Map<String, Object> searchMap);
+
+	void insertSearchKeyword(String searchKeyword);
 
 }

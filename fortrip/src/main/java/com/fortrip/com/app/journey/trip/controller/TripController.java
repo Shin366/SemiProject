@@ -5,10 +5,16 @@ import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+
 
 import com.fortrip.com.app.journey.trip.dto.TripCreateForm;
+
 import com.fortrip.com.app.journey.trip.dto.TripRequest;
 import com.fortrip.com.app.journey.trip.dto.TripUpdateForm;
 import com.fortrip.com.app.journey.trip.dto.TripView;
@@ -45,6 +51,17 @@ public class TripController {
         TripView course = tripService.findTrip(id);
         if (course == null) return "redirect:/trip/course";
         model.addAttribute("course", course);
+        if (course.getItineraryJson() != null && !course.getItineraryJson().isBlank()) {
+        	try {
+                ObjectMapper om = new ObjectMapper();
+                var list = om.readValue(course.getItineraryJson(),
+                        new TypeReference<java.util.List<java.util.Map<String,Object>>>() {});
+                model.addAttribute("itinerary", list);
+            } catch (Exception e) {
+                // 파싱 실패 시에도 페이지는 뜨게 하고, 콘솔 로그 정도만
+                System.err.println("itineraryJson parse error: " + e.getMessage());
+            }
+        }
         return "trip/coursedetail";
     }
 
@@ -90,9 +107,23 @@ public class TripController {
 
     // 수정 폼
     @GetMapping("/course/{id}/edit")
-    public String courseEditForm(@PathVariable int id, Model model) {
-        TripView course = tripService.findTrip(id);
+    public String courseEditForm(@PathVariable int id, Model model, HttpSession session) {
+    	Member loginMember = (Member) session.getAttribute("loginMember");
+        if (loginMember == null) {
+            return "redirect:/member/login?beforeURL=/trip/course/" + id + "/edit";
+        }
+        
+    	TripView course = tripService.findTrip(id);
         if (course == null) return "redirect:/trip/course";
+        
+        String adminYn = (String) session.getAttribute("adminYn");
+        boolean admin = "Y".equals(adminYn);
+        
+     // ★ 작성자 또는 관리자만 접근
+        if (!admin && (course.getMemberNo() == null || !course.getMemberNo().equals(loginMember.getMemberNo()))) {
+            return "redirect:/trip/course/" + id; // 권한 없으면 상세로 리다이렉트
+        }
+        
         model.addAttribute("course", course);
         return "trip/tripEdit"; // 만들어서 사용
     }
@@ -133,4 +164,26 @@ public class TripController {
     @GetMapping("/add") public String courseAdd() { return "trip/tripAdd"; }
     @GetMapping("/map") public String coursemap() { return "trip/map"; }
     @GetMapping("/info") public String tourList() { return "tourInfo/tourInfo"; }
+    
+    @GetMapping("roadmap/my")
+    public String myRoadmap(@RequestParam(defaultValue = "1") int page,
+            Model model, HttpSession session) {
+        Member loginMember = (Member) session.getAttribute("loginMember");
+        if (loginMember == null) {
+            return "redirect:/member/login";
+        }
+        int size = 5; // 한 페이지당 5개씩
+        int offset = (page - 1) * size;
+
+        List<Trip> myCourses = tripService.selectTripsByMemberPaged(loginMember.getMemberNo(), offset, size);
+        int total = tripService.countTripsByMember(loginMember.getMemberNo());
+        int totalPages = (int) Math.ceil((double) total / size);
+
+        model.addAttribute("courseList", myCourses);
+        model.addAttribute("page", page);
+        model.addAttribute("totalPages", totalPages);
+        return "myroad/roadMain";
+    }
+
+
 }

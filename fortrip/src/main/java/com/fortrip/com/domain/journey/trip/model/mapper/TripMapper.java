@@ -1,6 +1,7 @@
 package com.fortrip.com.domain.journey.trip.model.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -28,6 +29,12 @@ public interface TripMapper {
 
 	    int softDelete(@Param("id") int id, @Param("memberNo") Integer memberNo, @Param("admin") boolean admin);
 
+	    List<Trip> selectTripsByMemberPaged(Map<String, Object> param);
+	    int countTripsByMember(Integer memberNo);
+	    
+	    // 나의 로드맵
+	    List<Trip> selectTripsByMember(int memberNo);
+	    
 	    // (옵션) 관리자 전용 목록 필터
 	    List<Trip> selectAdminTrips(
 	        @Param("destination") String destination,

@@ -1,0 +1,48 @@
+@charset "UTF-8";
+
+/* --- 기본 & 레이아웃 --- */
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; background-color: #f8f9fa; margin: 0; color: #343a40; }
+.container { display: flex; max-width: 1200px; margin: 30px auto; gap: 30px; }
+.sidebar { flex: 0 0 200px; }
+.main-content { flex-grow: 1; background-color: #fff; padding: 40px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+
+/* --- 사이드바 --- */
+.sidebar ul { list-style: none; padding: 0; background-color: #fff; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); padding: 10px; }
+.sidebar a { display: block; padding: 15px 20px; text-decoration: none; color: #555; border-radius: 6px; font-weight: 600; font-size: 16px; }
+.sidebar a.active, .sidebar a:hover { background-color: #007bff; color: white; }
+
+/* --- 폼 스타일 --- */
+.page-title { font-size: 28px; font-weight: bold; margin-top: 0; margin-bottom: 30px; }
+.review-article { max-width: 900px; margin: 0 auto; }
+.form-group { margin-bottom: 25px; }
+.form-group label { display: block; font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+.form-group input[type="text"], .form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+    box-sizing: border-box;
+}
+.form-group input.title-input { font-size: 24px; font-weight: bold; }
+.form-group textarea { min-height: 400px; resize: vertical; line-height: 1.8; }
+
+.rating-input .stars { font-size: 28px; color: #ddd; cursor: pointer; }
+.rating-input .stars .fa-star:hover,
+.rating-input .stars .fa-star.selected { color: #ffc107; }
+
+.course-link-wrapper { margin: 25px 0; }
+.course-info { display: block; width: 100%; text-align: center; background-color: #f8f9fa; border: 1px solid #dee2e6; padding: 15px; border-radius: 8px; color: #343a40; font-weight: bold; }
+.course-info i { margin-right: 8px; }
+
+/* --- 파일 첨부 영역 --- */
+.existing-files ul { list-style: none; padding: 0; margin: 0; }
+.existing-files li { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; font-size: 14px; }
+.existing-files label { font-weight: normal; margin: 0; }
+.new-file-input { margin-top: 10px; }
+
+/* --- 하단 버튼 --- */
+.bottom-actions { text-align: center; margin-top: 40px; display: flex; justify-content: flex-end; gap: 10px; }
+.btn { padding: 12px 30px; border-radius: 6px; text-decoration: none; font-size: 16px; border: 1px solid #ccc; background-color: #fff; cursor: pointer; }
+.btn-submit { background-color: #007bff; color: white; border: none; }
+.btn-cancel { background-color: #6c757d; color: white; border: none; }

@@ -4,8 +4,6 @@ import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 
-import com.fortrip.com.domain.journey.trip.model.vo.Trip;
-
 import lombok.Builder;
 import lombok.Getter;
 
@@ -25,6 +23,8 @@ public class TripView {
     private final String slogan;
     private final String itineraryJson;
     
+    private final Integer memberNo;
+    
     private final java.util.List<String> routeList;
     
     @Builder
@@ -32,6 +32,7 @@ public class TripView {
             String thumbnailUrl, java.sql.Timestamp createdAt,
             String intro, String start, String end, String cost,
             String roadStyle, String slogan, String itineraryJson,
+            Integer memberNo,
             String routeCsv) {
     	this.id = id;
         this.title = title;
@@ -46,6 +47,7 @@ public class TripView {
         this.roadStyle = roadStyle;
         this.slogan = slogan;
         this.itineraryJson = itineraryJson;
+        this.memberNo = memberNo;
         this.routeList = (routeCsv == null || routeCsv.isBlank())
                 ? List.of()
                 : Arrays.asList(routeCsv.split("\\s*,\\s*"));
@@ -57,26 +59,5 @@ public class TripView {
 //    public String[] getRouteArray() { // fn:join 사용할 때
 //        return (routeList == null) ? new String[0] : routeList.toArray(new String[0]);
 //    }
-    private TripView toView(Trip r) {
-        return TripView.builder()
-            .id(r.getRoadNo())
-            .title(r.getRoadName())
-            .location(r.getRoadLocation())
-            .thumbnailUrl(r.getThumbUrl())   // ✅ null 고정 제거
-            .createdAt(r.getWriteDate())
-
-            // ✅ 상세에서 쓰는 것들 매핑
-            .intro(r.getRoadIntro())
-            .start(r.getRoadStart())
-            .end(r.getRoadEnd())
-            .cost(r.getRoadCost())
-            .roadStyle(r.getRoadStyle())
-            .slogan(r.getSlogan())
-            .itineraryJson(r.getItineraryJson())
-
-            // ROUTE_CSV 컬럼이 없으니 빈 값 유지
-            .routeCsv(null)
-            .build();
-    }
 
 }

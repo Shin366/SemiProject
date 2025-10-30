@@ -5,7 +5,6 @@
 <!-- 깔끔한 한글 가독성 -->
 <link rel="preconnect" href="https://cdn.jsdelivr.net" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
-
 <link rel="stylesheet" href="/resources/css/common/header.css">
 
 <header class="kr-header" role="banner">
@@ -34,9 +33,9 @@
 
         <!-- 나만의 로드맵 -->
         <li class="nav-item">
-          <a href="/roadmap/my" class="nav-link">나만의 로드맵</a>
+          <a href="/trip/roadmap/my" class="nav-link">나만의 로드맵</a>
           <ul class="dropdown">
-            <li><a href="/roadmap/my">나만의 로드맵</a></li>
+            <li><a href="/trip/roadmap/my">나만의 로드맵</a></li>
           </ul>
         </li>
 
