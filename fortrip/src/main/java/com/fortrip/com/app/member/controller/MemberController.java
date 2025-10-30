@@ -1,5 +1,7 @@
 package com.fortrip.com.app.member.controller;
 
+import java.util.List;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,8 +18,10 @@ import com.fortrip.com.app.common.util.TempPwUtil;
 import com.fortrip.com.app.member.dto.JoinRequest;
 import com.fortrip.com.app.member.dto.LoginRequest;
 import com.fortrip.com.app.member.dto.ModifyRequest;
+import com.fortrip.com.app.member.dto.MyBoard;
 import com.fortrip.com.app.member.dto.pwUpdateRequest;
 import com.fortrip.com.domain.member.model.service.MemberService;
+import com.fortrip.com.domain.member.model.service.MyPageService;
 import com.fortrip.com.domain.member.model.vo.Member;
 
 import jakarta.servlet.http.HttpSession;
@@ -30,6 +34,7 @@ public class MemberController {
 	
 	private final BCryptPasswordEncoder bcrypt;
 	private final MemberService mService;
+	
 	
 	@GetMapping("pwSearch")	// 아이디, 이메일이 같으면 비밀번호 보여주기 > 근데 보호를 해놔서 어떻게 보여줄 수 있는지 여쭤봐야함
 	public String showpwSearchPage() {
@@ -245,15 +250,7 @@ public class MemberController {
 		return "/member/profile";
 	}
 	
-	@GetMapping("myBoard")
-	public String showMyBoard() {
-		return "member/myBoard";
-	}
 	
-	@PostMapping("myBoard")
-	public String myBoard() {
-		return "";
-	}
 	
 	@GetMapping("list")
 	public String showListPage() {
