@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.fortrip.com.domain.board.review.model.mapper.ReviewTripMapper">
+	 <select id="selectAllRoadList" resultType="com.fortrip.com.domain.board.review.model.vo.ReviewTrip">
+	        SELECT 
+		        ROAD_NO AS roadNo,
+		        ROAD_NAME AS roadName
+		    FROM ROAD
+		    ORDER BY ROAD_NO
+	</select>
+ </mapper>
