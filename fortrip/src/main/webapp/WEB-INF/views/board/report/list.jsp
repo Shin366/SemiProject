@@ -7,98 +7,94 @@
     <meta charset="UTF-8">
     <title>신고 게시판 - 고객지원</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
-	<link rel="stylesheet" href="/resources/css/common/header.css">
-    <style>
-        /* 이전 페이지들과 공통된 스타일은 재사용합니다. */
-        body { font-family: sans-serif; background-color: #f8f9fa; margin: 0; }
-        .container { display: flex; max-width: 1200px; margin: 20px auto; gap: 20px; }
-        .sidebar { flex: 0 0 180px; }
-        .sidebar a { display: block; padding: 12px 20px; text-decoration: none; color: #333; border-radius: 8px; font-weight: 500; }
-        .sidebar a.active { background-color: #007bff; color: white; font-weight: bold; }
-        .main-content { flex-grow: 1; background-color: #fff; padding: 40px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-        .page-title { font-size: 28px; font-weight: bold; margin-top: 0; margin-bottom: 30px; }
-
-        .list-header { display: flex; justify-content: flex-end; margin-bottom: 20px; }
-        .search-form { display: flex; gap: 5px; }
-        .search-form select, .search-form input { padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
-        
-        .report-list { list-style: none; padding: 0; margin: 0; border-top: 2px solid #333; }
-        .list-item { display: flex; align-items: center; padding: 15px; border-bottom: 1px solid #dee2e6; }
-        .item-no { width: 50px; text-align: center; color: #888; }
-        .item-title a { text-decoration: none; color: #333; }
-        
-        /* 공지사항 스타일 */
-        .list-item.notice { background-color: #f8f9fa; font-weight: bold; }
-        .notice-tag { display: inline-block; background-color: #dc3545; color: white; font-size: 12px; padding: 3px 8px; border-radius: 4px; margin-right: 10px; }
-
-        .actions { text-align: right; margin-top: 20px; }
-        .btn-write { background-color: #007bff; color: white; border: none; padding: 10px 24px; text-decoration: none; border-radius: 6px; }
-        
-        .pagination { display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 40px; }
-        .pagination a, .pagination strong { display: inline-block; width: 32px; height: 32px; line-height: 32px; text-align: center; border-radius: 4px; text-decoration: none; color: #333; }
-        .pagination a:hover { background-color: #e9ecef; }
-        .pagination strong { background-color: #007bff; color: white; font-weight: bold; }
-    </style>
+	<link rel="stylesheet" href="<c:url value='/resources/css/common/header.css'/>"> 
+	<link rel="stylesheet" href="<c:url value='/resources/css/common/rset.css'/>"> 
+	<link rel="stylesheet" href="<c:url value='/resources/css/board/report/list.css'/>"> 
 </head>
 <body>
+    <!-- header -->
+    <jsp:include page="/WEB-INF/views/common/header.jsp"/>
+
     <div class="container">
         <aside class="sidebar">
-            <a href="#">공지 사항</a>
-            <a href="#">자주 묻는 질문</a>
-            <a href="#">1:1 문의</a>
-            <a href="#" class="active">신고 게시판</a>
+            <ul>
+                <li><a href="<c:url value='/board/notice/list'/>">공지 사항</a></li>
+                <li><a href="<c:url value='/board/faq/list'/>">자주 묻는 질문</a></li>
+                <li><a href="<c:url value='/board/qna/list'/>">1:1 문의</a></li>
+                <li><a href="<c:url value='/board/report/list'/>" class="active">신고 게시판</a></li>
+            </ul>
         </aside>
 
         <main class="main-content">
             <h1 class="page-title">신고 게시판</h1>
-            <div class="list-header">
-                <form action="/report/list" class="search-form">
-                    <select name="condition">
-                        <option value="title">제목</option>
-                        <option value="content">내용</option>
-                    </select>
-                    <input type="text" name="keyword" placeholder="검색어를 입력해주세요">
-                    <button type="submit">검색</button>
-                </form>
-            </div>
 
             <ul class="report-list">
-                <%-- Controller에서 고정 공지(pinnedNotice) 객체를 전달받았을 경우에만 표시 --%>
+                <li class="list-item header">
+                    <div class="item-no">번호</div>
+                    <div class="item-title">제목</div>
+                    <div class="item-date">작성일</div> 
+                </li>
+
+                <%-- Controller에서 고정 공지(pinnedNotice) 객체를 전달받았을 경우 --%>
                 <c:if test="${not empty pinnedNotice}">
                     <li class="list-item notice">
                         <div class="item-no"><span class="notice-tag">공지</span></div>
                         <div class="item-title">
-                            <a href="/notice/detail?no=${pinnedNotice.noticeNo}">${pinnedNotice.title}</a>
+                            <%-- 링크 경로 및 파라미터 이름 수정, EL 변수명 수정 --%>
+                            <a href="<c:url value='/board/notice/detail?noticeNo=${pinnedNotice.noticeNo}'/>">${pinnedNotice.noticeTitle}</a>
                         </div>
+                        <div class="item-date"></div> <%-- 공지 작성일 표시 (선택) --%>
                     </li>
                 </c:if>
 
-                <%-- Controller에서 전달받은 신고 목록(reportList)을 반복문으로 출력 --%>
+                <%-- Controller에서 전달받은 신고 목록(reportList) 반복 --%>
                 <c:forEach var="report" items="${reportList}">
                     <li class="list-item">
                         <div class="item-no">${report.reportNo}</div>
                         <div class="item-title">
-                            <a href="/report/detail?no=${report.reportNo}">${report.title}</a>
+                            <a href="<c:url value='/board/report/detail?reportNo=${report.reportNo}'/>">${report.reportTitle}</a>
                         </div>
+                        <div class="item-date"><fmt:formatDate value="${report.writeDate}" pattern="yyyy.MM.dd"/></div>
                     </li>
                 </c:forEach>
+
+                <%-- 목록이 없을 경우 메시지 표시 --%>
+                 <c:if test="${empty reportList}">
+                    <p style="text-align: center; padding: 50px;">등록된 신고가 없습니다.</p>
+                </c:if>
             </ul>
 
             <div class="actions">
-                <a href="/report/write" class="btn-write">게시글 작성</a>
+                 <%-- 글쓰기 버튼 링크 수정 --%>
+                <a href="<c:url value='/board/report/insert'/>" class="btn-write">신고하기</a>
             </div>
 
+            <%-- 페이지네이션 구현 --%>
             <nav class="pagination">
-                <a href="#">&lt;</a>
-                <strong>1</strong>
-                <a href="#">2</a>
-                <a href="#">...</a>
-                <a href="#">9</a>
-                <a href="#">10</a>
-                <a href="#">&gt;</a>
+                <%-- 이전 페이지 버튼 --%>
+                <c:if test="${currentPage > 1}">
+                    <a href="?page=${currentPage - 1}${searchParam}">&lt;</a> <%-- 검색 조건 유지 --%>
+                </c:if>
+
+                <%-- 페이지 번호 목록 --%>
+                <c:forEach var="p" begin="${startNavi}" end="${endNavi}">
+                    <c:choose>
+                        <c:when test="${p == currentPage}">
+                            <strong>${p}</strong>
+                        </c:when>
+                        <c:otherwise>
+                            <a href="?page=${p}${searchParam}">${p}</a> <%-- 검색 조건 유지 --%>
+                        </c:otherwise>
+                    </c:choose>
+                </c:forEach>
+
+                <%-- 다음 페이지 버튼 --%>
+                <c:if test="${currentPage < maxPage}">
+                    <a href="?page=${currentPage + 1}${searchParam}">&gt;</a> <%-- 검색 조건 유지 --%>
+                </c:if>
             </nav>
         </main>
     </div>
+    <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 </body>
-<jsp:include page="/WEB-INF/views/common/header.jsp"/>
 </html>

@@ -10,6 +10,17 @@
 <link rel="stylesheet" href="../../../resources/css/admin/noticeSet.css">
 </head>
 <body>
+	<c:if test="${not empty success }">
+		<script>
+			alert("${success}"});
+			window.loaction.href="/admin/main";
+		</script>
+	</c:if>
+	<c:if test="${not empty error }">
+		<script>
+			alert("${error}");
+		</script>
+	</c:if>
     <div id="container">
         <jsp:include page="/WEB-INF/views/admin/include/header.jsp"/>
         <div id="main">

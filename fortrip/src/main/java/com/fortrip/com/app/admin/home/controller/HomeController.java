@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fortrip.com.app.admin.home.dto.GetMemberDTO;
+import com.fortrip.com.domain.admin.board.model.service.BoardService;
 import com.fortrip.com.domain.admin.home.model.service.MemberInfoService;
 import com.fortrip.com.domain.admin.home.model.vo.MemberVO;
 import com.fortrip.com.domain.admin.notice.model.service.NoticeService;
@@ -26,6 +27,8 @@ import com.fortrip.com.domain.admin.question.model.service.QuestionService;
 import com.fortrip.com.domain.admin.question.model.vo.QuestionVO;
 import com.fortrip.com.domain.admin.report.model.service.ReportService;
 import com.fortrip.com.domain.admin.road.model.service.RoadService;
+import com.fortrip.com.domain.admin.tourist.model.service.TourIstService;
+import com.fortrip.com.domain.admin.tourist.model.vo.TouristInfoVO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -38,6 +41,7 @@ public class HomeController {
 	private final NoticeService nService;
 	private final RoadService rService;
 	private final ReportService roService;
+	private final BoardService bService;
 	
 	@GetMapping("/main")
     public String homePage(Model model, @RequestParam(value="page", defaultValue = "1") int currentPage) {
@@ -59,10 +63,25 @@ public class HomeController {
          
           /* 여행 코스 총 갯수 */
           int getTravelCourseCount = rService.getTravelCourseCount();
+          
+          /* 게시물 총 갯수 */
+          int getBoardCount = bService.getBoardCount();
          
           /* 신고 게시물 총 갯수 */
           int getReportCount = roService.getReportCount();
           
+          /* 리뷰 총 갯수 */
+          int getReviewCount = bService.getReviewCount();
+          
+          /* 관광지 리스트 */
+          //List<TouristInfoVO> tList = tService.getTripList();
+          
+          /* 여행 코스 리스트 */
+          
+          //System.out.println(tList);
+          //model.addAttribute("tList", tList);
+          model.addAttribute("getReviewCount", getReviewCount);
+          model.addAttribute("getBoardCount", getBoardCount);
           model.addAttribute("getReportCount", getReportCount);
           model.addAttribute("getTravelCourseCount", getTravelCourseCount);
           model.addAttribute("getQuestionCount", getQuestionCount);

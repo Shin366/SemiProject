@@ -21,6 +21,7 @@ public class MemberInfoServiceImpl implements MemberInfoService{
 	@Override
 	public int getMemberCount() {
 		int result = mMapper.getMemberCount();
+		System.out.println("회원 카운트:"+result);
 		return result;
 	}
 

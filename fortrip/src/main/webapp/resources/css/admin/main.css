@@ -590,128 +590,322 @@ tfoot tr {
 }
 
 /*******************여행, 관광지 관리 - 카드 부분******************/
-.course-content, .travel-content {
-	width: 1100px;
+.material-symbols-outlined {
+      font-size: 18px; 
+    }
+
+.travel-content {
+    width:1200px;
+	display: flex;       
+   flex-wrap: nowrap;  
+   overflow-x: auto;   
+   gap: 24px;
+   padding: 24px;
+   scroll-behavior: smooth;
+ }
+
+/* 카드 본체 */
+.travel-card {
+    width: 320px; 
+    flex-shrink: 0; 
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
     display: flex;
-    margin-bottom: 1px;
-    flex-wrap: nowrap;
-    gap: 20px;               /* 카드 사이 간격 */
-    padding: 0px 20px;
-    overflow-x: auto;        /* 가로 스크롤 */
-    scroll-behavior: smooth; /* 부드러운 스크롤 */
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.travel-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
 }
 
 
-/* 스크롤바 전체 영역 */
+.travel-card-header {
+    width: 100%;
+    height: 180px; 
+    overflow: hidden; 
+}
+
+.travel-card-header img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 이미지가 찌그러지지 않고 꽉 차게 */
+    transition: transform 0.3s ease;
+}
+
+.travel-card:hover .travel-card-header img {
+    transform: scale(1.05); /* 호버 시 이미지 살짝 확대 */
+}
+
+/* 카드 제목 */
+.travel-title {
+    display: block;
+    font-size: 20px;
+    font-weight: 700;
+    color: #222;
+    padding: 16px 16px 8px 16px;
+}
+
+/* 카드 정보 (메인 + 푸터) */
+.travel-card-info {
+    padding: 0 16px 16px 16px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; 
+}
+
+/* 카드 메인 (아이템 목록) */
+.travel-card-main {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; 
+    flex-grow: 1; 
+}
+
+.travel-card-item {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #555;
+}
+
+.travel-card-item .material-symbols-outlined {
+    margin-right: 8px;
+    color: #888;
+}
+
+.travel-card-item span:last-child {
+    font-weight: 600;
+    color: #333;
+    margin-left: 8px;
+}
+
+.travel-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 16px; /* 정보 부분과 간격 */
+    padding-top: 12px;
+    border-top: 1px solid #f0f0f0; /* 구분선 */
+}
+
+.travel-card-date {
+    font-size: 13px;
+    color: #999;
+}
+
+.travel-card-btn-row {
+    display: flex;
+    gap: 8px;
+}
+
+.travel-card-btn-row a {
+    display: inline-block;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+}
+
+/* 수정 버튼 (파란색 계열) */
+#travel-modify-btn {
+    background-color: #e6f0ff;
+    color: #0056b3;
+}
+#travel-modify-btn:hover {
+    background-color: #d1e3ff;
+}
+
+
+#travel-delete-btn {
+    background-color: #fff0f0;
+    color: #d93030;
+}
+#travel-delete-btn:hover {
+    background-color: #ffe0e0;
+}
+
+/****여행***/
+.course-content {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 24px;
+    padding: 24px;
+    width:1200px;
+}
+
+
+.course-card {
+    width: 340px; 
+    flex-shrink: 0;
+    
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.course-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+}
+
+
+.card-img {
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+    background-color: #eee; 
+}
+
+.card-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.course-card:hover .card-img img {
+    transform: scale(1.05);
+}
+
+
+.course-title {
+    display: block;
+    font-size: 20px;
+    font-weight: 700;
+    color: #222;
+    padding: 16px 16px 8px 16px;
+}
+
+
+.card-info {
+    padding: 0 16px 16px 16px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /
+}
+
+
+.card-header {
+	background-color:#ccc;
+	border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    color: #555;
+    padding:5px;
+    margin-bottom: 12px;
+}
+
+.card-header span {
+    font-weight: 600; 
+}
+
+
+.card-main {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex-grow: 1; 
+}
+
+.card-item {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #555;
+}
+
+.card-item .material-symbols-outlined {
+    margin-right: 8px;
+    color: #888;
+    font-size: 18px;
+}
+
+.card-item > span:last-child {
+    font-weight: 600;
+    color: #333;
+    margin-left: 4px; 
+}
+
+
+.card-item:last-child > span:last-child {
+    color: #d93030;
+    font-weight: 700;
+}
+
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px solid #f0f0f0;
+}
+
+.card-date {
+    font-size: 13px;
+    color: #999;
+}
+
+.card-btn-row {
+    display: flex;
+    gap: 8px;
+}
+
+.card-btn-row a,
+.card-btn-row button {
+    display: inline-block;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+    border: none;
+    cursor: pointer;
+}
+
+#course-modify-btn {
+    background-color: #e6f0ff;
+    color: #0056b3;
+}
+#course-modify-btn:hover {
+    background-color: #d1e3ff;
+}
+
+#course-delete-btn {
+    background-color: #fff0f0;
+    color: #d93030;
+}
+#course-delete-btn:hover {
+    background-color: #ffe0e0;
+}
+
 .course-content::-webkit-scrollbar,
 .travel-content::-webkit-scrollbar {
     height: 8px;
 }
-
-/* 스크롤바 막대 배경 */
 .course-content::-webkit-scrollbar-thumb,
 .travel-content::-webkit-scrollbar-thumb {
-    background-color: #5D78FF;  
-    border-radius: 4px;      
-}
-
-/* 스크롤바 막대 안 배경 */
-.course-content::-webkit-scrollbar-track,
-.travel-content::-webkit-scrollbar-track  {
-    background: #f1f1f1;
+    background-color: #ccc;
     border-radius: 4px;
 }
-
-.course-card, .travel-card{
-    margin: 10px;
-    display: flex;
-    flex-direction: column;
-    border-radius: 12px;
+.course-content::-webkit-scrollbar-track,
+.travel-content::-webkit-scrollbar-track {
     background-color: #f1f1f1;
-    width: 330px;     /* 카드의 고정 너비 (조절 가능) */
-    min-width: 330px;
-    flex-shrink: 0;   /* 카드가 찌그러지지 않도록 함 */
-    transition: 0.2s;
-    cursor: pointer;
-
-    &:hover {
-        box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
-        transform: translateY(-4px); /* 마우스 올리면 살짝 위로 */
-    }
 }
-
-.card-img, .travel-card-img{
-    height: 200px;
-    background-image: url("../../img/admin/seoul-img.png");
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: 50% 50%;
-    border-top-right-radius: 12px;
-    border-top-left-radius: 12px;
-}
-
-.course-card .course-title, .travel-card .travel-title {margin-bottom: 10px; font-size: 14px; font-weight: bold; padding: 5px 10px;}
-
-.card-info, .travel-card-info {
-    padding: 10px;
-    font-size: 12px;
-    font-weight: 500;
-    color: #666;
-}
-
-.card-header, .travel-card-header{
-    display: flex;
-    flex-direction: row;
-    gap: 5px;
-    margin-bottom: 30px;
-}
-
-.card-item, .travel-card-item {
-    font-size: 12px;
-    display: flex;
-    align-items: center;  /* 아이콘과 텍스트 세로 중앙 정렬 */
-    gap: 3px;           /* 아이콘과 텍스트 사이 간격 */
-}
-
-.card-item .material-symbols-outlined,
-.travel-card-item .material-symbols-outlined {font-size: 12px;}
-
-.card-main, .travel-card-main {
-    display: flex;
-    justify-content: start;
-    flex-direction: row;
-    margin-bottom: 30px;
-    gap: 15px;
-}
-
-.card-footer, .travel-card-footer {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-}
-
-.card-btn-row, .travel-card-btn-row {
-    display: flex;
-    justify-content: center;
-    align-items:center;
-    gap: 10px;     /* 수정, 삭제 버튼 간격용 */
-}
-
-#course-modify-btn,
-#travel-modify-btn 
-{color: #5D78FF; text-decoration: none; font-size:12px; font-weight:500;}
-
-#course-modify-btn:hover,
-#travel-modify-btn:hover
-{color: #027dbf;}
-
-#course-delete-btn,
-#travel-delete-btn
-{color: #DC2626; border:none; font-size:12px; font-weight:500; cursor:pointer;}
-
-#course-delete-btn:hover, 
-#travel-delete-btn:hover
-{color: #c42121;}
 
 /*******************게시물 관리******************/
 /*/ 간단 통계 부분 /*/
@@ -1008,6 +1202,7 @@ tfoot tr {
 
 /** 페이징 **/
 
+.post-pagination-wrapper,
 .qna-pagination-wrapper,
 .notice-pagination-wrapper,
 .report-pagination-wrapper {
@@ -1015,6 +1210,7 @@ tfoot tr {
     padding: 10px 20px 20px 0;
 }
 
+.post-pagination,
 .qna-pagination,
 .notice-pagination,
 .pagination,
@@ -1024,6 +1220,7 @@ tfoot tr {
    	justify-content: flex-end;
 }
 
+.post-pagination button,
 .qna-pagination button,
 .notice-pagination button,
 .pagination button,
@@ -1036,6 +1233,7 @@ tfoot tr {
     cursor: pointer;
 }
 
+.post-pagination button.active,
 .qna-pagination button.active,
 .notice-pagination button.active,
 .pagination button.active,

@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@ taglib uri="http://java.sun.com/jsp/jstl/core"  prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core"  prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -139,7 +139,7 @@
                             </div>
                             <div class="reviewCount">
                                 <span class="material-symbols-outlined" style="background-color:#cbc3e3; color: purple;">reviews</span>
-                                <span class="num">210</span>
+                                <span class="num">${getReviewCount }</span>
                                 <span class="label">전체 후기 수</span>
                             </div>
                             <div class="reviewCount">
@@ -251,46 +251,7 @@
                                     <button type="button" id="courseAdd-btn" onclick="location.href='/trip/add'">+ 새 코스</button>
                                 </div>
                             </form>
-                            <div class="course-content">
-                                <div class="course-card" data-id=\${rList.roadNo}>
-			                        <div class="card-img"></div>
-			                        <span class="course-title">\${rList.roadName}</span>
-			                        <div class="card-info">
-			                            <div class="card-header">
-			                                <span>\${rList.roadStart}</span>→
-			                                <span>\${rList.roadEnd}</span>→
-			                                <span>경북궁</span>→
-			                                <span>경북궁</span>
-			                            </div>
-			                            <div class="card-main">
-			                                <div class="card-item">
-			                                    <span class="material-symbols-outlined">location_on</span>
-			                                    <span>\${rList.roadLocation}</span>
-			                                </div>
-			                                <div class="card-item">
-			                                    <span class="material-symbols-outlined">schedule</span>
-			                                    <span>7</span>
-			                                </div>
-			                                <div class="card-item">
-			                                    <span class="material-symbols-outlined">star</span>
-			                                    <span>4.8</span>
-			                                </div>
-			                                <div class="card-item">
-			                                    <span class="material-symbols-outlined">credit_card</span>
-			                                    <span>\${rList.roadCost}￦</span>
-			                                </div>
-			                            </div>
-			                            <div class="card-footer">
-			                                <span class="card-date">\${rList.writeDate} 등록</span>
-			                                <div class="card-btn-row">
-			                                    <a href="#" id="course-modify-btn">수정</a>
-			                                    <input type="hidden" name="roadNo" value="\${rList.roadNo}">
-			                                    <button type="button" onclick="travelDeleteFun(\${rList.roadNo});" id="course-delete-btn">삭제</button>
-			                                </div>
-			                            </div>
-			                        </div>
-			                    </div>
-                            </div>
+                            <div class="course-content"></div>
                         </div>
                         <!--********************여행 코스 관리 끝******************-->
 
@@ -306,44 +267,58 @@
                             </form>
                             <div class="travel-content">
                                 <!--********************카드 시작******************-->
-                                <div class="travel-card">
-                                    <div class="travel-card-img"></div>
-                                    <span class="travel-title">서울 도심문화 코스</span>
-                                    <div class="travel-card-info">
-                                        <div class="travel-card-header">
-                                            <span>경북궁</span>→
-                                            <span>경북궁</span>→
-                                            <span>경북궁</span>→
-                                            <span>경북궁</span>
-                                        </div>
-                                        <div class="travel-card-main">
-                                            <div class="travel-card-item">
-                                                <span class="material-symbols-outlined">location_on</span>
-                                                <span>서울</span>
-                                            </div>
-                                            <div class="travel-card-item">
-                                                <span class="material-symbols-outlined">schedule</span>
-                                                <span>서울</span>
-                                            </div>
-                                            <div class="travel-card-item">
-                                                <span class="material-symbols-outlined">star</span>
-                                                <span>서울</span>
-                                            </div>
-                                            <div class="travel-card-item">
-                                                <span class="material-symbols-outlined">credit_card</span>
-                                                <span>50,000￦</span>
-                                            </div>
-                                        </div>
-                                        <div class="travel-card-footer">
-                                            <span class="travel-card-date">2025.10.25 등록</span>
-                                            <div class="travel-card-btn-row">
-                                                <a href="#" id="travel-modify-btn">수정</a>
-                                                <a href="#" id="travel-delete-btn">삭제</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--********************카드 끝******************-->
+                                <c:forEach var="tList" items="${tList }">
+	                                <div class="travel-card">
+	                                <div class="travel-card-header">
+	                                	<c:set var="repImgPath" value="" />
+					            		<c:forEach var="img" items="${tList.imageList}">
+					                	<c:if test="${img.imgType == 'rep'}">
+					                    	<c:set var="repImgPath" 
+					                           value="${pageContext.request.contextPath}/resources/tripInfo/${img.imgPath}" />
+					                		</c:if>
+					            		</c:forEach>
+					
+					            		<%-- 이미지 표시 (대표 이미지가 없으면 기본 이미지) --%>
+					            		<c:choose>
+							                <c:when test="${not empty repImgPath}">
+							                    <img src="${repImgPath}" alt="${tList.touristTitle}">
+							                </c:when>
+							                <c:otherwise>
+							                    <img src="${pageContext.request.contextPath}/resources/img/common/no-image.jpg" class="travel-card-img">
+							                </c:otherwise>
+					            		</c:choose>
+					            		</div>
+	                                    <span class="travel-title">${tList.touristTitle }</span>
+	                                    <div class="travel-card-info">
+	                                        <div class="travel-card-main">
+	                                            <div class="travel-card-item">
+	                                                <span class="material-symbols-outlined">credit_card</span>
+	                                                성인<span>${tList.ticketAdult }</span>
+	                                            </div>
+	                                            <div class="travel-card-item">
+	                                                <span class="material-symbols-outlined">credit_card</span>
+	                                                청소년<span>${tList.ticketYouth }</span>
+	                                            </div>
+	                                            <div class="travel-card-item">
+	                                                <span class="material-symbols-outlined">credit_card</span>
+	                                                어린이<span>${tList.ticketChildren }</span>
+	                                            </div>
+	                                            <div class="travel-card-item">
+	                                                <span class="material-symbols-outlined">location_on</span>
+	                                                위치<span>${tList.touristLocation }</span>
+	                                            </div>
+	                                        </div>
+	                                        <div class="travel-card-footer">
+	                                            <span class="travel-card-date">${tList.writeDate } 등록</span>
+	                                            <div class="travel-card-btn-row">
+	                                                <a href="#" id="travel-modify-btn">수정</a>
+	                                                <a href="#" id="travel-delete-btn">삭제</a>
+	                                            </div>
+	                                        </div>
+	                                    </div>
+	                                </div>
+                                	<!--********************카드 끝******************-->
+                                </c:forEach>
                             </div>
                         </div>
                         <!--********************관광지 관리 끝******************-->
@@ -359,7 +334,7 @@
                         <div class="board-chart">
                             <div class="allBoard">
                                 <span class="material-symbols-outlined" style="background-color: #98e6fb; color: #0796E5;">groups</span>
-                                <span class="num">2000</span>
+                                <span class="num">${getBoardCount }</span>
                                 <span class="label">총 게시물 갯수</span>
                             </div>
                             <div class="allNotice">
@@ -382,88 +357,16 @@
                         <!--***********************게시물 관리*******************************-->
                         <div class="board-wrapper" id="board-set">
                             <div class="board-title">게시물 관리</div>
-                            <form action="" id="board-search-form">
-                                <div class="board-search-wrapper">
-                                    <span class="material-symbols-outlined">search</span>
-                                    <input type="text" placeholder="제목, 내용으로 검색..">
-                                </div>
-                            </form>
+                             <div class="board-search-wrapper">
+                                 <span class="material-symbols-outlined">search</span>
+                                 <input type="text" name="boardSearchInput" id="boardSearchInput" placeholder="제목, 내용으로 검색..">
+                             </div>
+                           
 
-                            <div class="board-content">
-                                <div class="board-list" style="background-color: #D4DBFF">
-                                    <div class="board-list-header">
-                                    <div class="board-category">
-                                        <p style="background-color: #5D78FF;">일반</p>
-                                    </div>
-                                    <div class="board-date">2025.10.25&nbsp;&nbsp;09:15</div>
-                                    <div class="board-btn">
-                                        <button class="delete-btn">삭제</button>
-                                    </div>
-                                    </div>
-
-                                    <div class="board-list-title">
-                                    <span>제주도 여행 코스 추천해주세요</span>
-                                    </div>
-
-                                    <div class="board-list-detail">
-                                    제목 그대로 가봤던곳에서 좋았던 곳 추천해주세요!
-                                    </div>
-
-                                    <div class="board-list-footer">
-                                    <div class="board-list-view">
-                                        <span class="material-symbols-outlined">visibility</span>
-                                        <span>205 조회</span>
-                                    </div>
-                                    <div class="board-list-comment">
-                                        <span class="material-symbols-outlined">chat_bubble</span>
-                                        <span>150 댓글</span>
-                                    </div>
-                                    </div>
-                                </div>
-                            </div> 
-                            <div class="board-content">
-                                <div class="board-list" style="background-color: #D4DBFF">
-                                    <div class="board-list-header">
-                                    <div class="board-category">
-                                        <p style="background-color: #5D78FF;">일반</p>
-                                    </div>
-                                    <div class="board-date">2025.10.25&nbsp;&nbsp;09:15</div>
-                                    <div class="board-btn">
-                                        <button class="delete-btn">삭제</button>
-                                    </div>
-                                    </div>
-
-                                    <div class="board-list-title">
-                                    <span>제주도 여행 코스 추천해주세요</span>
-                                    </div>
-
-                                    <div class="board-list-detail">
-                                    제목 그대로 가봤던곳에서 좋았던 곳 추천해주세요!
-                                    </div>
-
-                                    <div class="board-list-footer">
-                                    <div class="board-list-view">
-                                        <span class="material-symbols-outlined">visibility</span>
-                                        <span>205 조회</span>
-                                    </div>
-                                    <div class="board-list-comment">
-                                        <span class="material-symbols-outlined">chat_bubble</span>
-                                        <span>150 댓글</span>
-                                    </div>
-                                    </div>
-                                </div> 
-                            </div>
-                            <div class="board-pagination-wrapper">
-                                <nav class="board-pagination">
-                                    <c:if test="${startNavi ne 1 }">
-                                        <a href="/?page=${startNavi - 1}" class="prev">&laquo; 이전</a>
-                                    </c:if>
-                                    <c:forEach begin="${startNavi }" end="${endNavi }" var="n">
-                                        <a href="/?page=${n }" class='page-number <c:if test="${currentPage eq n }">active</c:if>'>${n }</a>
-                                    </c:forEach>
-                                    <c:if test="${endNavi ne maxPage }">
-                                        <a href="/?page=${endNavi + 1}" class="next">다음 &raquo;</a>
-                                    </c:if>
+                            <div class="board-content"></div> 
+                            
+                            <div class="post-pagination-wrapper">
+                                <nav class="post-pagination">
                                 </nav>
                             </div>
                         </div>
@@ -570,6 +473,127 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
     <script src="../../../resources/css/admin/js/List-move.js"></script>
     <script>
+    /* 게시물 */
+  	document.querySelector("#boardSearchInput").addEventListener("keydown", (e) => {
+       const boardSearchInput = document.querySelector("#boardSearchInput");
+      	if(e.key == "Enter") {
+      		e.preventDefault();
+      		boardList(1);
+      		boardSearchInput.value = "";
+      	}
+	});
+    
+    function boardList(currentPage= 1) {
+    	const keyword = document.querySelector("#boardSearchInput").value.trim();
+    	const url = keyword ? "/board/search/list" : "/board/list?page=" + currentPage; 
+    	const options = keyword
+        ? {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: new URLSearchParams({ page: currentPage, keyword }),
+          }
+        : {};
+    	fetch(url, options)
+    	.then(res => res.json())
+    	.then(data => {
+    		const boardList = document.querySelector(".board-content");
+    		boardList.innerHTML = "";
+    		
+    		if (!data.bList || data.bList.length === 0) {
+            	const pagination = document.querySelector(".post-pagination");
+            	pagination.innerHTML = '';
+            	boardList.innerHTML = `
+	                <div style="height: 200px; display:flex; align-items:center; justify-content: center;">
+	                  <p style="text-align: center; font-weight: bold; padding: 10px 20px; color:#666">
+	                    검색 결과가 없습니다.
+	                  </p>
+	                </div>
+	              `;
+	              return; 
+	            }
+    		
+    		data.bList.forEach(bList => {
+    			boardList.innerHTML +=`
+    			<div class="board-list" style="background-color: #D4DBFF">
+                    <div class="board-list-header">
+	                    <div class="board-category">
+	                        <p style="background-color: #5D78FF;">일반</p>
+	                    </div>
+                    	<div class="board-date">\${bList.writeDate}</div>
+	                    <div class="board-btn">
+	                        <button type="button" onclick="boardDelete(\${bList.postNo})"class="delete-btn">삭제</button>
+	                    </div>
+                    </div>
+
+                    <div class="board-list-title">
+                    	<span>\${bList.postTitle}</span>
+                    </div>
+
+                    <div class="board-list-detail">
+                    	\${bList.postContent}
+                    </div>
+
+                    <div class="board-list-footer">
+	                    <div class="board-list-view">
+	                        <span class="material-symbols-outlined">visibility</span>
+	                        <span>\${bList.viewCount}</span>
+	                    </div>
+	                    <div class="board-list-comment">
+	                        <span class="material-symbols-outlined">chat_bubble</span>
+	                        <span>150 댓글</span>
+	                    </div>
+                    </div>
+                </div>
+    			`;
+    		});
+    	
+            const pagination = document.querySelector(".post-pagination");
+		    if(pagination) {
+		    	pagination.innerHTML = "";
+				
+			    let pageHtml = '';
+			    
+			    // 이전 버튼
+                if (data.startNavi > 1) {
+                    pageHtml += `<button class="prev" onclick="boardList(\${data.startNavi - 1}, '\${keyword}')">\&laquo;이전</button>`;
+                }
+
+                // 페이지 번호
+                for (let i = data.startNavi; i <= data.endNavi; i++) {
+                    if (i === data.currentPage) {
+                        pageHtml += `<button class="page-number active" onclick="boardList(\${i}), '\${keyword}'">\${i}</button>`;
+                    } else {
+                        pageHtml += `<button class="page-number" onclick="boardList(\${i}, '\${keyword}')">\${i}</button>`;
+                    }
+                }
+
+                // 다음 버튼
+                if (data.endNavi < data.maxPage) {
+                    pageHtml += `<button class="next" onclick="boardList(\${data.endNavi + 1}, '\${keyword}')">다음&raquo;</button>`;
+                }
+			    pagination.innerHTML = pageHtml;
+		    }
+		    
+        })
+		.catch(error => console.log(error))
+    }
+    
+    function boardDelete(postNo) {
+    	if(!confirm("정말 삭제하시겠습니까?")) return;
+    	fetch("/board/delete?boardNo=" + postNo)
+    	.then(res => res.json())
+    	.then(result => {
+    		if(result > 0) {
+    			alert("게시판 삭제 완료");
+    			boardList();
+    		} else {
+    			alert("게시판 삭제 실패");
+    		}
+    	})
+    	.catch(error => console.log(error));
+    };
+    boardList(1);
+    
     /* 회원 리스트 */
     document.querySelector("#userSearchInput").addEventListener("keydown", (e) => {
     	const userSearchInput = document.querySelector("#userSearchInput");
@@ -917,7 +941,7 @@
                                 </div>
                             </div>
                         </div>
-                    `
+                    `;
                 });
                 
                  const pagination = document.querySelector(".notice-pagination");
@@ -934,15 +958,15 @@
 		                // 페이지 번호
 		                for (let i = data.startNavi; i <= data.endNavi; i++) {
 		                    if (i === data.currentPage) {
-		                        pageHtml += `<button class="page-number active" onclick="noticeFun(\${i})">\${i}</button>`;
+		                        pageHtml += `<button class="page-number active" onclick="noticeFun(\${i}, '\${keyword}')">\${i}</button>`;
 		                    } else {
-		                        pageHtml += `<button class="page-number" onclick="noticeFun(\${i})">\${i}</button>`;
+		                        pageHtml += `<button class="page-number" onclick="noticeFun(\${i}, '\${keyword}')">\${i}</button>`;
 		                    }
 		                }
 
 		                // 다음 버튼
 		                if (data.endNavi < data.maxPage) {
-		                    pageHtml += `<button class="next" onclick="noticeFun(\${data.endNavi + 1})">다음&raquo;</button>`;
+		                    pageHtml += `<button class="next" onclick="noticeFun(\${data.endNavi + 1}, '\${keyword}')">다음&raquo;</button>`;
 		                }
 					    pagination.innerHTML = pageHtml;
 				    }
@@ -1045,21 +1069,21 @@
 					    
 					    // 이전 버튼
 		                if (data.startNavi > 1) {
-		                    pageHtml += `<button class="prev" onclick="qnaFun(\${data.startNavi - 1})">\&laquo;이전</button>`;
+		                    pageHtml += `<button class="prev" onclick="qnaFun(\${data.startNavi - 1}, '\${keyword}')">\&laquo;이전</button>`;
 		                }
 
 		                // 페이지 번호
 		                for (let i = data.startNavi; i <= data.endNavi; i++) {
 		                    if (i === data.currentPage) {
-		                        pageHtml += `<button class="page-number active" onclick="qnaFun(\${i})">\${i}</button>`;
+		                        pageHtml += `<button class="page-number active" onclick="qnaFun(\${i}, '\${keyword}')">\${i}</button>`;
 		                    } else {
-		                        pageHtml += `<button class="page-number" onclick="qnaFun(\${i})">\${i}</button>`;
+		                        pageHtml += `<button class="page-number" onclick="qnaFun(\${i}, '\${keyword}')">\${i}</button>`;
 		                    }
 		                }
 
 		                // 다음 버튼
 		                if (data.endNavi < data.maxPage) {
-		                    pageHtml += `<button class="next" onclick="qnaFun(\${data.endNavi + 1})">다음&raquo;</button>`;
+		                    pageHtml += `<button class="next" onclick="qnaFun(\${data.endNavi + 1}, '\${keyword}')">다음&raquo;</button>`;
 		                }
 					    pagination.innerHTML = pageHtml;
 				    }
@@ -1068,7 +1092,7 @@
 		        .catch(error => console.error('데이터 불러오기 오류:', error));
 		    
 		}
-		qnaFun();
+		qnaFun(1);
         /*  문의글 끝  */
         
         /* 문의 글 삭제 */
@@ -1104,10 +1128,7 @@
                         <span class="course-title">\${rList.roadName}</span>
                         <div class="card-info">
                             <div class="card-header">
-                                <span>\${rList.roadStart}</span>→
-                                <span>\${rList.roadEnd}</span>→
-                                <span>경북궁</span>→
-                                <span>경북궁</span>
+                                <span>\${rList.roadStyle}</span>
                             </div>
                             <div class="card-main">
                                 <div class="card-item">
@@ -1115,12 +1136,8 @@
                                     <span>\${rList.roadLocation}</span>
                                 </div>
                                 <div class="card-item">
-                                    <span class="material-symbols-outlined">schedule</span>
-                                    <span>7</span>
-                                </div>
-                                <div class="card-item">
-                                    <span class="material-symbols-outlined">star</span>
-                                    <span>4.8</span>
+                                	<span class="material-symbols-outlined">article</span>
+                                   	<span>\${rList.roadIntro}</span>
                                 </div>
                                 <div class="card-item">
                                     <span class="material-symbols-outlined">credit_card</span>
@@ -1143,9 +1160,7 @@
         	.catch(error => alert(error));
         }
         travelCourseFun();
-        /* 여행 코스 끝 */
         
-        /* 여행 코스 삭제 */
         function travelDeleteFun(roadNo) {
         	if(!confirm("정말 삭제하시겠습니까?")) return;
         	console.log("불러온 로드 번호",roadNo);
@@ -1161,7 +1176,89 @@
         	})
         	.catch(error => alert(error));
         };
-        /* 여행 코스 삭제 끝 */
+        /* 여행 코스 끝 */
+        
+        /* 관광지 */
+       const contextPath = "${pageContext.request.contextPath}";
+       function tripList() {
+	    fetch("/tourist/list")
+	        .then(res => res.json())
+	        .then(trip => {
+	        	console.log("trip", trip);
+	            const tripList = document.querySelector(".travel-content");
+	            tripList.innerHTML = "";     
+	            let htmlToRender = ""; 
+	            
+	            trip.forEach(tList => {
+	            	console.log("tList" + tList);
+	                const repImg = tList.imageList.find(img => img.imgType == 'rep');
+	                let imgHtml = "";
+	                
+	                if (repImg) {        
+	                    const repImgPath = "${contextPath}/resources/tripInfo/" + repImg.imgPath;
+	                    imgHtml = `<img src="\${repImgPath}" alt="\${tList.touristTitle}">`;
+	                } else {           
+	                    imgHtml = `<img src="${contextPath}/resources/img/common/no-image.jpg" class="travel-card-img">`;
+	                }
+	                
+	                htmlToRender += `
+	                    <div class="travel-card">
+	                        <div class="travel-card-header">\${imgHtml}</div>
+	                        <span class="travel-title">\${tList.touristTitle}</span>
+	                        <div class="travel-card-info">
+	                            <div class="travel-card-main">
+	                                <div class="travel-card-item">
+	                                    <span class="material-symbols-outlined">credit_card</span>
+	                                    성인<span>\${tList.ticketAdult}</span>
+	                                </div>
+	                                <div class="travel-card-item">
+	                                    <span class="material-symbols-outlined">credit_card</span>
+	                                    청소년<span>\${tList.ticketYouth}</span>
+	                                </div>
+	                                <div class="travel-card-item">
+	                                    <span class="material-symbols-outlined">credit_card</span>
+	                                    어린이<span>\${tList.ticketChildren}</span>
+	                                </div>
+	                                <div class="travel-card-item">
+	                                    <span class="material-symbols-outlined">location_on</span>
+	                                    위치<span>\${tList.touristLocation}</span>
+	                                </div>
+	                            </div>
+	                            <div class="travel-card-footer">
+	                                <span class="travel-card-date">\${tList.writeDate} 등록</span>
+	                                <div class="travel-card-btn-row">
+	                                    <button  id="travel-modify-btn" style="border: none; padding: 6px 12px; border-radius:8px;">수정</a>
+	                                    <button type="button" style="border: none; padding: 6px 12px; border-radius:8px;" onclick="tripDelete(\${tList.touristId})" id="travel-delete-btn">삭제</a>
+	                                </div>
+	                            </div>
+	                        </div>
+	                    </div>
+	                `;
+	            }); // <-- forEach loop ends here
+	
+	            // 3. Set the innerHTML *ONCE* after the loop is complete
+	            tripList.innerHTML = htmlToRender;
+	
+	        })
+	        .catch(error => console.log(error));
+		}
+         tripList();
+        
+        function tripDelete(tripNo) {
+        	if(!confirm("정말 삭제하시겠습니까?")) return;
+        	fetch("/tourist/delete?tripNo=" + tripNo)
+        	.then(response => response.json())
+        	.then(result => {
+        		if(result > 0) {
+        			alert("삭제 완료");
+        			tripList();
+        		} else {
+        			alert("삭제 실패");
+        		}
+        	})
+        	.catch(error => alert(error));
+        };
+      
         
         /* 신고게시판 */ 
         document.querySelector("#reportSearchInput").addEventListener("keydown", (e) => {
@@ -1227,21 +1324,21 @@
 				    
 				    // 이전 버튼
 	                if (data.startNavi > 1) {
-	                    pageHtml += `<button class="prev" onclick="reportList(\${data.startNavi - 1})">\&laquo;이전</button>`;
+	                    pageHtml += `<button class="prev" onclick="reportList(\${data.startNavi - 1}, '\${keyword}')">\&laquo;이전</button>`;
 	                }
 
 	                // 페이지 번호
 	                for (let i = data.startNavi; i <= data.endNavi; i++) {
 	                    if (i === data.currentPage) {
-	                        pageHtml += `<button class="page-number active" onclick="reportList(\${i})">\${i}</button>`;
+	                        pageHtml += `<button class="page-number active" onclick="reportList(\${i}, '\${keyword}')">\${i}</button>`;
 	                    } else {
-	                        pageHtml += `<button class="page-number" onclick="reportList(\${i})">\${i}</button>`;
+	                        pageHtml += `<button class="page-number" onclick="reportList(\${i}, '\${keyword}')">\${i}</button>`;
 	                    }
 	                }
 
 	                // 다음 버튼
 	                if (data.endNavi < data.maxPage) {
-	                    pageHtml += `<button class="next" onclick="reportList(\${data.endNavi + 1})">다음&raquo;</button>`;
+	                    pageHtml += `<button class="next" onclick="reportList(\${data.endNavi + 1}, '\${keyword}')">다음&raquo;</button>`;
 	                }
 				    pagination.innerHTML = pageHtml;
 			    }			          		

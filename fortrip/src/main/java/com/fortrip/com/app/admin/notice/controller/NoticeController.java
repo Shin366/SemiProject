@@ -41,8 +41,14 @@ public class NoticeController {
 			,Model model, HttpSession session) {
 		try {
 			int result = nService.insertNotice(notice);
+			if (result > 0) {
+				model.addAttribute("success", "공지 삽입 성공");	
+			} else {
+				model.addAttribute("error", "공지 삽입 실패");
+			}
 			return "admin/notice/noticeInsert";
 		} catch (Exception e) {
+			model.addAttribute("error", e.getMessage());
 			e.printStackTrace();
 			return "admin/notice/noticeInsert";
 		}

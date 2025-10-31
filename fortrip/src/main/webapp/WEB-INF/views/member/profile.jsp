@@ -47,14 +47,14 @@
                     <div class="use-type">
                         <p>성향</p>
                         <select name="type" id="type">
-                            <option value="">성향 선택</option>
-                            <option value="">🌿 힐링러 (자연·휴식형)</option>
-                            <option value="">🍜 미식러 (맛집·로컬 중심)</option>
-                            <option value="">🧭 탐험러 (액티비티·모험형)</option>
-                            <option value="">🎨 감성러 (사진·문화·감성 중심)</option>
-                            <option value="">💼 실속러 (효율·가성비 중심)</option>
-                            <option value="">🧳 플래너형 (계획적·조직형)</option>
-                            <option value="">🎒 즉흥러 (자유·즉흥형)</option>
+                            <option value="N">성향 선택</option>
+                            <option value="healing">🌿 힐링러 (자연·휴식형)</option>
+                            <option value="delicacies">🍜 미식러 (맛집·로컬 중심)</option>
+                            <option value="exploration">🧭 탐험러 (액티비티·모험형)</option>
+                            <option value="emotion">🎨 감성러 (사진·문화·감성 중심)</option>
+                            <option value="efficiency">💼 실속러 (효율·가성비 중심)</option>
+                            <option value="plan">🧳 플래너형 (계획적·조직형)</option>
+                            <option value="free">🎒 즉흥러 (자유·즉흥형)</option>
                         </select>
                     </div>
                     <button type="submit" class="save-button">저장하기</button>

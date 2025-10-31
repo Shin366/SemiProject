@@ -34,9 +34,9 @@
 
         <!-- 나만의 로드맵 -->
         <li class="nav-item">
-          <a href="/roadmap/my" class="nav-link">나만의 로드맵</a>
+          <a href="/trip/roadmap/my" class="nav-link">나만의 로드맵</a>
           <ul class="dropdown">
-            <li><a href="/roadmap/my">나만의 로드맵</a></li>
+            <li><a href="/trip/roadmap/my">나만의 로드맵</a></li>
           </ul>
         </li>
 
@@ -45,7 +45,8 @@
           <a href="/board/free/list" class="nav-link">커뮤니티</a>
           <ul class="dropdown">
           	<!-- 서브네비 추가하시면 됩니다 -->
-            <li><a href="#">???</a></li>
+            <li><a href="/board/free/list">자유 게시판</a></li>
+            <li><a href="/board/review/list">코스 리뷰</a></li>
           </ul>
         </li>
 
@@ -54,7 +55,10 @@
           <a href="/board/notice/list" class="nav-link">고객지원</a>
           <ul class="dropdown">
           	<!-- 서브네비 추가하시면 됩니다 -->
-            <li><a href="#">Notices</a></li>
+            <li><a href="/board/notice/list">공지사항</a></li>
+            <li><a href="/board/faq/list">자주 묻는 질문</a></li>
+            <li><a href="/board/qna/list">1 : 1 문의</a></li>
+            <li><a href="/board/report/list">신고 게시판</a></li>
           </ul>
         </li>
       </ul>

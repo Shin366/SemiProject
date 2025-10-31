@@ -1,7 +1,9 @@
 package com.fortrip.com.domain.journey.trip.model.service.impl;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -74,6 +76,10 @@ public class TripServiceImpl implements TripService {
         t.setRoadCost(joinCost(form.getBudget(), form.getBudgetUnit()));
         t.setRoadStyle(joinThemes(form.getThemes()));
         t.setRoadIntro(form.getDescription());
+        
+        t.setSlogan(form.getSlogan());
+        t.setItineraryJson(form.getItineraryJson());
+        
         return tripMapper.updateTrip(t);
     }
 
@@ -101,13 +107,24 @@ public class TripServiceImpl implements TripService {
     private TripView toView(Trip r) {
         // routeCsv는 roadIntro에 CSV가 아니라 소개문이라 칩 분해 안함 → 빈 리스트
         return TripView.builder()
-            .id(r.getRoadNo())
-            .title(r.getRoadName())
-            .location(r.getRoadLocation())
-            .thumbnailUrl(null)       // 썸네일 칼럼 생기면 매핑
-            .createdAt(r.getWriteDate())
-            .routeCsv(null)           // 소개문은 칩대상 아님
-            .build();
+        		.id(r.getRoadNo())
+	            .title(r.getRoadName())
+	            .location(r.getRoadLocation())
+	            .thumbnailUrl(r.getThumbUrl())   // ✅ null 고정 제거
+	            .createdAt(r.getWriteDate())
+
+	            // ✅ 상세에서 쓰는 것들 매핑
+	            .intro(r.getRoadIntro())
+	            .start(r.getRoadStart())
+	            .end(r.getRoadEnd())
+	            .cost(r.getRoadCost())
+	            .roadStyle(r.getRoadStyle())
+	            .slogan(r.getSlogan())
+	            .itineraryJson(r.getItineraryJson())
+	            .memberNo(r.getMemberNo())
+	            // ROUTE_CSV 컬럼이 없으니 빈 값 유지
+	            .routeCsv(null)
+	            .build();
     }
 
 	@Override
@@ -121,4 +138,47 @@ public class TripServiceImpl implements TripService {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<Trip> selectTripsByMember(int memberNo) {
+		// TODO Auto-generated method stub
+		return tripMapper.selectTripsByMember(memberNo);
+	}
+
+	@Override
+	public List<Trip> selectTripsByMemberPaged(int memberNo, int offset, int size) {
+		Map<String, Object> param = new HashMap<>();
+        param.put("memberNo", memberNo);
+        param.put("offset", offset);
+        param.put("size", size);
+        return tripMapper.selectTripsByMemberPaged(param);
+	}
+
+	@Override
+	public int countTripsByMember(int memberNo) {
+		// TODO Auto-generated method stub
+		return tripMapper.countTripsByMember(memberNo);
+	}
+	
+	@Override
+	public List<TripView> findAdminTrips(TripRequest req) {
+	    return tripMapper.selectAdminTrips(req);
+	}
+
+	@Override
+	public int countAdminTrips(TripRequest req) {
+	    return tripMapper.countAdminTrips(req);
+	}
+	
+	@Override
+    public List<TripView> findUserTrips(TripRequest req) {
+        return tripMapper.selectUserTrips(req);
+    }
+
+    @Override
+    public int countUserTrips(TripRequest req) {
+        return tripMapper.countUserTrips(req);
+    }
+	
 }

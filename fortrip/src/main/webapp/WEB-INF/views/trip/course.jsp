@@ -22,8 +22,7 @@
           <li class="active"><a href="${pageContext.request.contextPath}/trip/course">여행코스</a></li>
 	        <li><a href="${pageContext.request.contextPath}/trip/course1">관리자 추천코스</a></li>
 	        <li><a href="${pageContext.request.contextPath}/trip/course2">사용자 추천코스</a></li>
-          <li><a href="/recommend/season">계절 추천코스</a></li>
-          <li><a href="/info">관광지 정보</a></li>
+          	<li><a href="/trip/info">관광지 정보</a></li>
         </ul>
       </nav>
     </aside>
@@ -46,34 +45,13 @@
               </div>
             </div>
 
-            <div class="field">
-              <label>체크인</label>
-              <div class="input-wrap">
-                <input type="date" name="checkin"/>
-              </div>
-            </div>
-
-            <div class="field">
-              <label>체크아웃</label>
-              <div class="input-wrap">
-                <input type="date" name="checkout"/>
-              </div>
-            </div>
-
-            <div class="field">
-              <label>인원</label>
-              <div class="input-wrap">
-                <input type="text" name="people" placeholder="1명" />
-              </div>
-            </div>
-
             <div class="field btn-field">
               <button type="submit">검색</button>
             </div>
           </div>
 
           <!-- 고급 필터 토글 (JS 없이 동작) -->
-          <input type="checkbox" id="advToggle" class="visually-hidden">
+          <input type="checkbox" id="advToggle" class="visually-hidden"${not empty param.category or not empty param.roadStyle or not empty param.minCost ? 'checked' : ''}>
           <div class="filter-link">
             <label for="advToggle" class="adv-btn">
               <span class="gear" aria-hidden="true">⚙</span> 고급 필터
@@ -188,7 +166,6 @@
            aria-disabled="${page >= totalPages}">다음</a>
       </nav>
 
-      <!-- 사용자 추천 섹션 -->
       <!-- 사용자 추천 섹션 -->   
       <section class="user-recommend">
         <h2>당신만을 위한 사용자 추천 특별한 여행</h2>

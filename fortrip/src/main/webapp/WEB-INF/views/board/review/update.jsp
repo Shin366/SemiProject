@@ -1,198 +1,244 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>코스 리뷰 - 수정</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>코스 리뷰 수정</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+    <link rel="stylesheet" href="<c:url value='/resources/css/common/header.css'/>">
+    <link rel="stylesheet" href="<c:url value='/resources/css/board/review/insert.css'/>">
     <style>
-        /* --- 기본 & 레이아웃 --- */
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; background-color: #f8f9fa; margin: 0; color: #343a40; }
-        .container { display: flex; max-width: 1200px; margin: 30px auto; gap: 30px; }
-        .sidebar { flex: 0 0 200px; }
-        .main-content { flex-grow: 1; background-color: #fff; padding: 40px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
-
-        /* --- 사이드바 --- */
-        .sidebar ul { list-style: none; padding: 0; background-color: #fff; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); padding: 10px; }
-        .sidebar a { display: block; padding: 15px 20px; text-decoration: none; color: #555; border-radius: 6px; font-weight: 600; font-size: 16px; }
-        .sidebar a.active, .sidebar a:hover { background-color: #007bff; color: white; }
-
-        /* --- 폼 스타일 --- */
-        .page-title { font-size: 28px; font-weight: bold; margin-top: 0; margin-bottom: 30px; }
-        .review-article { max-width: 900px; margin: 0 auto; }
-        .form-group { margin-bottom: 25px; }
-        .form-group label { display: block; font-size: 16px; font-weight: 600; margin-bottom: 8px; }
-        .form-group input[type="text"], .form-group textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 15px;
-            box-sizing: border-box;
+        .current-thumbnail img {
+            max-width: 100%;
+            border-radius: 5px;
+            margin-top: 10px;
         }
-        .form-group input.title-input { font-size: 24px; font-weight: bold; }
-        .form-group textarea { min-height: 400px; resize: vertical; line-height: 1.8; }
-
-        .rating-input .stars { font-size: 28px; color: #ddd; cursor: pointer; }
-        .rating-input .stars .fa-star:hover,
-        .rating-input .stars .fa-star.selected { color: #ffc107; }
-
-        .course-link-wrapper { margin: 25px 0; }
-        .course-info { display: block; width: 100%; text-align: center; background-color: #f8f9fa; border: 1px solid #dee2e6; padding: 15px; border-radius: 8px; color: #343a40; font-weight: bold; }
-        .course-info i { margin-right: 8px; }
-
-        /* --- 파일 첨부 영역 --- */
-        .existing-files ul { list-style: none; padding: 0; margin: 0; }
-        .existing-files li { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; font-size: 14px; }
-        .existing-files label { font-weight: normal; margin: 0; }
-        .new-file-input { margin-top: 10px; }
-
-        /* --- 하단 버튼 --- */
-        .bottom-actions { text-align: center; margin-top: 40px; display: flex; justify-content: flex-end; gap: 10px; }
-        .btn { padding: 12px 30px; border-radius: 6px; text-decoration: none; font-size: 16px; border: 1px solid #ccc; background-color: #fff; cursor: pointer; }
-        .btn-submit { background-color: #007bff; color: white; border: none; }
-        .btn-cancel { background-color: #6c757d; color: white; border: none; }
+        .course-display {
+            padding: 12px 10px;
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            font-weight: bold;
+            color: #495057;
+            margin-bottom: 8px;
+        }
+        /* 모달 관련 스타일 */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+        .course-list { max-height: 400px; overflow-y: auto; margin-top: 10px; }
+        .course-item {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+        }
+        .course-item:hover { background: #f7f7f7; }
+        .btn-close-modal {
+            margin-top: 15px;
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn-close-modal:hover { background: #5a6268; }
     </style>
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/common/header.jsp"/>
 
-    <div class="container">
-        <aside class="sidebar">
-            <ul>
-                <li><a href="<c:url value='/board/free/list'/>">자유 소통</a></li>
-                <li><a href="<c:url value='/board/review/list'/>" class="active">코스 리뷰</a></li>
-            </ul>
-        </aside>
+<div class="container">
+    <h1>코스 리뷰 수정</h1>
 
-        <main class="main-content">
-            <h1 class="page-title">코스 리뷰 수정</h1>
+    <form class="review-form" id="review-form" action="<c:url value='/board/review/update'/>" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="reviewNo" value="${review.reviewNo}">
 
-            <%-- form ID 확인 --%>
-            <form id="updateForm" action="/board/review/update" method="post" enctype="multipart/form-data">
-                <%-- 리뷰 번호 hidden input --%>
-                <input type="hidden" name="reviewNo" value="${review.reviewNo}">
-
-                <article class="review-article">
-                    <div class="form-group">
-                        <label for="reviewTitle">제목</label>
-                        <%-- value 속성에 DTO 필드명 사용 --%>
-                        <input type="text" id="reviewTitle" name="reviewTitle" class="title-input" value="${review.reviewTitle}" required>
-                    </div>
-
-                    <div class="form-group rating-input">
-                        <label>별점</label>
-                        <div class="stars">
-                            <i class="fa-solid fa-star" data-value="1"></i>
-                            <i class="fa-solid fa-star" data-value="2"></i>
-                            <i class="fa-solid fa-star" data-value="3"></i>
-                            <i class="fa-solid fa-star" data-value="4"></i>
-                            <i class="fa-solid fa-star" data-value="5"></i>
-                        </div>
-                        <%-- value 속성에 DTO 필드명 사용 --%>
-                        <input type="hidden" id="reviewRating" name="reviewRating" value="${review.reviewRating}" required>
-                    </div>
-
-                    <div class="course-link-wrapper">
-                         <div class="course-info">
-                            <%-- 코스 이름 대신 코스 번호(roadNo) 표시 (Controller에서 이름 조회 안 했을 경우) --%>
-                            <i class="fa-solid fa-route"></i>리뷰 대상 코스 번호: ${review.roadNo}
-                        </div>
-                        <%-- 수정 페이지에서는 코스 변경 불가하도록 hidden 처리 권장 --%>
-                        <input type="hidden" name="roadNo" value="${review.roadNo}">
-                        <input type="hidden" name="reviewerType" value="${review.reviewerType}">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="reviewSubtitle">부제목</label>
-                        <%-- value 속성에 DTO 필드명 사용 --%>
-                        <input type="text" id="reviewSubtitle" name="reviewSubtitle" value="${review.reviewSubtitle}">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="reviewContent">본문</label>
-                        <%-- textarea 내용은 태그 사이에 DTO 필드명 사용 --%>
-                        <textarea id="reviewContent" name="reviewContent" required>${review.reviewContent}</textarea>
-                    </div>
-
-                    <%-- === 파일 첨부 영역 수정 === --%>
-                    <div class="form-group">
-                        <label>첨부 파일</label>
-                        <%-- 기존 파일 목록 및 삭제 체크박스 --%>
-                        <div class="existing-files">
-                            <ul>
-                                <c:forEach var="attach" items="${attachmentList}"> <%-- Controller에서 attachmentList 전달 가정 --%>
-                                    <li>
-                                        <span>${attach.originalName}</span>
-                                        <label>
-                                            <input type="checkbox" name="deletedFiles" value="${attach.attachNo}"> 삭제
-                                        </label>
-                                    </li>
-                                </c:forEach>
-                                <c:if test="${empty attachmentList}">
-                                    <li>첨부된 파일이 없습니다.</li>
-                                </c:if>
-                            </ul>
-                        </div>
-                        <%-- 새 파일 첨부 input --%>
-                        <div class="new-file-input">
-                            <label for="reloadFiles">새 파일 추가:</label>
-                            <%-- name을 reloadFiles로 변경, multiple 추가 --%>
-                            <input type="file" id="reloadFiles" name="reloadFiles" multiple>
-                        </div>
-                    </div>
-                    <%-- === 파일 첨부 영역 수정 끝 === --%>
-
-                </article>
-            </form> <%-- form 태그는 article 밖에서 닫힘 --%>
-
-            <div class="bottom-actions">
-                <button type="button" class="btn btn-cancel" onclick="history.back()">취소</button>
-                <%-- submit 버튼의 form 속성 수정 --%>
-                <button type="submit" form="updateForm" class="btn btn-submit">수정 완료</button>
+        <div class="main-content">
+            <div class="form-group">
+                <label for="reviewTitle">제목</label>
+                <input type="text" id="reviewTitle" name="reviewTitle" value="${review.reviewTitle}" required>
             </div>
-        </main>
+
+            <div class="form-group">
+                <label for="reviewSubtitle">소제목</label>
+                <input type="text" id="reviewSubtitle" name="reviewSubtitle" value="${review.reviewSubtitle}">
+            </div>
+
+            <div class="form-group">
+                <label for="reviewContent">상세 내용</label>
+                <textarea id="reviewContent" name="reviewContent" required>${review.reviewContent}</textarea>
+            </div>
+        </div>
+
+        <div class="sidebar">
+            <div class="form-group">
+                <label>리뷰 코스</label>
+                <div id="selectedCourse" class="course-display">현재 코스 번호: ${review.roadNo}</div>
+                <input type="hidden" id="roadNo" name="roadNo" value="${review.roadNo}">
+                <button type="button" id="selectCourseBtn" class="btn btn-outline">코스 변경하기</button>
+            </div>
+
+            <div class="widget rating">
+                <h3>평점 <span style="color:red;">*</span></h3>
+                <div class="stars">
+                    <i class="fa-solid fa-star" data-value="1"></i>
+                    <i class="fa-solid fa-star" data-value="2"></i>
+                    <i class="fa-solid fa-star" data-value="3"></i>
+                    <i class="fa-solid fa-star" data-value="4"></i>
+                    <i class="fa-solid fa-star" data-value="5"></i>
+                </div>
+                <input type="hidden" id="reviewRating" name="reviewRating" value="${review.reviewRating}" required>
+            </div>
+
+            <div class="widget">
+                <h3>현재 썸네일</h3>
+                <div class="current-thumbnail">
+                    <c:choose>
+                        <c:when test="${not empty review.thumbnailPath}">
+                            <img src="${pageContext.request.contextPath}${review.thumbnailPath}" alt="현재 이미지">
+                        </c:when>
+                        <c:otherwise><p>등록된 이미지가 없습니다.</p></c:otherwise>
+                    </c:choose>
+                </div>
+            </div>
+
+            <div class="widget">
+                <h3>새 썸네일</h3>
+                <div class="image-uploader" id="imageUploader">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <p>새 이미지를 드래그하거나<br>클릭해서 업로드하세요</p>
+                </div>
+                <input type="file" id="fileInput" name="reloadFiles" hidden>
+                <div id="imagePreview" style="margin-top: 15px;"></div>
+            </div>
+        </div>
+    </form>
+
+    <div class="form-actions">
+        <button type="button" class="btn btn-secondary" onclick="location.href='<c:url value='/board/review/detail?reviewNo=${review.reviewNo}'/>'">취소</button>
+        <button type="submit" form="review-form" class="btn btn-primary">수정하기</button>
     </div>
+</div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const stars = document.querySelectorAll('.rating-input .stars .fa-star');
-            const ratingInput = document.getElementById('reviewRating');
+<!-- 코스 선택 모달 -->
+<div id="courseModal" class="modal-overlay">
+    <div class="modal-content">
+        <h2>코스 선택</h2>
+        <div id="courseList" class="course-list"></div>
+        <button type="button" class="btn-close-modal">닫기</button>
+    </div>
+</div>
 
-            // 페이지 로드 시 기존 별점을 UI에 표시
-            const initialRating = ratingInput.value;
-            if (initialRating && initialRating > 0) { // Check if initialRating is valid
-                updateStars(initialRating);
-            }
+<script>
+document.addEventListener('DOMContentLoaded', () => {
 
-            stars.forEach(star => {
-                star.addEventListener('click', function() {
-                    const rating = this.dataset.value;
-                    ratingInput.value = rating;
-                    updateStars(rating);
-                });
-                // Mouseover/Mouseout 이벤트 추가 (선택 사항)
-                star.addEventListener('mouseover', () => highlightStars(star.dataset.value));
-                star.addEventListener('mouseout', () => updateStars(ratingInput.value));
+    // --- 별점 표시 ---
+    const stars = document.querySelectorAll('.rating .stars .fa-star');
+    const ratingInput = document.getElementById('reviewRating');
+    function highlightStars(rating) {
+        for (let i = 0; i < rating; i++) stars[i]?.classList.add('selected');
+    }
+    function resetStars() { stars.forEach(s => s.classList.remove('selected')); }
+    stars.forEach(star => {
+        star.addEventListener('mouseover', () => { resetStars(); highlightStars(star.dataset.value); });
+        star.addEventListener('mouseout', () => { resetStars(); highlightStars(ratingInput.value); });
+        star.addEventListener('click', () => { ratingInput.value = star.dataset.value; highlightStars(ratingInput.value); });
+    });
+    highlightStars(ratingInput.value);
+
+    // --- 이미지 업로드 ---
+    const uploader = document.getElementById('imageUploader');
+    const fileInput = document.getElementById('fileInput');
+    const preview = document.getElementById('imagePreview');
+    uploader.addEventListener('click', () => fileInput.click());
+    uploader.addEventListener('dragover', e => { e.preventDefault(); uploader.style.borderColor = '#007bff'; });
+    uploader.addEventListener('dragleave', () => uploader.style.borderColor = '#ddd');
+    uploader.addEventListener('drop', e => {
+        e.preventDefault();
+        uploader.style.borderColor = '#ddd';
+        fileInput.files = e.dataTransfer.files;
+        showPreview(fileInput.files);
+    });
+    fileInput.addEventListener('change', () => showPreview(fileInput.files));
+    function showPreview(files) {
+        preview.innerHTML = '';
+        if (files.length > 0 && files[0].type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = e => {
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                img.style.maxWidth = '80px';
+                img.style.borderRadius = '5px';
+                preview.appendChild(img);
+            };
+            reader.readAsDataURL(files[0]);
+        }
+    }
+
+    // --- 코스 선택 모달 ---
+    const modal = document.getElementById('courseModal');
+    const openBtn = document.getElementById('selectCourseBtn');
+    const closeBtn = document.querySelector('.btn-close-modal');
+    const courseList = document.getElementById('courseList');
+    const selected = document.getElementById('selectedCourse');
+    const roadNoInput = document.getElementById('roadNo');
+
+    openBtn.addEventListener('click', async () => {
+        modal.style.display = 'flex';
+        try {
+            const res = await fetch('/review/trip/list');
+            if (!res.ok) throw new Error('서버 오류: ' + res.status);
+            const list = await res.json();
+
+            courseList.innerHTML = '';
+            list.forEach(r => {
+                const item = document.createElement('div');
+                item.className = 'course-item';
+                item.dataset.roadNo = r.roadNo;
+                item.dataset.roadName = r.roadName;
+                item.textContent = r.roadNo + ' : ' + r.roadName;
+                courseList.appendChild(item);
             });
+        } catch (err) {
+            alert('코스 목록을 불러오지 못했습니다.');
+            console.error(err);
+        }
+    });
 
-            function highlightStars(rating) {
-                 stars.forEach(s => {
-                     s.classList.remove('selected');
-                     if (s.dataset.value <= rating) {
-                         s.classList.add('selected');
-                     }
-                 });
-            }
-            function updateStars(rating) {
-                 stars.forEach(s => {
-                     s.classList.toggle('selected', s.dataset.value <= rating);
-                 });
-            }
-        });
-    </script>
+    closeBtn.addEventListener('click', () => modal.style.display = 'none');
+    modal.addEventListener('click', e => { if (e.target === modal) modal.style.display = 'none'; });
+
+    courseList.addEventListener('click', e => {
+        const item = e.target.closest('.course-item');
+        if (!item) return;
+        roadNoInput.value = item.dataset.roadNo;
+        selected.textContent = '선택된 코스: ' + item.dataset.roadName;
+        modal.style.display = 'none';
+    });
+
+});
+</script>
+
+<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 </body>
 </html>
