@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
     <link rel="stylesheet" href="<c:url value='/resources/css/common/header.css'/>">
+    <link rel="stylesheet" href="<c:url value='/resources/css/common/rset.css'/>">
+    <link rel="stylesheet" href="<c:url value='/resources/css/common/base-layout.css'/>">
     <link rel="stylesheet" href="<c:url value='/resources/css/board/review/list.css'/>">
 </head>
 <body>
@@ -85,5 +87,8 @@
             </div>
         </main>
     </div>
+    <footer>
+        <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
+    </footer>
 </body>
 </html>

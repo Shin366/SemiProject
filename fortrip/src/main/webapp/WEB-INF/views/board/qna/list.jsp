@@ -8,6 +8,8 @@
     <title>공지사항 - 문의 게시판 목록</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
 	<link rel="stylesheet" href="/resources/css/common/header.css">
+  <link rel="stylesheet" href="/resources/css/common/base-layout.css">
+  <link rel="stylesheet" href="/resources/css/common/rset.css">
 	<link rel="stylesheet" href="/resources/css/board/qna/list.css">
 </head>
 <body>
@@ -73,5 +75,6 @@
             </nav>
         </main>
     </div>
+  <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 </body>
 </html>

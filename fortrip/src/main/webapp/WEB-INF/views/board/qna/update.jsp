@@ -8,6 +8,8 @@
     <title>문의 수정 - 고객지원</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
 	<link rel="stylesheet" href="/resources/css/common/header.css">
+    <link rel="stylesheet" href="/resources/css/common/base-layout.css">
+    <link rel="stylesheet" href="/resources/css/common/rset.css">
 	<link rel="stylesheet" href="/resources/css/board/qna/update.css">
 </head>
 <body>
@@ -61,5 +63,6 @@
             </div>
         </main>
     </div>
+    <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 </body>
 </html>

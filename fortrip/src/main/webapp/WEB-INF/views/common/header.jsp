@@ -76,10 +76,10 @@
           <c:when test="${empty sessionScope.loginMember}">
             <a href="<c:url value='/member/login'/>" class="link">로그인</a>
             <span class="sep">·</span>
-            <a href="<c:url value='/member/signup'/>" class="link">회원가입</a>
+            <a href="<c:url value='/member/use'/>" class="link">회원가입</a>
           </c:when>
           <c:otherwise>
-            <a href="<c:url value='/member/mypage'/>" class="link welcome">${sessionScope.loginMember.nickName} 님</a>
+            <a href="<c:url value='/member/profile'/>" class="link welcome">${sessionScope.loginMember.nickName} 님</a>
             <span class="sep">·</span>
             <a href="<c:url value='/member/logout'/>" class="link">로그아웃</a>
           </c:otherwise>

@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
 	<link rel="stylesheet" href="<c:url value='/resources/css/common/header.css'/>"> 
 	<link rel="stylesheet" href="<c:url value='/resources/css/common/rset.css'/>"> 
+    <link rel="stylesheet" href="<c:url value='/resources/css/common/base-layout.css'/>">
 	<link rel="stylesheet" href="<c:url value='/resources/css/board/report/list.css'/>"> 
 </head>
 <body>

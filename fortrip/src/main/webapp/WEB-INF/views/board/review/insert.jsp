@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
     <link rel="stylesheet" href="<c:url value='/resources/css/common/header.css'/>">
+    <link rel="stylesheet" href="<c:url value='/resources/css/common/rset.css'/>">
+
     <link rel="stylesheet" href="<c:url value='/resources/css/board/review/insert.css'/>">
     
     <style>

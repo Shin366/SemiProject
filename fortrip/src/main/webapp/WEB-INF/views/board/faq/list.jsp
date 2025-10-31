@@ -9,8 +9,6 @@
     <link rel="stylesheet" href="/resources/css/common/header.css">
     <link rel="stylesheet" href="/resources/css/board/faq/faq.css">
     <link rel="stylesheet" href="/resources/css/common/rset.css">
-    <style>
-    </style>
 </head>
 <body>
     <jsp:include page="/WEB-INF/views/common/header.jsp"/>
@@ -60,7 +58,7 @@
     </div>
 
     <!-- footer -->
-    <%-- <jsp:include page="/WEB-INF/views/include/footer.jsp"/> --%>
+    <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {

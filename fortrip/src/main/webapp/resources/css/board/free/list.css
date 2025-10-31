@@ -13,10 +13,26 @@
 .notice .post-no .badge { background-color: #dc3545; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
 
 .board-footer { display: flex; justify-content: flex-end; margin-top: 20px; }
-.write-button { background-color: #007bff; color: white; text-decoration: none; padding: 12px 25px; border-radius: 6px; font-weight: bold; }
+
+.write-button {
+    background-color: white;
+    color: #0796E5;
+    border: 2px solid #0796E5;
+    text-decoration: none;
+    padding: 12px 25px;
+    border-radius: 6px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.write-button:hover {
+  background-color: #0796E5;
+  color: white;
+}
+
 
 /* --- 페이지네이션 --- */
 .pagination { display: flex; justify-content: center; align-items: center; gap: 8px; margin: 40px 0; }
 .pagination a, .pagination strong { display: inline-block; width: 36px; height: 36px; line-height: 36px; text-align: center; border-radius: 6px; text-decoration: none; color: #555; border: 1px solid #ddd; }
 .pagination a:hover { background-color: #e9ecef; }
-.pagination strong { background-color: #007bff; color: white; border-color: #007bff; font-weight: bold; }
+.pagination strong { background-color: #0796E5; color: white; border-color: #0796E5; font-weight: bold; }

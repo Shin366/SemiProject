@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
 	<link rel="stylesheet" href="/resources/css/common/header.css">
+	<link rel="stylesheet" href="/resources/css/common/base-layout.css">
+	<link rel="stylesheet" href="/resources/css/common/rset.css">
 	<link rel="stylesheet" href="/resources/css/board/qna/detail.css">
 </head>
 <body>
@@ -271,6 +273,6 @@ commentListArea.addEventListener('click', e => {
 });
 
 </script>
-
+<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 </body>
 </html>

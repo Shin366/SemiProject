@@ -1,24 +1,170 @@
 @charset "UTF-8";
 
-body { font-family: sans-serif; background-color: #f8f9fa; margin: 0; }
-.container { display: flex; max-width: 1200px; margin: 20px auto; gap: 20px; }
-.sidebar { flex: 0 0 180px; }
-.sidebar a { display: block; padding: 12px 20px; text-decoration: none; color: #333; border-radius: 8px; font-weight: 500; }
-.sidebar a.active { background-color: #007bff; color: white; font-weight: bold; }
-.main-content { flex-grow: 1; background-color: #fff; padding: 40px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-.page-title { font-size: 28px; font-weight: bold; margin-top: 0; margin-bottom: 30px; }
+/* ====== 기본 폼 구조 ====== */
+.form-group {
+  margin-bottom: 25px;
+}
 
-.form-group { margin-bottom: 20px; }
-.title-group { display: flex; border-bottom: 2px solid #333; }
-.title-group input { flex-grow: 1; border:none; padding: 15px 0; font-size: 20px; }
-.title-group input:focus { outline: none; }
-.title-group .author { padding: 15px; color: #888; }
-.content-group textarea { width: 100%; min-height: 300px; border: none; resize: vertical; padding: 20px 0; font-size: 16px; }
-.content-group textarea:focus { outline: none; }
-.attachment-group { border-top: 1px solid #dee2e6; padding-top: 20px; }
-.actions { text-align: right; margin-top: 20px; }
-.btn { padding: 10px 24px; border-radius: 6px; text-decoration: none; font-size: 15px; margin-left: 8px; border: 1px solid #ccc; background-color: #fff; cursor: pointer; }
-.btn-update { background-color: #007bff; color: white; border: none; }
-.btn-delete { background-color: #dc3545; color: white; border: none; }
-.bottom-actions { display: flex; justify-content: flex-end; margin-top: 40px; }
-.btn-list { background-color: #007bff; color: white; border: none; padding: 10px 24px; text-decoration: none; border-radius: 6px; }
+/* 제목 입력 영역 */
+.title-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #333;
+  padding-bottom: 10px;
+  margin-bottom: 30px;
+}
+
+.title-group input {
+  flex-grow: 1;
+  border: none;
+  padding: 15px 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+}
+
+.title-group input:focus {
+  outline: none;
+}
+
+.title-group .author {
+  padding-left: 15px;
+  color: #888;
+  font-size: 15px;
+}
+
+/* 본문 영역 */
+.content-group textarea {
+  width: 100%;
+  min-height: 320px;
+  border: none;
+  resize: vertical;
+  padding: 15px 0;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.content-group textarea:focus {
+  outline: none;
+}
+
+/* 첨부파일 영역 */
+.attachment-section {
+  border-top: 1px solid #dee2e6;
+  padding-top: 25px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  font-size: 15px;
+}
+
+.attachment-section strong {
+  font-weight: 600;
+  margin-right: 6px;
+}
+
+.attachment-section a {
+  color: #0796E5;
+  text-decoration: none;
+}
+
+.attachment-section a:hover {
+  text-decoration: underline;
+}
+
+/* ====== 버튼 공통 ====== */
+.btn {
+  padding: 10px 24px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 600;
+  margin-left: 8px;
+  border: 2px solid transparent;
+  background-color: #fff;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* 수정 완료 */
+.btn-update {
+  background-color: white;
+  color: #0796E5;
+  border: 2px solid #0796E5;
+}
+
+.btn-update:hover {
+  background-color: #0796E5;
+  color: white;
+}
+
+/* 삭제 */
+.btn-delete {
+  background-color: white;
+  color: #dc3545;
+  border: 2px solid #dc3545;
+}
+
+.btn-delete:hover {
+  background-color: #dc3545;
+  color: white;
+}
+
+/* 취소 */
+.actions .btn:first-child {
+  border: 2px solid #ccc;
+}
+
+.actions .btn:first-child:hover {
+  border-color: #0796E5;
+  color: #0796E5;
+}
+
+/* ====== 버튼 정렬 ====== */
+.actions {
+  text-align: right;
+  margin-top: 30px;
+}
+
+/* 하단 목록 버튼 */
+.bottom-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 50px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+.btn-list {
+  background-color: white;
+  color: #0796E5;
+  border: 2px solid #0796E5;
+  padding: 12px 25px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.btn-list:hover {
+  background-color: #0796E5;
+  color: white;
+}
+
+/* ====== 반응형 ====== */
+@media (max-width: 768px) {
+  .title-group {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .actions {
+    text-align: center;
+  }
+
+  .bottom-actions {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+}

@@ -10,12 +10,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
     <link rel="stylesheet" href="<c:url value='/resources/css/common/header.css'/>">
+    <link rel="stylesheet" href="<c:url value='/resources/css/common/rset.css'/>">
+    <link rel="stylesheet" href="<c:url value='/resources/css/common/base-layout.css'/>">
     <link rel="stylesheet" href="<c:url value='/resources/css/board/review/detail.css'/>">
 </head>
 <jsp:include page="/WEB-INF/views/common/header.jsp"/>
 <body>
 <script>
-  const loginMemberNo = ${not empty sessionScope.loginMember ? sessionScope.loginMember.memberNo : 0};
+	const loginMemberNo = ${not empty sessionScope.loginMember ? sessionScope.loginMember.memberNo : 0};
 </script>
     <div class="container">
         <aside class="sidebar">
@@ -139,6 +141,9 @@
             </div>
         </main>
     </div>
+	<footer>
+		<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
+	</footer>
 <script>
 /* sns */
 function shareTwitter() {
