@@ -143,18 +143,21 @@
 <script>
 document.addEventListener('DOMContentLoaded', () => {
     
+	// 디버그용 코드 
     console.log('DEBUG: DOM이 로드되었습니다. 스크립트를 시작합니다.');
 
-    // --- 1. 코스 선택 모달 관련 ---
-    const btn = document.getElementById('selectRoadBtn');
-    const roadNoInput = document.getElementById('roadNo');
-    const selected = document.getElementById('selectedCourseName');
     
-    const modal = document.getElementById('courseModal');
-    const courseListContainer = document.getElementById('courseList');
-    const closeModalBtn = modal.querySelector('.btn-close-modal');
+    /* 버튼 및 입력 창 */
+    const btn = document.getElementById('selectRoadBtn'); // 리뷰할 코스 선택하기 버튼
+    const roadNoInput = document.getElementById('roadNo'); //  코스 번호를 담을 숨겨진 input
+    const selected = document.getElementById('selectedCourseName'); // 선택된 코스 이름을 보여줄 <div>
+    
+    /* 모달 관련 요소 */
+    const modal = document.getElementById('courseModal'); // 모달창 전체(어두운 배경 포함)
+    const courseListContainer = document.getElementById('courseList'); // 코스 목록(course-item)이 들어갈 <div>
+    const closeModalBtn = modal.querySelector('.btn-close-modal'); // 모달 내부의 '닫기' 버튼
 
-    // DEBUG: 주요 요소들이 제대로 찾아졌는지 확인
+    // DEBUG: HTML에서 요소들이 제대로 찾아졌는지 확인
     if (!btn) console.error('DEBUG ERROR: "selectRoadBtn" 버튼을 찾지 못했습니다!');
     if (!modal) console.error('DEBUG ERROR: "courseModal" 요소를 찾지 못했습니다!');
     if (!courseListContainer) console.error('DEBUG ERROR: "courseList" 요소를 찾지 못했습니다!');
@@ -165,9 +168,6 @@ document.addEventListener('DOMContentLoaded', () => {
         
         console.log('DEBUG: [1] 버튼이 클릭되었습니다.');
         
-        /* modal.style.display = 'flex';
-        console.log('DEBUG: [2] 모달을 열었습니다.'); */
-
         try {
             console.log('DEBUG: [3] fetch를 시도합니다: /review/trip/list');
             const res = await fetch('/review/trip/list');
@@ -234,7 +234,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- 2. 별점 스크립트 (기존과 동일) ---
+    // --- 2. 별점 스크립트 ---
     const stars = document.querySelectorAll('.rating .stars .fa-star');
     const ratingInput = document.getElementById('reviewRating');
     stars.forEach(star => {
@@ -256,7 +256,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     function resetStars() { stars.forEach(s => s.classList.remove('selected')); }
 
-    // --- 3. 이미지 업로드 스크립트 (기존과 동일) ---
+    // --- 3. 이미지 업로드 스크립트 ) ---
     const uploader = document.getElementById('imageUploader');
     const fileInput = document.getElementById('fileInput');
     const preview = document.getElementById('imagePreview');

@@ -1,56 +1,50 @@
 @charset "UTF-8";
 
-/* General Styles */
+/* ===== 기본 ===== */
 body {
-    font-family: 'pretendard', sans-serif;
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans KR", sans-serif;
     background-color: #f4f6f9;
     margin: 0;
-    padding: 20px;
+    padding: 0; /* 상단 여백 제거 */
 }
 
+/* ===== 전체 컨테이너 ===== */
 .container {
     max-width: 1200px;
-    margin: 0 auto;
+    margin: 40px auto; /* 상단 여백 추가로 헤더와 분리 */
     background-color: #fff;
-    padding: 30px 40px;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 40px 50px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
 }
 
+/* ===== 제목 ===== */
 h1 {
     font-size: 28px;
     font-weight: 700;
-    margin-bottom: 30px;
-    color: #333;
+    margin-bottom: 35px;
+    color: #222;
 }
 
-/* Form Layout */
+/* ===== 폼 레이아웃 ===== */
 .review-form {
     display: flex;
     gap: 40px;
 }
+.main-content { flex: 3; }
+.sidebar { flex: 1; }
 
-.main-content {
-    flex: 3; /* 3:1 ratio for main content vs sidebar */
-}
-
-.sidebar {
-    flex: 1;
-}
-
-/* Form Groups */
+/* ===== 폼 그룹 ===== */
 .form-group {
     margin-bottom: 25px;
 }
-
 .form-group label {
     display: block;
     font-size: 16px;
     font-weight: 600;
     margin-bottom: 8px;
-    color: #555;
+    color: #444;
 }
-
 .form-group input[type="text"],
 .form-group textarea {
     width: 100%;
@@ -61,26 +55,22 @@ h1 {
     box-sizing: border-box;
     transition: border-color 0.2s;
 }
-
 .form-group input[type="text"]:focus,
 .form-group textarea:focus {
     outline: none;
     border-color: #0796E5;
 }
-
-/* WYSIWYG Editor Placeholder */
 #reviewContent {
-    min-height: 450px; /* 에디터 높이 조정 */
+    min-height: 450px;
     resize: vertical;
 }
-
 .form-group .guide {
-     font-size: 13px;
-     color: #888;
-     margin-top: 5px;
+    font-size: 13px;
+    color: #888;
+    margin-top: 5px;
 }
 
-/* Sidebar Widgets */
+/* ===== 사이드바 위젯 ===== */
 .widget {
     background-color: #f9fafb;
     padding: 20px;
@@ -88,7 +78,6 @@ h1 {
     border: 1px solid #e9ecef;
     margin-bottom: 25px;
 }
-
 .widget h3 {
     font-size: 18px;
     margin-top: 0;
@@ -97,17 +86,20 @@ h1 {
     padding-bottom: 10px;
 }
 
-/* Course Selection Widget */
-#selectRoadBtn { /* 버튼 ID 수정 */
+/* ===== 코스 선택 버튼 ===== */
+#selectRoadBtn {
     width: 100%;
     padding: 10px;
     background-color: #343a40;
-    color: white;
+    color: #fff;
     border: none;
-    border-radius: 5px;
+    border-radius: 6px;
     cursor: pointer;
     font-size: 15px;
+    font-weight: 600;
+    transition: background-color 0.2s;
 }
+#selectRoadBtn:hover { background-color: #222; }
 #selectedCourseName {
     margin-top: 10px;
     font-size: 14px;
@@ -115,7 +107,7 @@ h1 {
     font-weight: 600;
 }
 
-/* Rating Widget */
+/* ===== 별점 ===== */
 .rating .stars {
     font-size: 28px;
     color: #ddd;
@@ -126,7 +118,7 @@ h1 {
     color: #ffc107;
 }
 
-/* Image Uploader Widget */
+/* ===== 이미지 업로더 ===== */
 .image-uploader {
     border: 2px dashed #ddd;
     border-radius: 8px;
@@ -148,12 +140,12 @@ h1 {
     color: #6c757d;
 }
 
-/* Action Buttons */
+/* ===== 버튼 ===== */
 .form-actions {
     display: flex;
     justify-content: flex-end;
-    gap: 10px;
-    margin-top: 30px; /* 폼과 버튼 사이 간격 */
+    gap: 12px;
+    margin-top: 40px;
 }
 .btn {
     padding: 12px 25px;
@@ -163,11 +155,63 @@ h1 {
     font-weight: 600;
     cursor: pointer;
 }
-.btn-primary {
-    background-color: #0796E5;
-    color: white;
+.btn-primary { background-color: #0796E5; color: white; }
+.btn-secondary { background-color: #6c757d; color: white; }
+.btn-primary:hover { background-color: #0682c6; }
+.btn-secondary:hover { background-color: #565e64; }
+
+/* ===== 코스 선택 모달 ===== */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
 }
-.btn-secondary {
-    background-color: #6c757d;
-    color: white;
+.modal-content {
+    background: #fff;
+    padding: 25px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
+.modal-content h2 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-top: 0;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    color: #111;
+}
+.course-list {
+    max-height: 400px;
+    overflow-y: auto;
+    margin-top: 10px;
+    border-radius: 6px;
+}
+.course-item {
+    padding: 12px 15px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    font-size: 15px;
+    background-color: #fff;
+    transition: background-color 0.15s ease;
+}
+.course-item:hover { background-color: #f8f9fa; }
+.course-item:last-child { border-bottom: none; }
+.btn-close-modal {
+    margin-top: 15px;
+    background: #6c757d;
+    color: #fff;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s ease;
+}
+.btn-close-modal:hover { background: #5a6268; }
