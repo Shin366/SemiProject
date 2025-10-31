@@ -5,13 +5,29 @@
   <mapper namespace="com.fortrip.com.domain.member.model.mapper.CourseViewHistoryMapper">
   
   	<select id="selectRecentCourses" parameterType="long">
-  		SELECT * FROM(SELECT h.*, )
+  		SELECT * FROM (
+        SELECT 
+            h.HISTORY_NO,
+            h.MEMBER_NO,
+            h.COURSE_ID,
+            h.COURSE_TYPE,
+            h.VIEW_DATE,
+            r.ROAD_NAME,
+            r.ROAD_LOCATION,
+            r.ROAD_COST,
+            r.ROAD_INTRO,
+            ROW_NUMBER() OVER (ORDER BY h.VIEW_DATE DESC)
+        FROM COURSE_VIEW_HISTORY h
+        JOIN ROAD r ON h.COURSE_ID = r.ROAD_NO
+        WHERE h.MEMBER_NO = #{memberNo}
+    )
+    WHERE ROW_NUMBER BETWEEN #{startRow} AND #{endRow}
   	</select>
   	
-  	<select id="checkExistiogView" parameterType="map" resultType="int">
-  		SELECT COUNT(*)FROM COURSE_VIEW_HISTORY
-  		WHERE MEMBER_NO = #{memberNo} AND COURSE_ID = #{courseId}
-  	</select>
+  	<select id="checkExistingView" parameterType="map" resultType="int">
+    SELECT COUNT(*) FROM COURSE_VIEW_HISTORY
+    WHERE MEMBER_NO = #{memberNo} AND COURSE_ID = #{courseId}
+	</select>
   	
   	<insert id="insertView">
   		INSERT INTO COURSE_VIEW_HISTORY(MEMBER_NO, COURSE_ID, COURSE_TYPE)

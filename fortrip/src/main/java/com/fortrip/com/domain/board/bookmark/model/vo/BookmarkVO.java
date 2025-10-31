@@ -17,5 +17,7 @@ public class BookmarkVO {
 	private String targetType;
 	private int targetNo;
 	private Timestamp bookmarkDate;
+	private String title;       // 게시글 제목
+	private Timestamp writeDate; // 작성일
 	
 }

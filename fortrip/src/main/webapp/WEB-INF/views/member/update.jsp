@@ -43,6 +43,19 @@
                         <label for="">이메일</label>
                         <input type="text" name="email" value="${member.email}">
                     </div>
+                    <div class="use-type">
+                        <p>성향</p>
+                        <select name="tendency" id="type">
+                            <option value="N" ${member.tendency == 'N' ? 'selected' : ''}>성향 선택</option>
+                            <option value="healing" ${member.tendency == 'healing' ? 'selected' : ''}>🌿 힐링러 (자연·휴식형)</option>
+                            <option value="delicacies" ${member.tendency == 'delicacies' ? 'selected' : ''}>🍜 미식러 (맛집·로컬 중심)</option>
+                            <option value="exploration" ${member.tendency == 'exploration' ? 'selected' : ''}>🧭 탐험러 (액티비티·모험형)</option>
+                            <option value="emotion" ${member.tendency == 'emotion' ? 'selected' : ''}>🎨 감성러 (사진·문화·감성 중심)</option>
+                            <option value="efficiency" ${member.tendency == 'efficiency' ? 'selected' : ''}>💼 실속러 (효율·가성비 중심)</option>
+                            <option value="plan" ${member.tendency == 'plan' ? 'selected' : ''}>🧳 플래너형 (계획적·조직형)</option>
+                            <option value="free" ${member.tendency == 'free' ? 'selected' : ''}>🎒 즉흥러 (자유·즉흥형)</option>
+                        </select>
+                    </div>
                     <span class="pwUpdate-button">
                         <a href="/member/pwUpdate">비밀번호 변경</a>
                     </span>

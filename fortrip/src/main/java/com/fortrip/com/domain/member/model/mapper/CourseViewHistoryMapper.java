@@ -16,6 +16,8 @@ public interface CourseViewHistoryMapper {
 
 	void insertView(CourseViewHistory history);
 
-	List<CourseViewHistory> selectRecentCourses(int memberNo);
+	List<CourseViewHistory> selectRecentCourses(Map<String, Object> param);
+
+	
 	
 }

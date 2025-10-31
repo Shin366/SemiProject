@@ -1,0 +1,113 @@
+/* term-popup-style.css */
+
+body {
+    font-family: 'Malgun Gothic', '맑은 고딕', Arial, sans-serif;
+    padding: 20px;
+    margin: 0;
+    line-height: 1.6;
+    background-color: #fff;
+    color: #333;
+    overflow-y: auto; /* 내용이 길면 스크롤 가능 */
+}
+
+/* 스크롤바 스타일링 (선택적) */
+body::-webkit-scrollbar {
+    width: 8px;
+}
+body::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 10px;
+}
+body::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+}
+
+/* 헤더 및 닫기 버튼 컨테이너 */
+.popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #0796E5;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+h1 {
+    color: #0796E5; /* 메인 색상 */
+    margin: 0;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.close-button {
+    background: none;
+    border: none;
+    color: #777;
+    font-size: 24px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+    transition: color 0.2s;
+}
+
+.close-button:hover {
+    color: #333;
+}
+
+.term-content {
+    font-size: 14px;
+    white-space: pre-wrap;
+    padding-right: 5px; /* 스크롤바 공간 확보 */
+}
+.term-content p {
+    margin-bottom: 15px;
+    text-align: justify; /* 양쪽 정렬 */
+}
+.term-content strong {
+    font-weight: bold;
+    color: #0796E5;
+}
+.term-content .section-title {
+    font-weight: bold;
+    margin-top: 20px; /* 간격 늘림 */
+    margin-bottom: 5px;
+    color: #000;
+    font-size: 15px;
+    padding-left: 5px;
+    border-left: 3px solid #0796E5; /* 강조 효과 */
+}
+.term-content .date {
+    font-style: italic;
+    color: #777;
+    display: block;
+    margin-bottom: 15px;
+    font-size: 13px;
+}
+.term-content ul, .term-content ol {
+    margin-top: 5px;
+    margin-bottom: 15px;
+    padding-left: 20px;
+}
+.term-content li {
+    margin-bottom: 5px;
+}
+
+/* 표 스타일링 */
+.table-style {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    margin-bottom: 25px;
+    border: 1px solid #ddd;
+}
+.table-style th, .table-style td {
+    border: 1px solid #eee;
+    padding: 10px;
+    text-align: left;
+    vertical-align: top;
+}
+.table-style th {
+    background-color: #f5f5f5;
+    font-weight: 600;
+    color: #555;
+}

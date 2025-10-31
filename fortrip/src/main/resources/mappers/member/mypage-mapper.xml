@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fortrip.com.domain.member.model.mapper.MyPageMapper">
+
+    <!-- 전체 게시글 (자유 + 리뷰) -->
+    <select id="getMyAllBoardList" parameterType="int" resultType="com.fortrip.com.app.member.dto.MyBoard">
+        SELECT *
+        FROM (
+            -- 자유 게시판
+            SELECT
+                F.POST_NO AS boardNo,
+                'community' AS boardType,
+                F.POST_TITLE AS title,
+                F.POST_CONTENT AS content,
+                F.MEMBER_NO AS memberNo,
+                M.MEMBER_ID AS memberId,
+                M.NICKNAME AS nickName,
+                NVL(F.VIEW_COUNT, 0) AS viewCount,
+                0 AS bookmarkCount,
+                0 AS commentCount,
+                F.WRITE_DATE AS writeDate,
+                '' AS category,
+                '' AS courseName,
+                NULL AS thumbnailPath
+            FROM FREE F
+            JOIN MEMBER M ON F.MEMBER_NO = M.MEMBER_NO
+            WHERE F.MEMBER_NO = #{memberNo}
+              AND F.DELETE_YN = 'N'
+
+            UNION ALL
+
+            -- 리뷰 게시판
+            SELECT
+                R.REVIEW_NO AS boardNo,
+                'review' AS boardType,
+                R.REVIEW_TITLE AS title,
+                R.REVIEW_CONTENT AS content,
+                R.MEMBER_NO AS memberNo,
+                M.MEMBER_ID AS memberId,
+                M.NICKNAME AS nickName,
+                NVL(R.VIEW_COUNT, 0) AS viewCount,
+                0 AS bookmarkCount,
+                0 AS commentCount,
+                R.WRITE_DATE AS writeDate,
+                NVL(R.REVIEWER_TYPE, '') AS category,
+                TO_CHAR(R.ROAD_NO) AS courseName,
+                R.THUMBNAIL_PATH AS thumbnailPath
+            FROM REVIEW R
+            JOIN MEMBER M ON R.MEMBER_NO = M.MEMBER_NO
+            WHERE R.MEMBER_NO = #{memberNo}
+              AND R.DELETE_YN = 'N'
+        )
+        ORDER BY writeDate DESC
+    </select>
+
+
+    <!-- 커뮤니티 게시글만 -->
+    <select id="selectMyCommunityList" parameterType="int" resultType="com.fortrip.com.app.member.dto.MyBoard">
+        SELECT
+            F.POST_NO AS boardNo,
+            'community' AS boardType,
+            F.POST_TITLE AS title,
+            F.POST_CONTENT AS content,
+            F.MEMBER_NO AS memberNo,
+            M.MEMBER_ID AS memberId,
+            M.NICKNAME AS nickName,
+            NVL(F.VIEW_COUNT, 0) AS viewCount,
+            0 AS bookmarkCount,
+            0 AS commentCount,
+            F.WRITE_DATE AS writeDate,
+            '' AS category,
+            '' AS courseName,
+            NULL AS thumbnailPath
+        FROM FREE F
+        JOIN MEMBER M ON F.MEMBER_NO = M.MEMBER_NO
+        WHERE F.MEMBER_NO = #{memberNo}
+          AND F.DELETE_YN = 'N'
+        ORDER BY F.WRITE_DATE DESC
+    </select>
+
+
+    <!-- 리뷰 게시글만 -->
+    <select id="selectMyReviewList" parameterType="int" resultType="com.fortrip.com.app.member.dto.MyBoard">
+        SELECT
+            R.REVIEW_NO AS boardNo,
+            'review' AS boardType,
+            R.REVIEW_TITLE AS title,
+            R.REVIEW_CONTENT AS content,
+            R.MEMBER_NO AS memberNo,
+            M.MEMBER_ID AS memberId,
+            M.NICKNAME AS nickName,
+            NVL(R.VIEW_COUNT, 0) AS viewCount,
+            0 AS bookmarkCount,
+            0 AS commentCount,
+            R.WRITE_DATE AS writeDate,
+            NVL(R.REVIEWER_TYPE, '') AS category,
+            TO_CHAR(R.ROAD_NO) AS courseName,
+            R.THUMBNAIL_PATH AS thumbnailPath
+        FROM REVIEW R
+        JOIN MEMBER M ON R.MEMBER_NO = M.MEMBER_NO
+        WHERE R.MEMBER_NO = #{memberNo}
+          AND R.DELETE_YN = 'N'
+        ORDER BY R.WRITE_DATE DESC
+    </select>
+
+</mapper>
