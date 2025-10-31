@@ -1,69 +1,60 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>ForTrip - 회원탈퇴</title>
 <link rel="icon" type="image/png" href="../../../resources/img/common/eyes-icon.png">
+<link rel="stylesheet" href="/resources/css/member/delete.css">
 </head>
 <body>
-	<div id="container">
+    <div id="container">
         <main id="main">
-            <div class="delete-container">
-                <div class="delete-title">
-                    <h2>회원탈퇴</h2>                
-                </div>
-                <div class="delete-title2">
-                    <p class="detile-title">회원탈퇴 유의사항</p>
-                    <p class="detile-delete">회원탈퇴를 신청하기 전에 안내 사항을 꼭 확인해주세요.</p>
-                </div>
-                <div class="detile-main1">
-                    <li class="detile1">
-                        ⦁ 사용하고 계신 아이디는 탈퇴할 경우 재사용 및 복구가 불가능합니다.
-                    </li>
-                    <p class="detile2">
-                        탈퇴한 아이디는 본인과 타인 모두 재사용 및 복구가 불가하오니 신중하게 선택하시길 바랍니다.
-                    </p>
-                </div>
-                <div class="detile-main2">
-                    <li class="detile3">
-                        ⦁ 탈퇴 후 회원정보 및 서비스 이용기록은 모두 삭제됩니다.
-                    </li>
-                    <p class="detile4">
-                        회원정보 및  게시글, 개인 서비스 이용기록은 모두 삭제되며, 삭제된 데이터는 복구되지 않습니다. <br>
-                        필요한 데이터의 경우 미리 백업을 해주세요.
-                    </p>
-                </div>
-                <div class="sidebar">
+            
+            <!-- 사이드바 -->
+            <div class="sidebar">
                 <ul class="menu-list">
                     <li><a href="profile">내 프로필</a></li>
                     <li><a href="myBoard">내 게시글</a></li>
                     <li><a href="list">찜 목록</a></li>
                     <li><a href="recent">최근 본 코스</a></li>
                     <li><a href="update">개인 정보 수정</a></li>
-                    <li><a href="delete">회원탈퇴</a></li>
+                    <li><a href="delete" class="active">회원탈퇴</a></li>
                 </ul>
             </div>
-                <div class="delete-title3">
-                    <p class="pw-check">비밀번호 확인</p>
-                    <p class="pw-main">회원탈퇴를 신청하기 전 비밀번호를 입력해주세요.</p>
+
+            <!-- 회원탈퇴 내용 -->
+            <div class="delete-container">
+                <h2 class="delete-title">회원탈퇴</h2>                
+
+                <div class="delete-warning">
+                    <p class="warning-title">회원탈퇴 유의사항</p>
+                    <ul class="warning-list">
+                        <li>사용하고 계신 아이디는 탈퇴할 경우 재사용 및 복구가 불가능합니다.</li>
+                        <li>탈퇴 후 회원정보 및 서비스 이용기록은 모두 삭제되며, 삭제된 데이터는 복구되지 않습니다.</li>
+                    </ul>
                 </div>
-                <form class="delete-form" action="/member/delete" method="post">
-                    <div class="form-group">
-                        <label for="memberName">이름</label>
-                        <input type="text" name="memberName" placeholder="${member.memberName }" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label for="memberId">아이디</label>
-                        <input type="text" name="memberId" placeholder="${member.memberId }" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label class="required" for="memberPw">비밀번호</label>
-                        <input type="password" name="memberPw">
-                    </div>
-                    <button type="submit" value="">탈퇴하기</button>
-                </form>
+
+                <div class="delete-password">
+                    <p>회원탈퇴를 신청하기 전 비밀번호를 입력해주세요.</p>
+                    <form class="delete-form" action="/member/delete" method="post">
+                        <div class="form-group">
+                            <label for="memberName">이름</label>
+                            <input type="text" name="memberName" value="<c:out value='${member.memberName}'/>" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="memberId">아이디</label>
+                            <input type="text" name="memberId" value="<c:out value='${member.memberId}'/>" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="memberPw">비밀번호</label>
+                            <input type="password" name="memberPw" required>
+                        </div>
+                        <button type="submit" class="btn-delete">탈퇴하기</button>
+                    </form>
+                </div>
             </div>
         </main>
     </div>

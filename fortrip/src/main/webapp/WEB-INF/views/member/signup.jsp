@@ -6,6 +6,7 @@
 <meta charset="UTF-8">
 <title>ForTrip - 회원가입</title>
 <link rel="icon" type="image/png" href="../../../resources/img/common/eyes-icon.png">
+<link rel="stylesheet" href="/resources/css/member/signup.css">
 </head>
 <body>
 	<div id="signup-container">
@@ -45,11 +46,11 @@
                 <label class="required" for="email">이메일</label>
                 <input type="email" id="email" name="email" placeholder="이메일을 입력해주세요.">
             </div>
-            <div class="form-group">
-                <label class="required" for="gender">성별</label>
-                <label><input type="radio" name="gender" value="M" checked>남</label>
-                <label><input type="radio" name="gender" value="F">여</label>
-            </div>
+            <div class="form-group gender-group">
+			    <label><input type="radio" name="gender" value="M" checked>남
+			    <input type="radio" name="gender" value="F">여
+			    </label>
+			</div>
             <button type="submit" class="signup-button">가입</button>
         </form>
     </div>

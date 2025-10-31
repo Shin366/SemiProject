@@ -7,9 +7,11 @@
 <title>ForTrip - 로그인</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
 <link rel="stylesheet" href="../resources/css/common/header.css">
+<link rel="stylesheet" href="/resources/css/member/login.css">
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/common/header.jsp"/>
+
 	<div id="container">
         <main id="main">
             <div class="login-container">

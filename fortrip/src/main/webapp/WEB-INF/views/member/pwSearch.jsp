@@ -6,6 +6,7 @@
 <meta charset="UTF-8">
 <title>ForTrip - 비밀번호 찾기</title>
 <link rel="icon" type="image/png" href="../../../resources/img/common/eyes-icon.png">
+<link rel="stylesheet" href="/resources/css/member/pwSearch.css">
 </head>
 <body>
 	<div id="container">

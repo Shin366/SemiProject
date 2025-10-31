@@ -38,6 +38,12 @@ public class MemberBookmarkServiceImpl implements MemberBookmarkService {
         return bMapper.selectBookmarksByMember(memberNo);
     }
     
+    // 이 메서드를 추가하세요
+    @Override
+    public List<BookmarkVO> selectMyBookmarkList(int memberNo) {
+        return bMapper.selectBookmarksByMember(memberNo);
+    }
+    
     @Override
     public void deleteSelectedBookmarks(int memberNo, List<Integer> ids) {
         Map<String, Object> param = new HashMap<>();
@@ -45,9 +51,11 @@ public class MemberBookmarkServiceImpl implements MemberBookmarkService {
         param.put("targetNos", ids);
         bMapper.deleteSelectedBookmarks(param);
     }
+
+	@Override
+	public void deleteAllBookmarks(int memberNo) {
+		// TODO Auto-generated method stub
+		
+	}
     
-    @Override
-    public void deleteAllBookmarks(int memberNo) {
-        bMapper.deleteAllBookmarks(memberNo);
-    }
 }

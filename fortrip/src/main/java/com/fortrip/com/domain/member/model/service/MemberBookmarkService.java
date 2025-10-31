@@ -22,5 +22,9 @@ public interface MemberBookmarkService {
     void deleteSelectedBookmarks(int memberNo, List<Integer> ids);
     
     // 전체 삭제
-    void deleteAllBookmarks(int memberNo);
+	List<BookmarkVO> selectMyBookmarkList(int memberNo);
+
+	void deleteAllBookmarks(int memberNo);
+
+	
 }

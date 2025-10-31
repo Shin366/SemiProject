@@ -40,7 +40,9 @@
             <!-- 게시글 리스트 -->
             <div class="board-list">
                 <c:forEach var="board" items="${boardList}" varStatus="status">
-                    <div class="board-card">
+                    <div class="board-card" style="cursor: pointer;" 
+                         onclick="location.href='${board.boardType == 'community' ? '/free/view?no=' : '/review/view?no='}${board.boardNo}'">
+                        
                         <!-- ✅ 썸네일 (이미지 없으면 기본 배경) -->
                         <div class="board-thumbnail ${empty board.thumbnailPath ? 'no-image' : ''} ${board.boardType}">
                             <c:choose>
@@ -58,8 +60,8 @@
                             </c:choose>
                         </div>
 
-                        <!-- 카드 클릭 영역 -->
-                        <div class="board-content" onclick="location.href='${board.boardType == 'community' ? '/community/detail?no=' : '/review/detail?no='}${board.boardNo}'">
+                        <!-- 카드 콘텐츠 -->
+                        <div class="board-content">
                             <!-- 카테고리 태그 -->
                             <div class="board-category ${board.boardType}">
                                 ${board.boardType == 'community' ? '커뮤니티' : '리뷰'}
@@ -102,11 +104,11 @@
 
                         <!-- 액션 버튼 -->
                         <div class="board-actions">
-                            <a href="${board.boardType == 'community' ? '/community/update?no=' : '/review/update?no='}${board.boardNo}" 
+                            <a href="${board.boardType == 'community' ? '/free/update?no=' : '/review/update?no='}${board.boardNo}" 
                                class="btn-edit" onclick="event.stopPropagation()">
                                 수정
                             </a>
-                            <a href="${board.boardType == 'community' ? '/community/delete?no=' : '/review/delete?no='}${board.boardNo}" 
+                            <a href="${board.boardType == 'community' ? '/free/delete?no=' : '/review/delete?no='}${board.boardNo}" 
                                class="btn-delete" 
                                onclick="event.stopPropagation(); return confirm('정말 삭제하시겠습니까?')">
                                 삭제

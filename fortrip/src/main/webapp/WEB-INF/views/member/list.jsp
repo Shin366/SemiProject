@@ -50,17 +50,42 @@
             </div>
         </div>
 
-        <!-- 필터 -->
+        <!-- 필터 섹션 -->
         <div class="filter-section">
-            <button class="filter-btn active" data-type="">
-                전체 <span class="count">${likedList.size()}</span>
-            </button>
-            <button class="filter-btn" data-type="community">
-                커뮤니티 <span class="count" id="communityCount">0</span>
-            </button>
-            <button class="filter-btn" data-type="review">
-                리뷰 <span class="count" id="reviewCount">0</span>
-            </button>
+            <div class="filter-left">
+                <button class="filter-btn active" data-type="">
+                    전체 <span class="count" id="totalCount">0</span>
+                </button>
+                <button class="filter-btn" data-type="community">
+                    커뮤니티 <span class="count" id="communityCount">0</span>
+                </button>
+                <button class="filter-btn" data-type="review">
+                    리뷰 <span class="count" id="reviewCount">0</span>
+                </button>
+            </div>
+            
+            <div class="filter-right">
+                <select id="regionFilter" class="region-select">
+                    <option value="">전체보기</option>
+                    <option value="서울">서울</option>
+                    <option value="부산">부산</option>
+                    <option value="인천">인천</option>
+                    <option value="대구">대구</option>
+                    <option value="대전">대전</option>
+                    <option value="광주">광주</option>
+                    <option value="울산">울산</option>
+                    <option value="세종">세종</option>
+                    <option value="경기">경기</option>
+                    <option value="강원">강원</option>
+                    <option value="충북">충북</option>
+                    <option value="충남">충남</option>
+                    <option value="전북">전북</option>
+                    <option value="전남">전남</option>
+                    <option value="경북">경북</option>
+                    <option value="경남">경남</option>
+                    <option value="제주">제주</option>
+                </select>
+            </div>
         </div>
 
         <!-- 찜 목록 그리드 -->
@@ -118,14 +143,22 @@
 		const deleteAllBtn = document.getElementById("deleteAllBtn");
 		const likedCards = document.querySelectorAll(".liked-card");
 		const filterBtns = document.querySelectorAll(".filter-btn");
+		const regionFilter = document.getElementById("regionFilter");
 		
-		// 카운트 업데이트
+		// 카운트 업데이트 함수
 		function updateCounts() {
-		    const communityCount = document.querySelectorAll('.liked-card[data-type="community"]').length;
-		    const reviewCount = document.querySelectorAll('.liked-card[data-type="review"]').length;
-		    document.getElementById('communityCount').textContent = communityCount;
-		    document.getElementById('reviewCount').textContent = reviewCount;
+		    const allCards = document.querySelectorAll('.liked-card');
+		    const communityCards = document.querySelectorAll('.liked-card[data-type="community"]');
+		    const reviewCards = document.querySelectorAll('.liked-card[data-type="review"]');
+		    
+		    document.getElementById('totalCount').textContent = allCards.length;
+		    document.getElementById('communityCount').textContent = communityCards.length;
+		    document.getElementById('reviewCount').textContent = reviewCards.length;
+		    
+		    console.log('전체:', allCards.length, '커뮤니티:', communityCards.length, '리뷰:', reviewCards.length);
 		}
+		
+		// 페이지 로드 시 카운트 업데이트
 		updateCounts();
 		
 		// 편집 모드
@@ -167,14 +200,14 @@
 		            const targetType = card.dataset.type;
 		            const targetNo = card.dataset.id;
 		            const url = targetType === 'community' 
-		                ? `/board/free/detail?postNo=${'$'}{targetNo}` 
-		                : `/board/review/detail?reviewNo=${'$'}{targetNo}`;
+		                ? '/board/free/detail?postNo=' + targetNo
+		                : '/board/review/detail?reviewNo=' + targetNo;
 		            window.location.href = url;
 		        }
 		    });
 		});
 		
-		// 필터
+		// 타입 필터
 		filterBtns.forEach(btn => {
 		    btn.addEventListener("click", () => {
 		        filterBtns.forEach(b => b.classList.remove("active"));
@@ -183,11 +216,21 @@
 		    });
 		});
 		
+		// 지역 필터 (형식용)
+		regionFilter.addEventListener("change", () => {
+		    filterCards();
+		});
+		
 		function filterCards() {
 		    const type = document.querySelector(".filter-btn.active").dataset.type;
+		    const region = regionFilter.value;
+		    
 		    likedCards.forEach(card => {
 		        const matchType = !type || card.dataset.type === type;
-		        card.style.display = matchType ? "block" : "none";
+		        // 지역 필터는 형식용이므로 항상 true
+		        const matchRegion = true;
+		        
+		        card.style.display = (matchType && matchRegion) ? "block" : "none";
 		    });
 		}
 		
@@ -201,7 +244,7 @@
 		        return;
 		    }
 		
-		    if (!confirm(`선택한 ${'$'}{selectedIds.length}개 항목을 삭제하시겠습니까?`)) return;
+		    if (!confirm('선택한 ' + selectedIds.length + '개 항목을 삭제하시겠습니까?')) return;
 		
 		    fetch('/member/deleteLiked', {
 		        method: 'POST',

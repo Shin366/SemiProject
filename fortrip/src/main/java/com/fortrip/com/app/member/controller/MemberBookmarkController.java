@@ -29,7 +29,7 @@ public class MemberBookmarkController {
 	        }
 
 	        int memberNo = loginMember.getMemberNo();
-	        List<BookmarkVO> bookmarkList = bService.selectMyBookmarkList(memberNo);
+	        List<BookmarkVO> bookmarkList = bService.selectBookmarksByMember(memberNo);
 
 	        model.addAttribute("bookmarkList", bookmarkList);
 	        model.addAttribute("bookmarkCount", bookmarkList.size());

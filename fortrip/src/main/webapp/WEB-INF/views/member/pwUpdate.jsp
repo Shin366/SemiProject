@@ -6,6 +6,7 @@
 <meta charset="UTF-8">
 <title>ForTrip - 비밀번호 변경</title>
 <link rel="icon" type="image/png" href="../../../resources/img/common/eyes-icon.png">
+<link rel="stylesheet" href="/resources/css/member/pwUpdate.css">
 </head>
 <body>
 	<div id="container">

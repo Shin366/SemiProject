@@ -1,0 +1,198 @@
+@charset "UTF-8";
+
+/* =====================================
+   1. 공통 레이아웃 설정
+===================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Malgun Gothic', '맑은 고딕', Arial, sans-serif;
+  background-color: #f5f7fa;
+}
+
+#container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+#main {
+  display: flex;
+  gap: 30px;
+}
+
+/* =====================================
+   2. 사이드바 (모든 member 페이지 공통)
+===================================== */
+/* 교체 전 */
+.sidebar {
+    flex: 0 0 250px;
+    position: sticky;
+    top: 20px;
+    height: fit-content;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+}
+
+.sidebar a {
+    display: block;
+    padding: 16px 24px;
+    text-decoration: none;
+    color: #555;
+    font-weight: 600;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.sidebar a:last-child {
+    border-bottom: none;
+}
+
+.sidebar a:hover {
+    background-color: #f8f9fa;
+    color: #007bff;
+}
+
+.sidebar a.active {
+    background-color: #007bff;
+    color: white;
+}
+
+
+/* =====================================
+   3. 프로필 섹션
+===================================== */
+.profile-section {
+  flex: 1;
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 40px 30px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.profile-image {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  margin-bottom: 20px;
+  border: 4px solid #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.profile-nickName {
+  font-size: 26px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.profile-name,
+.profile-memberId,
+.enroll-date {
+  font-size: 15px;
+  color: #777;
+  margin-bottom: 4px;
+}
+
+.enroll-date {
+  margin-bottom: 20px;
+  font-size: 14px;
+  color: #999;
+}
+
+/* =====================================
+   4. 통계 / 좋아요 / 북마크 요약 박스
+===================================== */
+.like-list {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  padding: 20px 0;
+  margin-top: 20px;
+}
+
+.like-list div {
+  text-align: center;
+}
+
+.like-list h2 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: #333;
+}
+
+.board, .like, .myPick {
+  color: #007bff;
+}
+
+.boardNo, .likeNo, .myPickNo {
+  font-size: 22px;
+  font-weight: 700;
+  color: #333;
+}
+
+.like-list a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.like-list a:hover .myPick {
+  color: #0056b3;
+}
+
+/* =====================================
+   5. 반응형
+===================================== */
+@media (max-width: 1024px) {
+  #main {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    position: static;
+    width: 100%;
+    display: flex;
+    overflow-x: auto;
+  }
+
+  .menu-list {
+    display: flex;
+  }
+
+  .menu-list li a {
+    border-bottom: none;
+    border-right: 1px solid #f0f0f0;
+    white-space: nowrap;
+    padding: 14px 20px;
+    font-size: 14px;
+  }
+
+  .menu-list li:last-child a {
+    border-right: none;
+  }
+
+  .profile-section {
+    padding: 30px 20px;
+  }
+
+  .like-list {
+    flex-direction: column;
+    gap: 16px;
+  }
+}

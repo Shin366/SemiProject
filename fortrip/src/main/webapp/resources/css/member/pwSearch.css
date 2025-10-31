@@ -1,0 +1,116 @@
+@charset "UTF-8";
+
+:root {
+    --main-color: #0796E5; /* ForTrip 주 색상 */
+    --main-dark-color: #007bbd;
+    --text-color: #333;
+    --border-color: #ddd;
+    --bg-color: #f9f9f9;
+}
+
+body {
+    font-family: 'Malgun Gothic', '맑은 고딕', Arial, sans-serif;
+    background-color: var(--bg-color);
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+#container {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+}
+
+/* 제목 영역 */
+.pwSearch-title h2 {
+    color: var(--main-color);
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+/* 폼 */
+.pwSearch-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 6px;
+}
+
+label.required:before {
+    color: #ff4757;
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+/* 입력란 */
+.pwSearch-form input[type="text"] {
+    padding: 12px 14px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 15px;
+    transition: all 0.2s ease;
+}
+
+.pwSearch-form input[type="text"]:focus {
+    border-color: var(--main-color);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(7, 150, 229, 0.2);
+}
+
+/* 버튼 */
+.pwSearch-form button {
+    padding: 14px 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    background-color: var(--main-color);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 15px;
+}
+
+.pwSearch-form button:hover {
+    background-color: var(--main-dark-color);
+}
+
+/* 반응형 */
+@media (max-width: 480px) {
+    #container {
+        padding: 30px 20px;
+    }
+
+    .pwSearch-title h2 {
+        font-size: 24px;
+    }
+
+    .pwSearch-form input[type="text"] {
+        font-size: 14px;
+        padding: 10px 12px;
+    }
+
+    .pwSearch-form button {
+        font-size: 16px;
+        padding: 12px 0;
+    }
+}

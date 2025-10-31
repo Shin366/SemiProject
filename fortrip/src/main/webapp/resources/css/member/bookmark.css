@@ -1,0 +1,215 @@
+@charset "UTF-8";
+
+/* =====================================
+   1. 공통 레이아웃
+===================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Malgun Gothic', '맑은 고딕', Arial, sans-serif;
+    background-color: #f5f7fa;
+}
+
+#container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+#main {
+    display: flex;
+    gap: 30px;
+}
+
+/* =====================================
+   2. 사이드바
+===================================== */
+.sidebar {
+    flex: 0 0 250px;
+    position: sticky;
+    top: 20px;
+    height: fit-content;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+}
+
+.sidebar ul {
+    list-style: none;
+}
+
+.sidebar li {
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.sidebar li:last-child {
+    border-bottom: none;
+}
+
+.sidebar a {
+    display: block;
+    padding: 16px 24px;
+    text-decoration: none;
+    color: #555;
+    font-weight: 600;
+    font-size: 15px;
+    transition: all 0.3s ease;
+}
+
+.sidebar a:hover {
+    background-color: #f8f9fa;
+    color: #007bff;
+}
+
+.sidebar a.active {
+    background-color: #007bff;
+    color: white;
+}
+
+/* =====================================
+   3. 메인 콘텐츠
+===================================== */
+.myboard-container {
+    flex: 1;
+    max-width: calc(1400px - 250px - 30px);
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 40px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.myboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.myboard-header h2 {
+    font-size: 26px;
+    font-weight: 700;
+    color: #333;
+}
+
+.myboard-header p {
+    font-size: 16px;
+    color: #555;
+}
+
+/* 북마크 카드 */
+.board-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.bookmark-card {
+    background-color: #f9f9f9;
+    padding: 20px 25px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.bookmark-card:hover {
+    background-color: #f0f8ff;
+}
+
+.bookmark-card .category {
+    display: inline-block;
+    background-color: #007bff;
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.bookmark-card .title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 6px;
+}
+
+.bookmark-card .date {
+    font-size: 14px;
+    color: #777;
+}
+
+.board-actions {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.btn-delete {
+    display: inline-block;
+    padding: 6px 12px;
+    font-size: 13px;
+    background-color: #dc3545;
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.3s;
+}
+
+.btn-delete:hover {
+    background-color: #c82333;
+}
+
+/* 북마크 없을 때 */
+.empty-state {
+    text-align: center;
+    padding: 50px 0;
+    color: #777;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+/* =====================================
+   4. 반응형
+===================================== */
+@media (max-width: 1024px) {
+    #main {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        position: static;
+        width: 100%;
+        display: flex;
+        overflow-x: auto;
+        border-radius: 8px;
+        box-shadow: none;
+    }
+
+    .sidebar ul {
+        display: flex;
+    }
+
+    .sidebar li a {
+        border-bottom: none;
+        border-right: 1px solid #f0f0f0;
+        white-space: nowrap;
+        padding: 14px 20px;
+        font-size: 14px;
+    }
+
+    .sidebar li:last-child a {
+        border-right: none;
+    }
+
+    .myboard-container {
+        max-width: 100%;
+        padding: 20px;
+    }
+}

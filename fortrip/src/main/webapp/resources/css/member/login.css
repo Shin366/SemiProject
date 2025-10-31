@@ -1,11 +1,137 @@
-.login-form {
+@charset "UTF-8";
+
+:root {
+    --main-color: #0796E5;
+    --main-dark-color: #007bbd;
+    --text-color: #333;
+    --border-color: #ddd;
+    --bg-color: #f9f9f9;
+}
+
+body {
+    font-family: 'Malgun Gothic', '맑은 고딕', Arial, sans-serif;
+    background-color: var(--bg-color);
+    margin: 0;
+    /* flex 제거 */
+}
+
+#container {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
     width: 100%;
-    padding: 12px;
-    background-color: #0796E5;
+    max-width: 450px;
+    margin: 60px auto; /* 화면 가운데 정렬 */
+}
+
+
+/* 제목 영역 */
+.login-title h2 {
+    color: var(--main-color);
+    text-align: center;
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 25px;
+}
+
+/* 폼 */
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 6px;
+    
+}
+
+/* 입력란 */
+.login-form input[type="text"],
+.login-form input[type="password"] {
+    padding: 12px 14px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 15px;
+    transition: all 0.2s ease;
+}
+
+.login-form input[type="text"]:focus,
+.login-form input[type="password"]:focus {
+    border-color: var(--main-color);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(7, 150, 229, 0.2);
+}
+
+/* 버튼 */
+.login-form button {
+    padding: 14px 0;
+    font-size: 18px;
+    font-weight: 700;
     color: #fff;
-    border: 1px;
-    border-color: #666666;
-    font-size: 16px;
-    border-radius: 5px;
+    background-color: var(--main-color);
+    border: none;
+    border-radius: 8px;
     cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+}
+
+.login-form button:hover {
+    background-color: var(--main-dark-color);
+}
+
+/* 아래 링크 */
+.login-links {
+    display: flex;
+    justify-content: space-between; /* 좌우로 벌어지는 기본 */
+    margin-top: 15px; /* 기존 20px에서 조금 줄임 */
+    font-size: 14px;
+    gap: 8px; /* 링크 사이 간격 추가 (좁힘) */
+}
+
+.login-links a {
+    color: var(--main-color);
+    text-decoration: none;
+    transition: color 0.3s;
+    white-space: nowrap; /* 줄 바꿈 방지 */
+}
+
+.login-links a:hover {
+    color: var(--main-dark-color);
+}
+
+/* 반응형 */
+@media (max-width: 480px) {
+    #container {
+        padding: 30px 20px;
+    }
+
+    .login-title h2 {
+        font-size: 24px;
+    }
+
+    .login-form input[type="text"],
+    .login-form input[type="password"] {
+        font-size: 14px;
+        padding: 10px 12px;
+    }
+
+    .login-form button {
+        font-size: 16px;
+        padding: 12px 0;
+    }
+
+    .login-links {
+        flex-direction: column;
+        gap: 10px;
+    }
 }

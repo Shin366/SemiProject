@@ -1,0 +1,204 @@
+@charset "UTF-8";
+
+/* =====================================
+   1. 공통 레이아웃 설정
+===================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Malgun Gothic', '맑은 고딕', Arial, sans-serif;
+  background-color: #f5f7fa;
+}
+
+#container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+#main {
+  display: flex;
+  gap: 30px;
+}
+
+/* =====================================
+   2. 사이드바 (모든 member 페이지 공통)
+===================================== */
+.sidebar {
+  flex: 0 0 250px;
+  position: sticky;
+  top: 20px;
+  height: fit-content;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.sidebar a {
+  display: block;
+  padding: 16px 24px;
+  text-decoration: none;
+  color: #555;
+  font-weight: 600;
+  font-size: 15px;
+  transition: all 0.3s ease;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.sidebar a:last-child {
+  border-bottom: none;
+}
+
+.sidebar a:hover {
+  background-color: #f8f9fa;
+  color: #007bff;
+}
+
+.sidebar a.active {
+  background-color: #007bff;
+  color: white;
+}
+
+/* =====================================
+   3. 회원탈퇴 본문
+===================================== */
+.delete-container {
+  flex: 1;
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 40px 30px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.delete-title {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+.delete-warning {
+  background-color: #f9f9f9;
+  padding: 20px 30px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+  border-left: 5px solid #ffc107;
+}
+
+.warning-title {
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.warning-list {
+  list-style: disc;
+  margin-left: 25px;
+  color: #555;
+  line-height: 1.6;
+}
+
+/* =====================================
+   4. 폼 영역
+===================================== */
+.delete-password p {
+  margin-bottom: 20px;
+  color: #555;
+  font-weight: 500;
+}
+
+.delete-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 🔹 모든 입력 필드와 버튼 가운데 정렬 */
+    margin-top: 60px;
+}
+
+.delete-form .form-group {
+    width: 65%; /* 🔹 input 길이와 동일하게 통일 */
+    margin-bottom: 45px; /* 🔹 간격 유지 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.delete-form label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    align-self: flex-start; /* 🔹 label은 왼쪽 정렬 유지 */
+}
+
+.delete-form input {
+    width: 100%;
+    padding: 12px 14px; /* ⬅ 기존 12px → 29px (위아래 17px 더 증가) */
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+    transition: all 0.2s ease;
+}
+
+.delete-form input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+    outline: none;
+}
+
+.btn-delete {
+    display: block;
+    width: 35%;
+    margin: 90px auto 0; /* 🔹 기존 30px → +15px */
+    padding: 14px 0;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 17px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-delete:hover {
+    background-color: #c82333;
+}
+/* =====================================
+   5. 반응형 (모바일)
+===================================== */
+@media (max-width: 1024px) {
+  #main {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    position: static;
+    width: 100%;
+    display: flex;
+    overflow-x: auto;
+  }
+
+  .menu-list {
+    display: flex;
+  }
+
+  .menu-list li a {
+    border-bottom: none;
+    border-right: 1px solid #f0f0f0;
+    white-space: nowrap;
+    padding: 14px 20px;
+    font-size: 14px;
+  }
+
+  .menu-list li:last-child a {
+    border-right: none;
+  }
+
+  .delete-container {
+    padding: 30px 20px;
+  }
+}

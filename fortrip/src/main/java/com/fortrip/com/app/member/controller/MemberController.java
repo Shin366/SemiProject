@@ -386,43 +386,52 @@ public class MemberController {
 	
 	@PostMapping("delete")
 	public String memberDelete(
-			@ModelAttribute LoginRequest member
-			,HttpSession session
-			, Model model) {
-		try {
-			Member loginMember = (Member) session.getAttribute("loginMember");
-			if(loginMember == null) {
-				System.out.println(loginMember);
-				model.addAttribute("errorMsg", "로그인 정보가 없습니다.");
-				return "common/error";
-			}
-			String memberId = loginMember.getMemberId();
-			System.out.println("탈퇴 요청 회원 ID: " + memberId);
-			Member dbMember = mService.selectOneById(memberId);
-			
-				if(dbMember == null) {
-		            model.addAttribute("errorMsg", "회원 정보를 찾을 수 없습니다.");
-		            return "common/error";
-		        }
-			
-				if(bcrypt.matches(member.getMemberPw(), dbMember.getMemberPw())) {
-					int result = mService.deleteMember(memberId);				
-				if(result > 0) {
-					session.invalidate();
-					return "member/deleteResult";
-				}else {
-					model.addAttribute("errorMsg", "회원 탈퇴에 실패했습니다.");
-					return "common/error";
-				}
-			}else {
-				model.addAttribute("errorMsg", "비밀번호가 일치하지 않습니다.");
-				return "member/delete";
-			}
-			
-		} catch (Exception e) {
-			model.addAttribute("errorMsg", e.getMessage());
-			return "common/error";
-		}
+	        @RequestParam(value="memberPw", required=false) String memberPw, 
+	        HttpSession session, 
+	        Model model) {
+
+	    try {
+	        // 세션에서 로그인 정보 가져오기
+	        Member loginMember = (Member) session.getAttribute("loginMember");
+	        if (loginMember == null) {
+	            model.addAttribute("errorMsg", "로그인 정보가 없습니다.");
+	            return "common/error";
+	        }
+
+	        // 화면에 이름, 아이디 표시
+	        model.addAttribute("member", loginMember);
+
+	        // memberPw가 null이면 아직 비밀번호 입력 전 -> 화면 표시만
+	        if (memberPw == null) {
+	            return "member/delete"; // JSP로 이동
+	        }
+
+	        // DB에서 회원 정보 가져오기
+	        Member dbMember = mService.selectOneById(loginMember.getMemberId());
+	        if (dbMember == null) {
+	            model.addAttribute("errorMsg", "회원 정보를 찾을 수 없습니다.");
+	            return "common/error";
+	        }
+
+	        // 비밀번호 확인
+	        if (bcrypt.matches(memberPw, dbMember.getMemberPw())) {
+	            int result = mService.deleteMember(dbMember.getMemberId());
+	            if (result > 0) {
+	                session.invalidate();
+	                return "member/deleteResult"; // 탈퇴 완료 화면
+	            } else {
+	                model.addAttribute("errorMsg", "회원 탈퇴에 실패했습니다.");
+	                return "common/error";
+	            }
+	        } else {
+	            model.addAttribute("errorMsg", "비밀번호가 일치하지 않습니다.");
+	            return "member/delete"; // 다시 화면으로
+	        }
+
+	    } catch (Exception e) {
+	        model.addAttribute("errorMsg", e.getMessage());
+	        return "common/error";
+	    }
 	}
 	
 	@GetMapping("/admin/user/admin")

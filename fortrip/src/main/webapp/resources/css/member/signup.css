@@ -1,0 +1,146 @@
+@charset "UTF-8";
+
+:root {
+    --main-color: #0796E5;
+    --main-dark-color: #007bbd;
+    --text-color: #333;
+    --border-color: #ddd;
+    --bg-color: #f5f7fa;
+}
+
+/* 전체 레이아웃 */
+body {
+    font-family: 'Malgun Gothic', '맑은 고딕', Arial, sans-serif;
+    background-color: var(--bg-color);
+    margin: 0;
+    padding: 0;
+}
+
+#signup-container {
+    max-width: 500px;
+    margin: 60px auto;
+    padding: 60px 40px; /* 위아래 여백 20px 늘림 */
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.singup-title h2 {
+    text-align: center;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--main-color);
+    margin-bottom: 50px; /* 위아래 간격 증가 */
+}
+
+/* 폼 */
+.signup-form {
+    display: flex;
+    flex-direction: column;
+    gap: 38px; /* 폼 그룹 간격 20px 증가 */
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--text-color);
+}
+
+/* 입력란 */
+.signup-form input[type="text"],
+.signup-form input[type="password"],
+.signup-form input[type="email"] {
+    padding: 12px 14px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 15px;
+    transition: all 0.2s ease;
+}
+
+.signup-form input:focus {
+    border-color: var(--main-color);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(7,150,229,0.15);
+}
+
+/* 생년월일 그룹 */
+.birthdate-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.birthdate-group input {
+    width: 60px;
+    text-align: center;
+}
+
+/* 성별 라디오 버튼 - 가로로 */
+.gender-group {
+    display: flex;
+    gap: 20px; /* 남/여 버튼 간격 */
+    align-items: center;
+}
+
+.form-group.gender-group label {
+    display: flex;
+    align-items: center;
+    font-weight: normal;
+}
+
+/* 버튼 */
+.signup-button {
+    padding: 14px 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    background-color: var(--main-color);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+}
+
+.signup-button:hover {
+    background-color: var(--main-dark-color);
+}
+
+/* 반응형 */
+@media (max-width: 480px) {
+    #signup-container {
+        padding: 50px 20px;
+        margin: 40px auto;
+    }
+
+    .singup-title h2 {
+        font-size: 24px;
+        margin-bottom: 40px;
+    }
+
+    .signup-form input[type="text"],
+    .signup-form input[type="password"],
+    .signup-form input[type="email"] {
+        font-size: 14px;
+        padding: 10px 12px;
+    }
+
+    .signup-button {
+        font-size: 16px;
+        padding: 12px 0;
+    }
+
+    .birthdate-group input {
+        width: 50px;
+    }
+
+    .gender-group {
+        flex-direction: row;
+        gap: 12px;
+    }
+}
